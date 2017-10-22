@@ -20,19 +20,19 @@
  */
 
 using System;
-using NUnit.Framework;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
-    [TestFixture()]
-    public class Pkcs11X509StoreTest
+    public static class Settings
     {
-        [Test()]
-        public void BasicTest()
+        public static string GetSoftHsmLibraryPath()
         {
-            string libraryPath = Settings.GetSoftHsmLibraryPath();
-            Pkcs11X509Store store = new Pkcs11X509Store(libraryPath);
-            store.Dispose();
+            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2.conf");
+
+            if (IntPtr.Size == 8)
+                return @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2-x64.dll";
+            else
+                return @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2.dll";
         }
     }
 }
