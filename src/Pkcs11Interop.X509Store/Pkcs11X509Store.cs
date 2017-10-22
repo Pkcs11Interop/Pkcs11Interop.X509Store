@@ -23,7 +23,7 @@ using System;
 
 namespace Net.Pkcs11Interop.X509Store
 {
-    public class X509Store
+    public class Pkcs11X509Store
     {
     }
 }
