@@ -3,7 +3,7 @@ Pkcs11Interop.X509Store
 **Easy to use PKCS#11 based X.509 certificate store**
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/blob/master/LICENSE.md)
-[![NuGet](https://img.shields.io/badge/nuget-pkcs11interop-blue.svg)](https://www.nuget.org/packages/Pkcs11Interop.X509Store/)
+[![NuGet](https://img.shields.io/badge/nuget-pkcs11interop.x509store-blue.svg)](https://www.nuget.org/packages/Pkcs11Interop.X509Store/)
 [![Twitter](https://img.shields.io/badge/twitter-p11interop-blue.svg)](https://twitter.com/p11interop)
 
 ## Table of Contents
