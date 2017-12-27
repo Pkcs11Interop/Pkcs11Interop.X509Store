@@ -44,6 +44,21 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetPinResult.cs" />
+    <Compile Include="IPinProvider.cs" />
+    <Compile Include="Pkcs11X509CertificateInfo.cs" />
+    <Compile Include="Pkcs11ECDsaProvider.cs" />
+    <Compile Include="Pkcs11RsaProvider.cs" />
+    <Compile Include="Pkcs11Slot.cs" />
+    <Compile Include="Pkcs11SlotContext.cs" />
+    <Compile Include="Pkcs11SlotInfo.cs" />
+    <Compile Include="Pkcs11Token.cs" />
+    <Compile Include="Pkcs11TokenContext.cs" />
+    <Compile Include="Pkcs11TokenInfo.cs" />
+    <Compile Include="Pkcs11X509Certificate.cs" />
+    <Compile Include="Pkcs11X509CertificateContext.cs" />
+    <Compile Include="Pkcs11X509StoreContext.cs" />
+    <Compile Include="Pkcs11X509StoreInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pkcs11X509Store.cs" />
   </ItemGroup>

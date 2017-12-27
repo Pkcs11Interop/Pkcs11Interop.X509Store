@@ -19,7 +19,8 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
-using System;
+using System.Security.Cryptography;
+using System.Text;
 using NUnit.Framework;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
@@ -31,8 +32,28 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         public void BasicTest()
         {
             string libraryPath = Settings.GetSoftHsmLibraryPath();
-            Pkcs11X509Store store = new Pkcs11X509Store(libraryPath);
-            store.Dispose();
+            IPinProvider pinProvider = Settings.GetSoftHsmPinProvider();
+
+            using (var store = new Pkcs11X509Store(libraryPath, pinProvider))
+            {
+                foreach (Pkcs11Slot slot in store.Slots)
+                {
+                    if (slot.Token != null)
+                    {
+                        Pkcs11X509Certificate cert = slot.Token.Certificates[0];
+
+                        RSA privKey = cert.GetRSAPrivateKey();
+
+                        byte[] data = Encoding.UTF8.GetBytes("Hello world!");
+                        byte[] hash = new SHA256Managed().ComputeHash(data);
+                        byte[] signature = privKey.SignHash(hash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                        RSA pubKey = cert.GetRSAPublicKey();
+
+                        bool result = pubKey.VerifyHash(hash, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                    }
+                }
+            }
         }
     }
 }

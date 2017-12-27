@@ -19,25 +19,27 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
-using System;
+using System.Text;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
-    public static class Settings
+    class ConstPinProvider : IPinProvider
     {
-        public static string GetSoftHsmLibraryPath()
-        {
-            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2.conf");
+        private byte[] _pin = null;
 
-            if (IntPtr.Size == 8)
-                return @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2-x64.dll";
-            else
-                return @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2.dll";
+        public ConstPinProvider(string pin)
+        {
+            _pin = Encoding.UTF8.GetBytes(pin);
         }
 
-        public static IPinProvider GetSoftHsmPinProvider()
+        public GetPinResult GetTokenPin(Pkcs11X509StoreInfo storeInfo, Pkcs11SlotInfo slotInfo, Pkcs11TokenInfo tokenInfo)
         {
-            return new ConstPinProvider("11111111");
+            return new GetPinResult(false, false, _pin);
+        }
+
+        public GetPinResult GetKeyPin(Pkcs11X509StoreInfo storeInfo, Pkcs11SlotInfo slotInfo, Pkcs11TokenInfo tokenInfo, Pkcs11X509CertificateInfo certificateInfo)
+        {
+            return new GetPinResult(false, false, _pin);
         }
     }
 }

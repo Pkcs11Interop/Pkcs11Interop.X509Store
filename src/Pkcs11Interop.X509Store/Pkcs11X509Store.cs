@@ -20,33 +20,121 @@
  */
 
 using System;
+using System.Collections.Generic;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 
 namespace Net.Pkcs11Interop.X509Store
 {
+    /// <summary>
+    /// PKCS#11 based read-only X.509 store with certificates and corresponding asymmetric keys
+    /// </summary>
     public class Pkcs11X509Store : IDisposable
     {
+        /// <summary>
+        /// Flag indicating whether instance has been disposed
+        /// </summary>
         private bool _disposed = false;
 
-        private Pkcs11 _pkcs11 = null;
+        /// <summary>
+        /// Internal context for Pkcs11X509Store class
+        /// </summary>
+        private Pkcs11X509StoreContext _storeContext = null;
 
-        public Pkcs11X509Store(string libraryPath)
+        /// <summary>
+        /// Detailed information about PKCS#11 based X.509 store
+        /// </summary>
+        public Pkcs11X509StoreInfo Info
+        {
+            get
+            {
+                if (_disposed)
+                    throw new ObjectDisposedException(this.GetType().FullName);
+
+                return _storeContext.StoreInfo;
+            }
+        }
+
+        /// <summary>
+        /// List of available PKCS#11 slots representing logical readers
+        /// </summary>
+        private List<Pkcs11Slot> _slots = null;
+
+        /// <summary>
+        /// List of available PKCS#11 slots representing logical readers
+        /// </summary>
+        public List<Pkcs11Slot> Slots
+        {
+            get
+            {
+                if (_disposed)
+                    throw new ObjectDisposedException(this.GetType().FullName);
+
+                return _slots;
+            }
+        }
+
+        /// <summary>
+        /// Creates new instance of Pkcs11X509Store class.
+        /// Also loads and initializes unmanaged PCKS#11 library.
+        /// </summary>
+        /// <param name="libraryPath">Name of or path to PKCS#11 library</param>
+        /// <param name="pinProvider">Provider of PIN codes for PKCS#11 tokens and keys</param>
+        public Pkcs11X509Store(string libraryPath, IPinProvider pinProvider)
         {
             if (string.IsNullOrEmpty(libraryPath))
                 throw new ArgumentNullException(nameof(libraryPath));
 
+            if (pinProvider == null)
+                throw new ArgumentNullException(nameof(pinProvider));
+
+            _storeContext = this.GetStoreContext(libraryPath, pinProvider);
+            _slots = this.GetSlots();
+        }
+
+        /// <summary>
+        /// Constructs internal context for Pkcs11X509Store class
+        /// </summary>
+        /// <param name="libraryPath">Name of or path to PKCS#11 library</param>
+        /// <param name="pinProvider">Provider of PIN codes for PKCS#11 tokens and keys</param>
+        /// <returns>Internal context for Pkcs11X509Store class</returns>
+        private Pkcs11X509StoreContext GetStoreContext(string libraryPath, IPinProvider pinProvider)
+        {
+            Pkcs11 pkcs11 = null;
+
             try
             {
-                _pkcs11 = new Pkcs11(libraryPath, AppType.MultiThreaded);
+                pkcs11 = new Pkcs11(libraryPath, AppType.MultiThreaded);
+                var storeInfo = new Pkcs11X509StoreInfo(libraryPath, pkcs11.GetInfo());
+                return new Pkcs11X509StoreContext(pkcs11, storeInfo, pinProvider);
             }
-            catch (Pkcs11Exception ex)
+            catch
             {
-                if (ex.RV == CKR.CKR_CANT_LOCK)
-                    _pkcs11 = new Pkcs11(libraryPath, AppType.SingleThreaded);
-                else
-                    throw;
+                if (pkcs11 != null)
+                {
+                    pkcs11.Dispose();
+                    pkcs11 = null;
+                }
+
+                throw;
             }
+        }
+
+        /// <summary>
+        /// Gets list of available PKCS#11 slots representing logical readers
+        /// </summary>
+        /// <returns>List of available PKCS#11 slots representing logical readers</returns>
+        private List<Pkcs11Slot> GetSlots()
+        {
+            var slots = new List<Pkcs11Slot>();
+
+            foreach (Slot slot in _storeContext.Pkcs11.GetSlotList(SlotsType.WithOrWithoutTokenPresent))
+            {
+                var pkcs11Slot = new Pkcs11Slot(slot, _storeContext);
+                slots.Add(pkcs11Slot);
+            }
+
+            return slots;
         }
 
         #region IDisposable
@@ -68,13 +156,26 @@ namespace Net.Pkcs11Interop.X509Store
         {
             if (!_disposed)
             {
-                // Dispose managed objects
                 if (disposing)
                 {
-                    if (_pkcs11 != null)
+                    // Dispose managed objects
+
+                    if (_slots != null)
                     {
-                        _pkcs11.Dispose();
-                        _pkcs11 = null;
+                        for (int i = 0; i < _slots.Count; i++)
+                        {
+                            if (_slots[i] != null)
+                            {
+                                _slots[i].Dispose();
+                                _slots[i] = null;
+                            }
+                        }
+                    }
+
+                    if (_storeContext != null)
+                    {
+                        _storeContext.Dispose();
+                        _storeContext = null;
                     }
                 }
 
