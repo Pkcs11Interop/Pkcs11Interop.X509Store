@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Pkcs11Interop.X509Store</id>
+    <version>0.1.0</version>
+    <title>Pkcs11Interop.X509Store</title>
+    <authors>Jaroslav Imrich</authors>
+    <owners>Jaroslav Imrich</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://www.pkcs11interop.net/nuget/pkcs11interop-apache-license-2.0.txt</licenseUrl>
+    <projectUrl>https://www.pkcs11interop.net/</projectUrl>
+    <iconUrl>https://www.pkcs11interop.net/nuget/pkcs11interop-icon-64x64.png</iconUrl>
+    <description>Easy to use PKCS#11 based X.509 certificate store</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017 The Pkcs11Interop Project</copyright>
+    <language></language>
+    <tags>pkcs pkcs11 security crypto cryptography smartcard hsm</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Pkcs11Interop" version="4.0.0" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
