@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Pkcs11Interop.X509Store.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Easy to use PKCS#11 based X.509 certificate store")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Pkcs11Interop.X509Store")]
