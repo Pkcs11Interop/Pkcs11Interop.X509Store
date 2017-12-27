@@ -66,5 +66,11 @@
     <None Include="packages.config" />
     <None Include="Pkcs11Interop.X509Store.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="CHANGELOG.txt" />
+    <Content Include="ISSUES.txt" />
+    <Content Include="LICENSE.txt" />
+    <Content Include="NOTICE.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
