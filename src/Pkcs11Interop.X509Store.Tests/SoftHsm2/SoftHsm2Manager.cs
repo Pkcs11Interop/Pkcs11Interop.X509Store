@@ -34,6 +34,12 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         public const string Token1UserPin = "11111111";
 
+        public const string Token1TestCaLabel = "TestCa";
+
+        public const string Token1TestUserRsaLabel = "TestUserRsa";
+
+        public const string Token1TestUserEcdsaLabel = "TestUserEcdsa";
+
         public const string Token2Label = "Second token";
 
         public const string Token2SoPin = "2222222222";
@@ -103,17 +109,17 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                     session.Login(CKU.CKU_USER, Token1UserPin);
 
                     // Import CA cert without private key
-                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes());
+                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(Token1TestCaLabel));
 
                     // Import user cert with RSA private and public keys
-                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes());
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes());
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes());
+                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(Token1TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(Token1TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(Token1TestUserRsaLabel));
 
                     // Import user cert with ECDSA private and public keys
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes());
-                    session.CreateObject(CryptoObjects.GetTestUseEcdsaPrivKeyAttributes());
-                    session.CreateObject(CryptoObjects.GetTestUseEcdsaPubKeyAttributes());
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(Token1TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUseEcdsaPrivKeyAttributes(Token1TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUseEcdsaPubKeyAttributes(Token1TestUserEcdsaLabel));
                 }
             }
         }

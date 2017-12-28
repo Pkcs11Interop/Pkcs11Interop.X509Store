@@ -55,7 +55,7 @@ LO8kPI+YVJ0lTN/q8IMjn4khmvweV5WfNt6iZ9LuMbhACFyEqgGVWbcXthsL+Yxr
 c4ATWyzwriXLPbamxo0Kf27oexY4F9n9d01u2j2XP8f2WkWHGhbRvg==
 -----END CERTIFICATE-----";
 
-        public static List<ObjectAttribute> GetTestCaCertAttributes()
+        public static List<ObjectAttribute> GetTestCaCertAttributes(string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestCaCert));
 
@@ -65,11 +65,11 @@ c4ATWyzwriXLPbamxo0Kf27oexY4F9n9d01u2j2XP8f2WkWHGhbRvg==
                 new ObjectAttribute(CKA.CKA_TOKEN, true),
                 new ObjectAttribute(CKA.CKA_PRIVATE, false),
                 new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, "TestCa"),
+                new ObjectAttribute(CKA.CKA_LABEL, label),
                 new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
                 new ObjectAttribute(CKA.CKA_TRUSTED, false),
                 new ObjectAttribute(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestCa")),
+                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_VALUE, x509Certificate.GetEncoded())
@@ -131,7 +131,7 @@ gUTWJbrzarovAUzgdbqDBYX2Gms35wBgverKYxnRurWID1GemHm7Z98+f5TPW0Qs
 W7ahGG6hOe+ZPHr78ZhqZdxN
 -----END PRIVATE KEY-----";
 
-        public static List<ObjectAttribute> GetTestUserRsaCertAttributes()
+        public static List<ObjectAttribute> GetTestUserRsaCertAttributes(string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserRsaCert));
 
@@ -141,18 +141,18 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 new ObjectAttribute(CKA.CKA_TOKEN, true),
                 new ObjectAttribute(CKA.CKA_PRIVATE, false),
                 new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, "TestUserRsa"),
+                new ObjectAttribute(CKA.CKA_LABEL, label),
                 new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
                 new ObjectAttribute(CKA.CKA_TRUSTED, false),
                 new ObjectAttribute(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestUserRsa")),
+                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_VALUE, x509Certificate.GetEncoded())
             };
         }
 
-        public static List<ObjectAttribute> GetTestUserRsaPrivKeyAttributes()
+        public static List<ObjectAttribute> GetTestUserRsaPrivKeyAttributes(string label)
         {
             using (var stringReader = new StringReader(TestUserRsaPrivKey))
             {
@@ -165,8 +165,8 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                     new ObjectAttribute(CKA.CKA_TOKEN, true),
                     new ObjectAttribute(CKA.CKA_PRIVATE, true),
                     new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                    new ObjectAttribute(CKA.CKA_LABEL, "TestUserRsa"),
-                    new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestUserRsa")),
+                    new ObjectAttribute(CKA.CKA_LABEL, label),
+                    new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
                     new ObjectAttribute(CKA.CKA_MODULUS, rsaPrivKeyParams.Modulus.ToByteArray()),
                     new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPrivKeyParams.PublicExponent.ToByteArray()),
@@ -180,7 +180,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
             }
         }
 
-        public static List<ObjectAttribute> GetTestUserRsaPubKeyAttributes()
+        public static List<ObjectAttribute> GetTestUserRsaPubKeyAttributes(string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserRsaCert));
             var rsaPubKeyParams = x509Certificate.GetPublicKey() as RsaKeyParameters;
@@ -191,8 +191,8 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 new ObjectAttribute(CKA.CKA_TOKEN, true),
                 new ObjectAttribute(CKA.CKA_PRIVATE, false),
                 new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, "TestUserRsa"),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestUserRsa")),
+                new ObjectAttribute(CKA.CKA_LABEL, label),
+                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
                 new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArray()),
                 new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArray())
@@ -227,7 +227,7 @@ f0P9qq5vGhY/fiVfkG1CFsJlQ8uhRANCAARgf13QFUotRUJdi/E6pi4WHJrMRogW
 v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
 -----END PRIVATE KEY-----";
 
-        public static List<ObjectAttribute> GetTestUserEcdsaCertAttributes()
+        public static List<ObjectAttribute> GetTestUserEcdsaCertAttributes(string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserEcdsaCert));
 
@@ -237,18 +237,18 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 new ObjectAttribute(CKA.CKA_TOKEN, true),
                 new ObjectAttribute(CKA.CKA_PRIVATE, false),
                 new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, "TestUserEcdsa"),
+                new ObjectAttribute(CKA.CKA_LABEL, label),
                 new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
                 new ObjectAttribute(CKA.CKA_TRUSTED, false),
                 new ObjectAttribute(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestUserEcdsa")),
+                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_VALUE, x509Certificate.GetEncoded())
             };
         }
 
-        public static List<ObjectAttribute> GetTestUseEcdsaPrivKeyAttributes()
+        public static List<ObjectAttribute> GetTestUseEcdsaPrivKeyAttributes(string label)
         {
             using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
             {
@@ -261,8 +261,8 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     new ObjectAttribute(CKA.CKA_TOKEN, true),
                     new ObjectAttribute(CKA.CKA_PRIVATE, true),
                     new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                    new ObjectAttribute(CKA.CKA_LABEL, "TestUserEcdsa"),
-                    new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestUserEcdsa")),
+                    new ObjectAttribute(CKA.CKA_LABEL, label),
+                    new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
                     new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPrivKeyParams.PublicKeyParamSet.GetDerEncoded()),
                     new ObjectAttribute(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArray())
@@ -270,7 +270,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             }
         }
 
-        public static List<ObjectAttribute> GetTestUseEcdsaPubKeyAttributes()
+        public static List<ObjectAttribute> GetTestUseEcdsaPubKeyAttributes(string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserEcdsaCert));
             var ecdsaPubKeyParams = x509Certificate.GetPublicKey() as ECPublicKeyParameters;
@@ -281,8 +281,8 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 new ObjectAttribute(CKA.CKA_TOKEN, true),
                 new ObjectAttribute(CKA.CKA_PRIVATE, false),
                 new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, "TestUserEcdsa"),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes("TestUserEcdsa")),
+                new ObjectAttribute(CKA.CKA_LABEL, label),
+                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
                 new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_EC_POINT, ecdsaPubKeyParams.Q.GetEncoded())
