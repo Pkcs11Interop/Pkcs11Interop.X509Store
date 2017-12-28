@@ -21,6 +21,7 @@
 
 using System;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 using Net.Pkcs11Interop.HighLevelAPI.MechanismParams;
@@ -44,7 +45,7 @@ namespace Net.Pkcs11Interop.X509Store
         internal Pkcs11RsaProvider(Pkcs11X509CertificateContext certContext)
         {
             _certContext = certContext ?? throw new ArgumentNullException(nameof(certContext));
-            base.KeySizeValue = _certContext.CertificateInfo.ParsedCertificate.PublicKey.Key.KeySize;
+            base.KeySizeValue = _certContext.CertificateInfo.ParsedCertificate.GetRSAPublicKey().KeySize;
             base.LegalKeySizesValue = new KeySizes[] { new KeySizes(base.KeySizeValue, base.KeySizeValue, 0) };
         }
 
@@ -57,6 +58,15 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>The RSA signature for the specified hash value</returns>
         public override byte[] SignHash(byte[] hash, HashAlgorithmName hashAlgorithm, RSASignaturePadding padding)
         {
+            if (hash == null || hash.Length == 0)
+                throw new ArgumentNullException(nameof(hash));
+
+            if (hashAlgorithm == null)
+                throw new ArgumentNullException(nameof(hashAlgorithm));
+
+            if (padding == null)
+                throw new ArgumentNullException(nameof(padding));
+
             if (padding == RSASignaturePadding.Pkcs1)
             {
                 byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
@@ -93,6 +103,18 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>True if the signature is valid, false otherwise</returns>
         public override bool VerifyHash(byte[] hash, byte[] signature, HashAlgorithmName hashAlgorithm, RSASignaturePadding padding)
         {
+            if (hash == null || hash.Length == 0)
+                throw new ArgumentNullException(nameof(hash));
+
+            if (signature == null || signature.Length == 0)
+                throw new ArgumentNullException(nameof(signature));
+
+            if (hashAlgorithm == null)
+                throw new ArgumentNullException(nameof(hashAlgorithm));
+
+            if (padding == null)
+                throw new ArgumentNullException(nameof(padding));
+
             if (padding == RSASignaturePadding.Pkcs1)
             {
                 byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
