@@ -19,7 +19,6 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
@@ -34,24 +33,12 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         private byte[] _data1 = Encoding.UTF8.GetBytes("Hello world!");
         private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
-        private static Pkcs11X509Certificate GetCertificate(Pkcs11X509Store store, string tokenLabel, string certLabel)
-        {
-            Pkcs11Token token = store.Slots.FirstOrDefault(p => p.Token.Info.Label == tokenLabel)?.Token;
-            return token?.Certificates.FirstOrDefault(p => p.Info.Label == certLabel);
-        }
-
-        private byte[] ComputeHash(byte[] data, HashAlgorithmName hashAlgName)
-        {
-            using (HashAlgorithm hashAlg = HashAlgorithm.Create(hashAlgName.Name))
-                return hashAlg.ComputeHash(data);
-        }
-
         [Test()]
         public void SelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
-                Pkcs11X509Certificate cert = GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
 
                 ECDsa p11PrivKey = cert.GetECDsaPrivateKey();
                 Assert.IsNotNull(p11PrivKey);
@@ -60,8 +47,8 @@ namespace Net.Pkcs11Interop.X509Store.Tests
 
                 foreach (HashAlgorithmName hashAlgName in _hashNames)
                 {
-                    byte[] hash1 = ComputeHash(_data1, hashAlgName);
-                    byte[] hash2 = ComputeHash(_data2, hashAlgName);
+                    byte[] hash1 = Helpers.ComputeHash(_data1, hashAlgName);
+                    byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
 
                     byte[] signature = p11PrivKey.SignHash(hash1);
                     Assert.IsNotNull(signature);
@@ -78,7 +65,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
-                Pkcs11X509Certificate cert = GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
 
                 ECDsa p11PrivKey = cert.GetECDsaPrivateKey();
                 Assert.IsNotNull(p11PrivKey);
@@ -89,8 +76,8 @@ namespace Net.Pkcs11Interop.X509Store.Tests
 
                 foreach (HashAlgorithmName hashAlgName in _hashNames)
                 {
-                    byte[] hash1 = ComputeHash(_data1, hashAlgName);
-                    byte[] hash2 = ComputeHash(_data2, hashAlgName);
+                    byte[] hash1 = Helpers.ComputeHash(_data1, hashAlgName);
+                    byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
 
                     byte[] p11Signature = p11PrivKey.SignHash(hash1);
                     Assert.IsNotNull(p11Signature);

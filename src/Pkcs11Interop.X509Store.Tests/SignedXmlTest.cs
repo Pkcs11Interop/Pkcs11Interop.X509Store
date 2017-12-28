@@ -20,7 +20,6 @@
  */
 
 using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -40,8 +39,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
                 // Find signing certificate
-                Pkcs11Token token = store.Slots.FirstOrDefault(p => p.Token.Info.Label == SoftHsm2Manager.Token1Label).Token;
-                Pkcs11X509Certificate cert = token.Certificates.FirstOrDefault(p => p.Info.Label == SoftHsm2Manager.Token1TestUserRsaLabel);
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserRsaLabel);
 
                 // Get PKCS#11 based private key
                 RSA rsaPrivateKey = cert.GetRSAPrivateKey();
