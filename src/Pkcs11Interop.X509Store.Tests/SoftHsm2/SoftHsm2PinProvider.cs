@@ -19,27 +19,26 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
+using System;
 using System.Text;
 
-namespace Net.Pkcs11Interop.X509Store.Tests
+namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 {
-    class ConstPinProvider : IPinProvider
+    public class SoftHsm2PinProvider : IPinProvider
     {
-        private byte[] _pin = null;
-
-        public ConstPinProvider(string pin)
-        {
-            _pin = Encoding.UTF8.GetBytes(pin);
-        }
-
         public GetPinResult GetTokenPin(Pkcs11X509StoreInfo storeInfo, Pkcs11SlotInfo slotInfo, Pkcs11TokenInfo tokenInfo)
         {
-            return new GetPinResult(false, false, _pin);
+            if (tokenInfo.Label == SoftHsm2Manager.Token1Label)
+                return new GetPinResult(false, false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token1UserPin));
+            else if (tokenInfo.Label == SoftHsm2Manager.Token2Label)
+                return new GetPinResult(false, false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token2UserPin));
+            else
+                return new GetPinResult(true, false, null);
         }
 
         public GetPinResult GetKeyPin(Pkcs11X509StoreInfo storeInfo, Pkcs11SlotInfo slotInfo, Pkcs11TokenInfo tokenInfo, Pkcs11X509CertificateInfo certificateInfo)
         {
-            return new GetPinResult(false, false, _pin);
+            throw new NotImplementedException();
         }
     }
 }

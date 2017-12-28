@@ -21,6 +21,7 @@
 
 using System.Security.Cryptography;
 using System.Text;
+using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 using NUnit.Framework;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
@@ -31,18 +32,18 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         [Test()]
         public void BasicTest()
         {
-            string libraryPath = Settings.GetSoftHsmLibraryPath();
-            IPinProvider pinProvider = Settings.GetSoftHsmPinProvider();
-
-            using (var store = new Pkcs11X509Store(libraryPath, pinProvider))
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
                 foreach (Pkcs11Slot slot in store.Slots)
                 {
-                    if (slot.Token != null)
-                    {
-                        Pkcs11X509Certificate cert = slot.Token.Certificates[0];
+                    if (slot.Token == null)
+                        continue;
 
+                    foreach (Pkcs11X509Certificate cert in slot.Token.Certificates)
+                    {
                         RSA privKey = cert.GetRSAPrivateKey();
+                        if (privKey == null)
+                            continue;
 
                         byte[] data = Encoding.UTF8.GetBytes("Hello world!");
                         byte[] hash = new SHA256Managed().ComputeHash(data);
