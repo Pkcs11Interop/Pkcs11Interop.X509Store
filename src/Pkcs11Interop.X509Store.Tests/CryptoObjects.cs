@@ -170,14 +170,14 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                     new ObjectAttribute(CKA.CKA_LABEL, label),
                     new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPrivKeyParams.Modulus.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPrivKeyParams.PublicExponent.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_PRIVATE_EXPONENT, rsaPrivKeyParams.Exponent.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_PRIME_1, rsaPrivKeyParams.P.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_PRIME_2, rsaPrivKeyParams.Q.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_EXPONENT_1, rsaPrivKeyParams.DP.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_EXPONENT_2, rsaPrivKeyParams.DQ.ToByteArray()),
-                    new ObjectAttribute(CKA.CKA_COEFFICIENT, rsaPrivKeyParams.QInv.ToByteArray())
+                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPrivKeyParams.Modulus.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPrivKeyParams.PublicExponent.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_PRIVATE_EXPONENT, rsaPrivKeyParams.Exponent.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_PRIME_1, rsaPrivKeyParams.P.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_PRIME_2, rsaPrivKeyParams.Q.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_EXPONENT_1, rsaPrivKeyParams.DP.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_EXPONENT_2, rsaPrivKeyParams.DQ.ToByteArrayUnsigned()),
+                    new ObjectAttribute(CKA.CKA_COEFFICIENT, rsaPrivKeyParams.QInv.ToByteArrayUnsigned())
                 };
             }
         }
@@ -196,8 +196,8 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 new ObjectAttribute(CKA.CKA_LABEL, label),
                 new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArray()),
-                new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArray())
+                new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
+                new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
             };
         }
 
