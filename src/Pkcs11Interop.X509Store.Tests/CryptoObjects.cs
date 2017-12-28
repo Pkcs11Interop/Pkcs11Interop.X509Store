@@ -21,12 +21,14 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;
+using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.X509;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
@@ -197,6 +199,20 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArray()),
                 new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArray())
             };
+        }
+
+        public static RSA GetTestUserRsaCngProvider()
+        {
+            using (var stringReader = new StringReader(TestUserRsaPrivKey))
+            {
+                var pemReader = new PemReader(stringReader);
+                var rsaPrivKeyParams = pemReader.ReadObject() as RsaPrivateCrtKeyParameters;
+
+                byte[] pkcs8 = PrivateKeyInfoFactory.CreatePrivateKeyInfo(rsaPrivKeyParams).GetDerEncoded();
+
+                CngKey cngKey = CngKey.Import(pkcs8, CngKeyBlobFormat.Pkcs8PrivateBlob);
+                return new RSACng(cngKey);
+            }
         }
 
         #endregion
