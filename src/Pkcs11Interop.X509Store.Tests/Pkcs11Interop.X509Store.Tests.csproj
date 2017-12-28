@@ -52,17 +52,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="softhsm2\softhsm2.conf" />
+    <None Include="SoftHsm2\softhsm2.conf" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="softhsm2\softhsm2-x64.dll" />
-    <Content Include="softhsm2\softhsm2.dll" />
+    <Content Include="SoftHsm2\softhsm2-x64.dll" />
+    <Content Include="SoftHsm2\softhsm2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="softhsm2\tokens\" />
+    <Folder Include="SoftHsm2\tokens\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

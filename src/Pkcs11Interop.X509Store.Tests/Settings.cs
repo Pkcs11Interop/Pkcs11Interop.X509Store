@@ -27,12 +27,12 @@ namespace Net.Pkcs11Interop.X509Store.Tests
     {
         public static string GetSoftHsmLibraryPath()
         {
-            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2.conf");
+            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"Pkcs11Interop.X509Store.Tests\SoftHsm2\softhsm2.conf");
 
             if (IntPtr.Size == 8)
-                return @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2-x64.dll";
+                return @"Pkcs11Interop.X509Store.Tests\SoftHsm2\softhsm2-x64.dll";
             else
-                return @"Pkcs11Interop.X509Store.Tests\softhsm2\softhsm2.dll";
+                return @"Pkcs11Interop.X509Store.Tests\SoftHsm2\softhsm2.dll";
         }
 
         public static IPinProvider GetSoftHsmPinProvider()
