@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
+using Net.Pkcs11Interop.HighLevelAPI.MechanismParams;
 
 namespace Net.Pkcs11Interop.X509Store
 {
@@ -55,17 +56,30 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>The RSA signature for the specified hash value</returns>
         public override byte[] SignHash(byte[] hash, HashAlgorithmName hashAlgorithm, RSASignaturePadding padding)
         {
-            // TODO - Implement RSASignaturePadding.Pss
-            if (padding != RSASignaturePadding.Pkcs1)
-                throw new NotSupportedException("Only PKCS#1 v1.5 RSA signature is supported");
+            if (padding == RSASignaturePadding.Pkcs1)
+            {
+                byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
+                if (pkcs1DigestInfo == null)
+                    throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
 
-            byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
-            if (pkcs1DigestInfo == null)
-                throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
+                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
+                    return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo);
+            }
+            else if (padding == RSASignaturePadding.Pss)
+            {
+                CkRsaPkcsPssParams pssMechanismParams = CreateCkRsaPkcsPssParams(hash, hashAlgorithm);
+                if (pssMechanismParams == null)
+                    throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
 
-            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-            using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
-                return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo);
+                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
+                    return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+            }
         }
 
         /// <summary>
@@ -78,19 +92,35 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>True if the signature is valid, false otherwise</returns>
         public override bool VerifyHash(byte[] hash, byte[] signature, HashAlgorithmName hashAlgorithm, RSASignaturePadding padding)
         {
-            // TODO - Implement RSASignaturePadding.Pss
-            if (padding != RSASignaturePadding.Pkcs1)
-                throw new NotSupportedException("Only PKCS#1 v1.5 RSA signature is supported");
-
-            byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
-            if (pkcs1DigestInfo == null)
-                throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm));
-
-            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-            using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
+            if (padding == RSASignaturePadding.Pkcs1)
             {
-                session.Verify(mechanism, _certContext.PubKeyHandle, pkcs1DigestInfo, signature, out bool isValid);
-                return isValid;
+                byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
+                if (pkcs1DigestInfo == null)
+                    throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm));
+
+                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
+                {
+                    session.Verify(mechanism, _certContext.PubKeyHandle, pkcs1DigestInfo, signature, out bool isValid);
+                    return isValid;
+                }
+            }
+            else if (padding == RSASignaturePadding.Pss)
+            {
+                CkRsaPkcsPssParams pssMechanismParams = CreateCkRsaPkcsPssParams(hash, hashAlgorithm);
+                if (pssMechanismParams == null)
+                    throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
+
+                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
+                {
+                    session.Verify(mechanism, _certContext.PubKeyHandle, hash, signature, out bool isValid);
+                    return isValid;
+                }
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
             }
         }
 
@@ -202,12 +232,69 @@ namespace Net.Pkcs11Interop.X509Store
                 pkcs1DigestInfo = new byte[] { 0x30, 0x51, 0x30, 0x0D, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03, 0x05, 0x00, 0x04, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
                 Array.Copy(hash, 0, pkcs1DigestInfo, pkcs1DigestInfo.Length - hash.Length, hash.Length);
             }
-            else
-            {
-                throw new ArgumentException("Invalid hash algorithm");
-            }
 
             return pkcs1DigestInfo;
+        }
+
+        /// <summary>
+        /// Creates parameters for CKM_RSA_PKCS_PSS mechanism
+        /// </summary>
+        /// <param name="hash">Hash value</param>
+        /// <param name="hashAlgorithm">Hash algorithm</param>
+        /// <returns>Parameters for CKM_RSA_PKCS_PSS mechanism or null</returns>
+        private static CkRsaPkcsPssParams CreateCkRsaPkcsPssParams(byte[] hash, HashAlgorithmName hashAlgorithm)
+        {
+            if (hash == null || hash.Length == 0)
+                throw new ArgumentNullException(nameof(hash));
+
+            CkRsaPkcsPssParams pssParams = null;
+
+            if (hashAlgorithm == HashAlgorithmName.SHA1)
+            {
+                if (hash.Length != 20)
+                    throw new ArgumentException("Invalid lenght of hash value");
+
+                pssParams = new CkRsaPkcsPssParams(
+                    hashAlg: (ulong)CKM.CKM_SHA_1,
+                    mgf: (ulong)CKG.CKG_MGF1_SHA1,
+                    len: (ulong)hash.Length
+                );
+            }
+            else if (hashAlgorithm == HashAlgorithmName.SHA256)
+            {
+                if (hash.Length != 32)
+                    throw new ArgumentException("Invalid lenght of hash value");
+
+                pssParams = new CkRsaPkcsPssParams(
+                    hashAlg: (ulong)CKM.CKM_SHA256,
+                    mgf: (ulong)CKG.CKG_MGF1_SHA256,
+                    len: (ulong)hash.Length
+                );
+            }
+            else if (hashAlgorithm == HashAlgorithmName.SHA384)
+            {
+                if (hash.Length != 48)
+                    throw new ArgumentException("Invalid lenght of hash value");
+
+                pssParams = new CkRsaPkcsPssParams(
+                    hashAlg: (ulong)CKM.CKM_SHA384,
+                    mgf: (ulong)CKG.CKG_MGF1_SHA384,
+                    len: (ulong)hash.Length
+                );
+            }
+            else if (hashAlgorithm == HashAlgorithmName.SHA512)
+            {
+                if (hash.Length != 64)
+                    throw new ArgumentException("Invalid lenght of hash value");
+
+                pssParams = new CkRsaPkcsPssParams(
+                    hashAlg: (ulong)CKM.CKM_SHA512,
+                    mgf: (ulong)CKG.CKG_MGF1_SHA512,
+                    len: (ulong)hash.Length
+                );
+            }
+
+            return pssParams;
         }
     }
 }
