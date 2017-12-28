@@ -306,7 +306,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             };
         }
 
-        public static ECDsaCng GetTestUserECDsaCngProvider()
+        public static ECDsaCng GetTestUserEcdsaCngProvider()
         {
             using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
             {

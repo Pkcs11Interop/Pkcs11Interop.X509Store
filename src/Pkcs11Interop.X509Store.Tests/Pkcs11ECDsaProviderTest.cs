@@ -34,7 +34,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
         [Test()]
-        public void SelfTest()
+        public void EcdsaSelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -61,7 +61,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void CngTest()
+        public void EcdsaCngTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -71,7 +71,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 Assert.IsNotNull(p11PrivKey);
                 ECDsa p11PubKey = cert.GetECDsaPublicKey();
                 Assert.IsNotNull(p11PubKey);
-                ECDsa cngKey = CryptoObjects.GetTestUserECDsaCngProvider();
+                ECDsa cngKey = CryptoObjects.GetTestUserEcdsaCngProvider();
                 Assert.IsNotNull(cngKey);
 
                 foreach (HashAlgorithmName hashAlgName in _hashNames)

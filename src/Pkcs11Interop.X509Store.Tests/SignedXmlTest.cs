@@ -34,7 +34,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
     {
         // Modified sample from https://msdn.microsoft.com/en-us/library/system.security.cryptography.xml.signedxml(v=vs.110).aspx
         [Test()]
-        public void BasicSignedXmlTest()
+        public void MsdnSignedXmlTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {

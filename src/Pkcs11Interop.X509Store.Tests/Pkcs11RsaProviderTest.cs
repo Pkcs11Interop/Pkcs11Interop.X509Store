@@ -35,7 +35,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
         [Test()]
-        public void Pkcs1SelfTest()
+        public void RsaPkcs1SelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -62,7 +62,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void Pkcs1CngTest()
+        public void RsaPkcs1CngTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -98,7 +98,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void PssSelfTest()
+        public void RsaPssSelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -125,7 +125,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void PssCngTest()
+        public void RsaPssCngTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
