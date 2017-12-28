@@ -45,6 +45,8 @@ namespace Net.Pkcs11Interop.X509Store
         internal Pkcs11RsaProvider(Pkcs11X509CertificateContext certContext)
         {
             _certContext = certContext ?? throw new ArgumentNullException(nameof(certContext));
+            base.KeySizeValue = _certContext.CertificateInfo.ParsedCertificate.PublicKey.Key.KeySize;
+            base.LegalKeySizesValue = new KeySizes[] { new KeySizes(base.KeySizeValue, base.KeySizeValue, 0) };
         }
 
         /// <summary>
