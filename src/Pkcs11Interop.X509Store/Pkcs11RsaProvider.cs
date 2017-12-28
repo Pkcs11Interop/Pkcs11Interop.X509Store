@@ -179,7 +179,7 @@ namespace Net.Pkcs11Interop.X509Store
             if (includePrivateParameters)
                 throw new NotSupportedException("Private key export is not supported");
 
-            var rsaPubKey = _certContext.CertificateInfo.ParsedCertificate.PublicKey.Key as RSA;
+            RSA rsaPubKey = _certContext.CertificateInfo.ParsedCertificate.GetRSAPublicKey();
             return rsaPubKey.ExportParameters(false);
         }
 
