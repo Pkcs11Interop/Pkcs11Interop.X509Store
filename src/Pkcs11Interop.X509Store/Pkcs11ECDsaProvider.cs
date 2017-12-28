@@ -21,6 +21,9 @@
 
 using System;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Net.Pkcs11Interop.Common;
+using Net.Pkcs11Interop.HighLevelAPI;
 
 namespace Net.Pkcs11Interop.X509Store
 {
@@ -41,6 +44,8 @@ namespace Net.Pkcs11Interop.X509Store
         internal Pkcs11ECDsaProvider(Pkcs11X509CertificateContext certContext)
         {
             _certContext = certContext ?? throw new ArgumentNullException(nameof(certContext));
+            base.KeySizeValue = _certContext.CertificateInfo.ParsedCertificate.GetECDsaPublicKey().KeySize;
+            base.LegalKeySizesValue = new KeySizes[] { new KeySizes(base.KeySizeValue, base.KeySizeValue, 0) };
         }
 
         /// <summary>
@@ -50,8 +55,12 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>A digital signature that consists of the given hash value encrypted with the private key</returns>
         public override byte[] SignHash(byte[] hash)
         {
-            // TODO - Implement
-            throw new NotImplementedException();
+            if (hash == null || hash.Length == 0)
+                throw new ArgumentNullException(nameof(hash));
+
+            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+            using (var mechanism = new Mechanism(CKM.CKM_ECDSA))
+                return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
         }
 
         /// <summary>
@@ -62,8 +71,18 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>True if the hash value equals the decrypted signature, false otherwise</returns>
         public override bool VerifyHash(byte[] hash, byte[] signature)
         {
-            // TODO - Implement
-            throw new NotImplementedException();
+            if (hash == null || hash.Length == 0)
+                throw new ArgumentNullException(nameof(hash));
+
+            if (signature == null || signature.Length == 0)
+                throw new ArgumentNullException(nameof(signature));
+
+            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+            using (var mechanism = new Mechanism(CKM.CKM_ECDSA))
+            {
+                session.Verify(mechanism, _certContext.PubKeyHandle, hash, signature, out bool isValid);
+                return isValid;
+            }
         }
     }
 }

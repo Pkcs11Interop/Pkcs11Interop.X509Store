@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoObjects.cs" />
+    <Compile Include="Pkcs11ECDsaProviderTest.cs" />
     <Compile Include="Pkcs11RsaProviderTest.cs" />
     <Compile Include="Pkcs11X509StoreTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -26,6 +26,7 @@ using System.Text;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Pkcs;
@@ -281,7 +282,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
                     new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPrivKeyParams.PublicKeyParamSet.GetDerEncoded()),
-                    new ObjectAttribute(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArray())
+                    new ObjectAttribute(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArrayUnsigned())
                 };
             }
         }
@@ -301,8 +302,22 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
                 new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_EC_POINT, ecdsaPubKeyParams.Q.GetEncoded())
+                new ObjectAttribute(CKA.CKA_EC_POINT, new X9ECPoint(ecdsaPubKeyParams.Q).GetDerEncoded())
             };
+        }
+
+        public static ECDsaCng GetTestUserECDsaCngProvider()
+        {
+            using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
+            {
+                var pemReader = new PemReader(stringReader);
+                var ecdsaPrivKeyParams = pemReader.ReadObject() as ECPrivateKeyParameters;
+
+                byte[] pkcs8 = PrivateKeyInfoFactory.CreatePrivateKeyInfo(ecdsaPrivKeyParams).GetDerEncoded();
+
+                CngKey cngKey = CngKey.Import(pkcs8, CngKeyBlobFormat.Pkcs8PrivateBlob);
+                return new ECDsaCng(cngKey);
+            }
         }
 
         #endregion
