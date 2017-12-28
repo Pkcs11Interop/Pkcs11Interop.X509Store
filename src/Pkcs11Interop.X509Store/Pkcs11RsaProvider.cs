@@ -20,7 +20,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
@@ -156,20 +155,10 @@ namespace Net.Pkcs11Interop.X509Store
         public override RSAParameters ExportParameters(bool includePrivateParameters)
         {
             if (includePrivateParameters)
-                throw new NotSupportedException("Private key cannot be exported");
+                throw new NotSupportedException("Private key export is not supported");
 
-            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-            {
-                var readTemplate = new List<CKA>() { CKA.CKA_PUBLIC_EXPONENT, CKA.CKA_MODULUS };
-
-                List<ObjectAttribute> objectAttributes = session.GetAttributeValue(_certContext.PrivKeyHandle, readTemplate);
-
-                return new RSAParameters()
-                {
-                    Exponent = objectAttributes[0].GetValueAsByteArray(),
-                    Modulus = objectAttributes[1].GetValueAsByteArray()
-                };
-            }
+            var rsaPubKey = _certContext.CertificateInfo.ParsedCertificate.PublicKey.Key as RSA;
+            return rsaPubKey.ExportParameters(false);
         }
 
         /// <summary>
@@ -178,7 +167,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="parameters">The parameters (key) for RSA algorithm</param>
         public override void ImportParameters(RSAParameters parameters)
         {
-            throw new NotSupportedException();
+            throw new NotSupportedException("Key import is not supported");
         }
 
         /// <summary>
