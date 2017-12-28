@@ -93,9 +93,9 @@ namespace Net.Pkcs11Interop.X509Store.Tests
 
                 byte[] cngSignature = cngKey.SignHash(_hash1, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                 Assert.IsNotNull(cngSignature);
-                bool result3 = p11PubKey.VerifyHash(_hash1, p11Signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                bool result3 = p11PubKey.VerifyHash(_hash1, cngSignature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                 Assert.IsTrue(result3);
-                bool result4 = p11PubKey.VerifyHash(_hash2, p11Signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                bool result4 = p11PubKey.VerifyHash(_hash2, cngSignature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                 Assert.IsFalse(result4);
             }
         }
