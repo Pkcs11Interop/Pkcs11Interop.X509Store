@@ -30,23 +30,20 @@ namespace Net.Pkcs11Interop.X509Store.Tests
     [TestFixture()]
     public class Pkcs11RsaProviderTest
     {
-        private byte[] _data1 = null;
-        private byte[] _hash1 = null;
-        private byte[] _data2 = null;
-        private byte[] _hash2 = null;
-
-        public Pkcs11RsaProviderTest()
-        {
-            _data1 = Encoding.UTF8.GetBytes("Hello world!");
-            _hash1 = new SHA256Managed().ComputeHash(_data1);
-            _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
-            _hash2 = new SHA256Managed().ComputeHash(_data2);
-        }
+        private HashAlgorithmName[] _hashAlgNames = new HashAlgorithmName[] { HashAlgorithmName.MD5, HashAlgorithmName.SHA1, HashAlgorithmName.SHA256, HashAlgorithmName.SHA384, HashAlgorithmName.SHA512 };
+        private byte[] _data1 = Encoding.UTF8.GetBytes("Hello world!");
+        private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
         private static Pkcs11X509Certificate GetCertificate(Pkcs11X509Store store, string tokenLabel, string certLabel)
         {
             Pkcs11Token token = store.Slots.FirstOrDefault(p => p.Token.Info.Label == tokenLabel)?.Token;
             return token?.Certificates.FirstOrDefault(p => p.Info.Label == certLabel);
+        }
+
+        private byte[] ComputeHash(byte[] data, HashAlgorithmName hashAlgName)
+        {
+            using (HashAlgorithm hashAlg = HashAlgorithm.Create(hashAlgName.Name))
+                return hashAlg.ComputeHash(data);
         }
 
         [Test()]
@@ -61,12 +58,18 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 RSA p11PubKey = cert.GetRSAPublicKey();
                 Assert.IsNotNull(p11PubKey);
 
-                byte[] signature = p11PrivKey.SignHash(_hash1, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsNotNull(signature);
-                bool result1 = p11PubKey.VerifyHash(_hash1, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsTrue(result1);
-                bool result2 = p11PubKey.VerifyHash(_hash2, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsFalse(result2);
+                foreach (HashAlgorithmName hashAlgName in _hashAlgNames)
+                {
+                    byte[] hash1 = ComputeHash(_data1, hashAlgName);
+                    byte[] hash2 = ComputeHash(_data2, hashAlgName);
+
+                    byte[] signature = p11PrivKey.SignHash(hash1, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsNotNull(signature);
+                    bool result1 = p11PubKey.VerifyHash(hash1, signature, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsTrue(result1);
+                    bool result2 = p11PubKey.VerifyHash(hash2, signature, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsFalse(result2);
+                }
             }
         }
 
@@ -84,19 +87,25 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 RSA cngKey = CryptoObjects.GetTestUserRsaCngProvider();
                 Assert.IsNotNull(cngKey);
 
-                byte[] p11Signature = p11PrivKey.SignHash(_hash1, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsNotNull(p11Signature);
-                bool result1 = cngKey.VerifyHash(_hash1, p11Signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsTrue(result1);
-                bool result2 = cngKey.VerifyHash(_hash2, p11Signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsFalse(result2);
+                foreach (HashAlgorithmName hashAlgName in _hashAlgNames)
+                {
+                    byte[] hash1 = ComputeHash(_data1, hashAlgName);
+                    byte[] hash2 = ComputeHash(_data2, hashAlgName);
 
-                byte[] cngSignature = cngKey.SignHash(_hash1, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsNotNull(cngSignature);
-                bool result3 = p11PubKey.VerifyHash(_hash1, cngSignature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsTrue(result3);
-                bool result4 = p11PubKey.VerifyHash(_hash2, cngSignature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                Assert.IsFalse(result4);
+                    byte[] p11Signature = p11PrivKey.SignHash(hash1, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsNotNull(p11Signature);
+                    bool result1 = cngKey.VerifyHash(hash1, p11Signature, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsTrue(result1);
+                    bool result2 = cngKey.VerifyHash(hash2, p11Signature, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsFalse(result2);
+
+                    byte[] cngSignature = cngKey.SignHash(hash1, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsNotNull(cngSignature);
+                    bool result3 = p11PubKey.VerifyHash(hash1, cngSignature, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsTrue(result3);
+                    bool result4 = p11PubKey.VerifyHash(hash2, cngSignature, hashAlgName, RSASignaturePadding.Pkcs1);
+                    Assert.IsFalse(result4);
+                }
             }
         }
     }
