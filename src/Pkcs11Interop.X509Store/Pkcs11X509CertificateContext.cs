@@ -94,6 +94,22 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
+        /// Flag indicating whether key usage requires context specific login to be perfromed
+        /// </summary>
+        private bool _keyUsageRequiresLogin = false;
+
+        /// <summary>
+        /// Flag indicating whether key usage requires context specific login to be perfromed
+        /// </summary>
+        internal bool KeyUsageRequiresLogin
+        {
+            get
+            {
+                return _keyUsageRequiresLogin;
+            }
+        }
+
+        /// <summary>
         /// Internal context for Pkcs11Token class
         /// </summary>
         private Pkcs11TokenContext _tokenContext = null;
@@ -116,13 +132,15 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
         /// <param name="privKeyHandle">High level PKCS#11 object handle of private key object</param>
         /// <param name="pubKeyHandle">High level PKCS#11 object handle of public key object</param>
+        /// <param name="keyUsageRequiresLogin">Flag indicating whether key usage requires context specific login to be perfromed</param>
         /// <param name="tokenContext">Internal context for Pkcs11Token class</param>
-        internal Pkcs11X509CertificateContext(Pkcs11X509CertificateInfo certificateInfo, ObjectHandle certHandle, ObjectHandle privKeyHandle, ObjectHandle pubKeyHandle, Pkcs11TokenContext tokenContext)
+        internal Pkcs11X509CertificateContext(Pkcs11X509CertificateInfo certificateInfo, ObjectHandle certHandle, ObjectHandle privKeyHandle, ObjectHandle pubKeyHandle, bool keyUsageRequiresLogin, Pkcs11TokenContext tokenContext)
         {
             _certificateInfo = certificateInfo ?? throw new ArgumentNullException(nameof(certificateInfo));
             _certHandle = certHandle ?? throw new ArgumentNullException(nameof(certHandle));
             _privKeyHandle = privKeyHandle;
             _pubKeyHandle = pubKeyHandle;
+            _keyUsageRequiresLogin = keyUsageRequiresLogin;
             _tokenContext = tokenContext ?? throw new ArgumentNullException(nameof(tokenContext));
         }
     }

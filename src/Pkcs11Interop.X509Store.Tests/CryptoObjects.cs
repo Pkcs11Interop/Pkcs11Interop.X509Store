@@ -155,7 +155,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
             };
         }
 
-        public static List<ObjectAttribute> GetTestUserRsaPrivKeyAttributes(string label)
+        public static List<ObjectAttribute> GetTestUserRsaPrivKeyAttributes(string label, bool alwaysAuthenticate)
         {
             using (var stringReader = new StringReader(TestUserRsaPrivKey))
             {
@@ -170,6 +170,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                     new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
                     new ObjectAttribute(CKA.CKA_LABEL, label),
                     new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                    new ObjectAttribute(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
                     new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
                     new ObjectAttribute(CKA.CKA_MODULUS, rsaPrivKeyParams.Modulus.ToByteArrayUnsigned()),
                     new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPrivKeyParams.PublicExponent.ToByteArrayUnsigned()),
@@ -265,7 +266,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             };
         }
 
-        public static List<ObjectAttribute> GetTestUseEcdsaPrivKeyAttributes(string label)
+        public static List<ObjectAttribute> GetTestUserEcdsaPrivKeyAttributes(string label, bool alwaysAuthenticate)
         {
             using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
             {
@@ -280,6 +281,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
                     new ObjectAttribute(CKA.CKA_LABEL, label),
                     new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                    new ObjectAttribute(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
                     new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
                     new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPrivKeyParams.PublicKeyParamSet.GetDerEncoded()),
                     new ObjectAttribute(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArrayUnsigned())
@@ -287,7 +289,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             }
         }
 
-        public static List<ObjectAttribute> GetTestUseEcdsaPubKeyAttributes(string label)
+        public static List<ObjectAttribute> GetTestUserEcdsaPubKeyAttributes(string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserEcdsaCert));
             var ecdsaPubKeyParams = x509Certificate.GetPublicKey() as ECPublicKeyParameters;

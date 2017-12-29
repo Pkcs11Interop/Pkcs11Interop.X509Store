@@ -34,17 +34,23 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         public const string Token1UserPin = "11111111";
 
-        public const string Token1TestCaLabel = "TestCa";
+        public const string Token1TestCaLabel = "Token1TestCa";
 
-        public const string Token1TestUserRsaLabel = "TestUserRsa";
+        public const string Token1TestUserRsaLabel = "Token1TestUserRsa";
 
-        public const string Token1TestUserEcdsaLabel = "TestUserEcdsa";
+        public const string Token1TestUserEcdsaLabel = "Token1TestUserEcdsa";
 
         public const string Token2Label = "Second token";
 
         public const string Token2SoPin = "2222222222";
 
         public const string Token2UserPin = "22222222";
+
+        public const string Token2TestCaLabel = "Token2TestCa";
+
+        public const string Token2TestUserRsaLabel = "Token2TestUserRsa";
+
+        public const string Token2TestUserEcdsaLabel = "Token2TestUserEcdsa";
 
         private static string _libraryPath = null;
 
@@ -67,7 +73,6 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
                 return _pinProvider;
             }
-
         }
 
         static SoftHsm2Manager()
@@ -113,13 +118,32 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
                     // Import user cert with RSA private and public keys
                     session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(Token1TestUserRsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(Token1TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(Token1TestUserRsaLabel, false));
                     session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(Token1TestUserRsaLabel));
 
                     // Import user cert with ECDSA private and public keys
                     session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(Token1TestUserEcdsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUseEcdsaPrivKeyAttributes(Token1TestUserEcdsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUseEcdsaPubKeyAttributes(Token1TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(Token1TestUserEcdsaLabel, false));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(Token1TestUserEcdsaLabel));
+                }
+
+                // Import objects to second token
+                using (Session session = slots[1].OpenSession(SessionType.ReadWrite))
+                {
+                    session.Login(CKU.CKU_USER, Token2UserPin);
+
+                    // Import CA cert without private key
+                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(Token1TestCaLabel));
+
+                    // Import user cert with RSA private and public keys
+                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(Token2TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(Token2TestUserRsaLabel, true));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(Token2TestUserRsaLabel));
+
+                    // Import user cert with ECDSA private and public keys
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(Token2TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(Token2TestUserEcdsaLabel, true));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(Token2TestUserEcdsaLabel));
                 }
             }
         }

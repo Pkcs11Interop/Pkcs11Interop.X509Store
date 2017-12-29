@@ -38,24 +38,28 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
-                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
+                Pkcs11X509Certificate cert1 = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
+                Pkcs11X509Certificate cert2 = Helpers.GetCertificate(store, SoftHsm2Manager.Token2Label, SoftHsm2Manager.Token2TestUserEcdsaLabel);
 
-                ECDsa p11PrivKey = cert.GetECDsaPrivateKey();
-                Assert.IsNotNull(p11PrivKey);
-                ECDsa p11PubKey = cert.GetECDsaPublicKey();
-                Assert.IsNotNull(p11PubKey);
-
-                foreach (HashAlgorithmName hashAlgName in _hashNames)
+                foreach (var cert in new Pkcs11X509Certificate[] { cert1, cert2 })
                 {
-                    byte[] hash1 = Helpers.ComputeHash(_data1, hashAlgName);
-                    byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
+                    ECDsa p11PrivKey = cert.GetECDsaPrivateKey();
+                    Assert.IsNotNull(p11PrivKey);
+                    ECDsa p11PubKey = cert.GetECDsaPublicKey();
+                    Assert.IsNotNull(p11PubKey);
 
-                    byte[] signature = p11PrivKey.SignHash(hash1);
-                    Assert.IsNotNull(signature);
-                    bool result1 = p11PubKey.VerifyHash(hash1, signature);
-                    Assert.IsTrue(result1);
-                    bool result2 = p11PubKey.VerifyHash(hash2, signature);
-                    Assert.IsFalse(result2);
+                    foreach (HashAlgorithmName hashAlgName in _hashNames)
+                    {
+                        byte[] hash1 = Helpers.ComputeHash(_data1, hashAlgName);
+                        byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
+
+                        byte[] signature = p11PrivKey.SignHash(hash1);
+                        Assert.IsNotNull(signature);
+                        bool result1 = p11PubKey.VerifyHash(hash1, signature);
+                        Assert.IsTrue(result1);
+                        bool result2 = p11PubKey.VerifyHash(hash2, signature);
+                        Assert.IsFalse(result2);
+                    }
                 }
             }
         }

@@ -19,7 +19,6 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
-using System;
 using System.Text;
 
 namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
@@ -38,7 +37,12 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         public GetPinResult GetKeyPin(Pkcs11X509StoreInfo storeInfo, Pkcs11SlotInfo slotInfo, Pkcs11TokenInfo tokenInfo, Pkcs11X509CertificateInfo certificateInfo)
         {
-            throw new NotImplementedException();
+            if (tokenInfo.Label == SoftHsm2Manager.Token1Label)
+                return new GetPinResult(false, false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token1UserPin));
+            else if (tokenInfo.Label == SoftHsm2Manager.Token2Label)
+                return new GetPinResult(false, false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token2UserPin));
+            else
+                return new GetPinResult(true, false, null);
         }
     }
 }

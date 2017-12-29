@@ -127,17 +127,14 @@ namespace Net.Pkcs11Interop.X509Store
             {
                 if (!this.SessionIsAuthenticated(session))
                 {
-                    IPinProvider pinProvider = _tokenContext.SlotContext.StoreContext.PinProvider;
-
-                    GetPinResult getPinResult = pinProvider.GetTokenPin(
-                        storeInfo: _tokenContext.SlotContext.StoreContext.StoreInfo,
-                        slotInfo: _tokenContext.SlotContext.SlotInfo,
-                        tokenInfo: _tokenContext.TokenInfo
-                    );
-
-                    if (getPinResult != null && !getPinResult.CancelLogin)
+                    try
                     {
-                        _tokenContext.AuthenticatedSession.Login(CKU.CKU_USER, (getPinResult.PerformProtectedLogin) ? null : getPinResult.Pin);
+                        byte[] pin = PinProviderUtils.GetTokenPin(_tokenContext);
+                        _tokenContext.AuthenticatedSession.Login(CKU.CKU_USER, pin);
+                    }
+                    catch (LoginCancelledException)
+                    {
+                        // Ignore and continue without login
                     }
                 }
 

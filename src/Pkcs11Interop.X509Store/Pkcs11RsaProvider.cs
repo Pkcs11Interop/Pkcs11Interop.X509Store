@@ -75,7 +75,12 @@ namespace Net.Pkcs11Interop.X509Store
 
                 using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
                 using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
-                    return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo);
+                {
+                    if (_certContext.KeyUsageRequiresLogin)
+                        return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo, PinProviderUtils.GetKeyPin(_certContext));
+                    else
+                        return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo);
+                }
             }
             else if (padding == RSASignaturePadding.Pss)
             {
@@ -85,7 +90,12 @@ namespace Net.Pkcs11Interop.X509Store
 
                 using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
                 using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
-                    return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
+                {
+                    if (_certContext.KeyUsageRequiresLogin)
+                        return session.Sign(mechanism, _certContext.PrivKeyHandle, hash, PinProviderUtils.GetKeyPin(_certContext));
+                    else
+                        return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
+                }
             }
             else
             {

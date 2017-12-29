@@ -107,8 +107,22 @@ namespace Net.Pkcs11Interop.X509Store
                 ObjectHandle privKeyHandle = FindKey(session, CKO.CKO_PRIVATE_KEY, ckaId, ckaLabel);
                 ObjectHandle pubKeyHandle = FindKey(session, CKO.CKO_PUBLIC_KEY, ckaId, ckaLabel);
 
-                return new Pkcs11X509CertificateContext(certInfo, certHandle, privKeyHandle, pubKeyHandle, tokenContext);
+                bool keyUsageRequiresLogin = (privKeyHandle == null) ? false : GetCkaAlwaysAuthenticateValue(session, privKeyHandle);
+
+                return new Pkcs11X509CertificateContext(certInfo, certHandle, privKeyHandle, pubKeyHandle, keyUsageRequiresLogin, tokenContext);
             }
+        }
+
+        /// <summary>
+        /// Gets value of CKA_ALWAYS_AUTHENTICATE attribute of private key object
+        /// </summary>
+        /// <param name="session">PKCS#11 session for finding operation</param>
+        /// <param name="privKeyHandle">Handle of private key object</param>
+        /// <returns>Value of CKA_ALWAYS_AUTHENTICATE</returns>
+        private bool GetCkaAlwaysAuthenticateValue(Session session, ObjectHandle privKeyHandle)
+        {
+            List<ObjectAttribute> objectAttributes = session.GetAttributeValue(privKeyHandle, new List<CKA>() { CKA.CKA_ALWAYS_AUTHENTICATE });
+            return objectAttributes[0].GetValueAsBool();
         }
 
         /// <summary>

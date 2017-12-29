@@ -60,7 +60,12 @@ namespace Net.Pkcs11Interop.X509Store
 
             using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
             using (var mechanism = new Mechanism(CKM.CKM_ECDSA))
-                return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
+            {
+                if (_certContext.KeyUsageRequiresLogin)
+                    return session.Sign(mechanism, _certContext.PrivKeyHandle, hash, PinProviderUtils.GetKeyPin(_certContext));
+                else
+                    return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
+            }
         }
 
         /// <summary>

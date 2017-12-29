@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="GetPinResult.cs" />
     <Compile Include="IPinProvider.cs" />
+    <Compile Include="LoginCancelledException.cs" />
+    <Compile Include="Pkcs11InteropExtensions.cs" />
     <Compile Include="Pkcs11X509CertificateInfo.cs" />
     <Compile Include="Pkcs11ECDsaProvider.cs" />
     <Compile Include="Pkcs11RsaProvider.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Pkcs11X509StoreInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pkcs11X509Store.cs" />
+    <Compile Include="PinProviderUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
