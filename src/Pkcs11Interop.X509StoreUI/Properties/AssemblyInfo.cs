@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Pkcs11Interop.X509StoreUI")]
-[assembly: AssemblyCopyright("Copyright 2017 The Pkcs11Interop Project")]
+[assembly: AssemblyCopyright("Copyright 2017-2018 The Pkcs11Interop Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
