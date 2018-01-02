@@ -1,2 +1,11 @@
+Pkcs11Interop 0.2.0 (2018-01-02)
+- Fixed PKCS#1 DigestInfo encoding
+- Added support for RSASSA-PSS signature scheme
+- Added support for ECDSA signatures
+- Added support for private keys protected with PIN.  
+  Those with CKA_ALWAYS_AUTHENTICATE attribute is set to CK_TRUE.
+- Removed Pkcs11SlotInfo::TokenPresent property.  
+  If token is not present then Pkcs11Slot::Token is null.
+
 Pkcs11Interop 0.1.0 (2017-12-27)
  - Initial development release
