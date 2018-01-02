@@ -62,22 +62,6 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
-        /// Flag indicating whether the token is present in the slot (e.g. a device is in the reader)
-        /// </summary>
-        private bool _tokenPresent = false;
-
-        /// <summary>
-        /// Flag indicating whether the token is present in the slot (e.g. a device is in the reader)
-        /// </summary>
-        public bool TokenPresent
-        {
-            get
-            {
-                return _tokenPresent;
-            }
-        }
-
-        /// <summary>
         /// Creates new instance of Pkcs11SlotInfo class
         /// </summary>
         /// <param name="slotInfo">Information about PKCS#11 slot (CK_SLOT_INFO)</param>
@@ -88,7 +72,6 @@ namespace Net.Pkcs11Interop.X509Store
 
             _description = slotInfo.SlotDescription;
             _manufacturer = slotInfo.ManufacturerId;
-            _tokenPresent = slotInfo.SlotFlags.TokenPresent;
         }
     }
 }

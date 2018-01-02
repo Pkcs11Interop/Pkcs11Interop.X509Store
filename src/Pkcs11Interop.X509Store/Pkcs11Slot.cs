@@ -108,20 +108,10 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>PKCS#11 token (cryptographic device) that is typically present in the slot</returns>
         private Pkcs11Token GetToken()
         {
-            if (!_slotContext.SlotInfo.TokenPresent)
+            if (!_slotContext.Slot.GetSlotInfo().SlotFlags.TokenPresent)
                 return null;
-
-            try
-            {
+            else
                 return new Pkcs11Token(_slotContext);
-            }
-            catch (Pkcs11Exception ex)
-            {
-                if (ex.RV == CKR.CKR_TOKEN_NOT_RECOGNIZED || ex.RV == CKR.CKR_TOKEN_NOT_PRESENT)
-                    return null;
-                else
-                    throw;
-            }
         }
 
         #region IDisposable

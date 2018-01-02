@@ -100,7 +100,7 @@ namespace Net.Pkcs11Interop.X509Store
         internal Pkcs11TokenContext(Pkcs11TokenInfo tokenInfo, Session authenticatedSession, Pkcs11SlotContext slotContext)
         {
             _tokenInfo = tokenInfo ?? throw new ArgumentNullException(nameof(tokenInfo));
-            _authenticatedSession = authenticatedSession ?? throw new ArgumentNullException(nameof(authenticatedSession));
+            _authenticatedSession = authenticatedSession;
             _slotContext = slotContext ?? throw new ArgumentNullException(nameof(slotContext));
         }
 

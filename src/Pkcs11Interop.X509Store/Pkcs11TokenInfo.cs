@@ -110,6 +110,22 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
+        /// Flag indicating whether token has been initialized and is usable
+        /// </summary>
+        private bool _initialized = false;
+
+        /// <summary>
+        /// Flag indicating whether token has been initialized and is usable
+        /// </summary>
+        public bool Initialized
+        {
+            get
+            {
+                return _initialized;
+            }
+        }
+
+        /// <summary>
         /// Creates new instance of Pkcs11TokenInfo class
         /// </summary>
         /// <param name="tokenInfo">Information about PKCS#11 token (CK_TOKEN_INFO)</param>
@@ -123,6 +139,7 @@ namespace Net.Pkcs11Interop.X509Store
             _serialNumber = tokenInfo.SerialNumber;
             _label = tokenInfo.Label;
             _supportsProtectedLogin = tokenInfo.TokenFlags.ProtectedAuthenticationPath;
+            _initialized = tokenInfo.TokenFlags.TokenInitialized;
         }
     }
 }

@@ -111,7 +111,7 @@ namespace Net.Pkcs11Interop.X509Store
         private Pkcs11TokenContext GetTokenContext(Pkcs11SlotContext slotContext)
         {
             var tokenInfo = new Pkcs11TokenInfo(slotContext.Slot.GetTokenInfo());
-            Session masterSession = slotContext.Slot.OpenSession(SessionType.ReadOnly);
+            Session masterSession = (!tokenInfo.Initialized) ? null : slotContext.Slot.OpenSession(SessionType.ReadOnly);
             return new Pkcs11TokenContext(tokenInfo, masterSession, slotContext);
         }
 
@@ -123,32 +123,35 @@ namespace Net.Pkcs11Interop.X509Store
         {
             var certificates = new List<Pkcs11X509Certificate>();
 
-            using (Session session = _tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+            if (_tokenContext.TokenInfo.Initialized)
             {
-                if (!this.SessionIsAuthenticated(session))
+                using (Session session = _tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
                 {
-                    try
+                    if (!this.SessionIsAuthenticated(session))
                     {
-                        byte[] pin = PinProviderUtils.GetTokenPin(_tokenContext);
-                        _tokenContext.AuthenticatedSession.Login(CKU.CKU_USER, pin);
+                        try
+                        {
+                            byte[] pin = PinProviderUtils.GetTokenPin(_tokenContext);
+                            _tokenContext.AuthenticatedSession.Login(CKU.CKU_USER, pin);
+                        }
+                        catch (LoginCancelledException)
+                        {
+                            // Ignore and continue without login
+                        }
                     }
-                    catch (LoginCancelledException)
-                    {
-                        // Ignore and continue without login
-                    }
-                }
 
-                var searchTemplate = new List<ObjectAttribute>()
+                    var searchTemplate = new List<ObjectAttribute>()
                 {
                     new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
                     new ObjectAttribute(CKA.CKA_TOKEN, true),
                     new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509)
                 };
 
-                foreach (ObjectHandle certHandle in session.FindAllObjects(searchTemplate))
-                {
-                    var pkcs11cert = new Pkcs11X509Certificate(certHandle, _tokenContext);
-                    certificates.Add(pkcs11cert);
+                    foreach (ObjectHandle certHandle in session.FindAllObjects(searchTemplate))
+                    {
+                        var pkcs11cert = new Pkcs11X509Certificate(certHandle, _tokenContext);
+                        certificates.Add(pkcs11cert);
+                    }
                 }
             }
 
