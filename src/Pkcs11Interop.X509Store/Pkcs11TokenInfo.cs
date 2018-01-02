@@ -96,16 +96,16 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// Flag indicating whether token has a protected authentication path (e.g. pin pad) whereby a user can log into the token without passing a PIN through the API
         /// </summary>
-        private bool _supportsProtectedLogin = false;
+        private bool _hasProtectedAuthenticationPath = false;
 
         /// <summary>
         /// Flag indicating whether token has a protected authentication path (e.g. pin pad) whereby a user can log into the token without passing a PIN through the API
         /// </summary>
-        public bool SupportsProtectedLogin
+        public bool HasProtectedAuthenticationPath
         {
             get
             {
-                return _supportsProtectedLogin;
+                return _hasProtectedAuthenticationPath;
             }
         }
 
@@ -138,7 +138,7 @@ namespace Net.Pkcs11Interop.X509Store
             _model = tokenInfo.Model;
             _serialNumber = tokenInfo.SerialNumber;
             _label = tokenInfo.Label;
-            _supportsProtectedLogin = tokenInfo.TokenFlags.ProtectedAuthenticationPath;
+            _hasProtectedAuthenticationPath = tokenInfo.TokenFlags.ProtectedAuthenticationPath;
             _initialized = tokenInfo.TokenFlags.TokenInitialized;
         }
     }
