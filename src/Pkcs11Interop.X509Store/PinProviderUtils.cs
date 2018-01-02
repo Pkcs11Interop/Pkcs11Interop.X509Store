@@ -45,10 +45,10 @@ namespace Net.Pkcs11Interop.X509Store
             if (getPinResult == null)
                 throw new Exception("Invalid response from IPinProvider");
 
-            if (getPinResult.CancelLogin)
+            if (getPinResult.Cancel)
                 throw new LoginCancelledException("Login with token pin was cancelled");
 
-            return (getPinResult.PerformProtectedLogin) ? null : getPinResult.Pin;
+            return getPinResult.Pin;
         }
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace Net.Pkcs11Interop.X509Store
             if (getPinResult == null)
                 throw new Exception("Invalid response from IPinProvider");
 
-            if (getPinResult.CancelLogin)
+            if (getPinResult.Cancel)
                 throw new LoginCancelledException("Login with key pin was cancelled");
 
-            return (getPinResult.PerformProtectedLogin) ? null : getPinResult.Pin;
+            return getPinResult.Pin;
         }
     }
 }

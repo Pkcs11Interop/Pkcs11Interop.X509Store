@@ -31,42 +31,28 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// Flag indicating whether login should be cancelled
         /// </summary>
-        private bool _cancelLogin = false;
+        private bool _cancel = false;
 
         /// <summary>
         /// Flag indicating whether login should be cancelled
         /// </summary>
-        public bool CancelLogin
+        public bool Cancel
         {
             get
             {
-                return _cancelLogin;
+                return _cancel;
             }
         }
 
         /// <summary>
-        /// Flag indicating whether login should be perfromed using protected authentication path (e.g. pin pad)
-        /// </summary>
-        private bool _performProtectedLogin = false;
-
-        /// <summary>
-        /// Flag indicating whether login should be perfromed using protected authentication path (e.g. pin pad)
-        /// </summary>
-        public bool PerformProtectedLogin
-        {
-            get
-            {
-                return _performProtectedLogin;
-            }
-        }
-
-        /// <summary>
-        /// Value of PIN that should be used for the login
+        /// Value of PIN that should be used for the login.
+        /// Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).
         /// </summary>
         private byte[] _pin = null;
 
         /// <summary>
-        /// Value of PIN that should be used for the login
+        /// Value of PIN that should be used for the login.
+        /// Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).
         /// </summary>
         public byte[] Pin
         {
@@ -79,19 +65,14 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// Creates new instance of GetPinResult class
         /// </summary>
-        /// <param name="cancelLogin">Flag indicating whether login should be cancelled</param>
-        /// <param name="performProtectedLogin">Flag indicating whether login should be perfromed using protected authentication path (e.g. pin pad)</param>
-        /// <param name="pin">Value of PIN that should be used for the login</param>
-        public GetPinResult(bool cancelLogin, bool performProtectedLogin, byte[] pin)
+        /// <param name="cancel">Flag indicating whether login should be cancelled</param>
+        /// <param name="pin">Value of PIN that should be used for the login. Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).</param>
+        public GetPinResult(bool cancel, byte[] pin)
         {
-            if (cancelLogin && pin != null)
+            if (cancel && pin != null)
                 throw new ArgumentException("PIN value provided along with the request to cancel login");
 
-            if (performProtectedLogin && pin != null)
-                throw new ArgumentException("PIN value provided along with the request to login using the protected authentication path");
-
-            _cancelLogin = cancelLogin;
-            _performProtectedLogin = performProtectedLogin;
+            _cancel = cancel;
             _pin = pin;
         }
     }
