@@ -95,6 +95,22 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
+        /// Type of certified asymmetric key
+        /// </summary>
+        private AsymmetricKeyType _keyType = AsymmetricKeyType.Other;
+
+        /// <summary>
+        /// Type of certified asymmetric key
+        /// </summary>
+        public AsymmetricKeyType KeyType
+        {
+            get
+            {
+                return _keyType;
+            }
+        }
+
+        /// <summary>
         /// Creates new instance of Pkcs11X509CertificateInfo class
         /// </summary>
         /// <param name="ckaId">Value of CKA_ID attribute</param>
@@ -106,6 +122,13 @@ namespace Net.Pkcs11Interop.X509Store
             _label = ckaLabel;
             _rawData = ckaValue ?? throw new ArgumentNullException(nameof(ckaValue));
             _parsedCertificate = new X509Certificate2(_rawData);
+
+            if (_parsedCertificate.PublicKey.Oid.Value == "1.2.840.113549.1.1.1")
+                _keyType = AsymmetricKeyType.RSA;
+            else if (_parsedCertificate.PublicKey.Oid.Value == "1.2.840.10045.2.1")
+                _keyType = AsymmetricKeyType.EC;
+            else
+                _keyType = AsymmetricKeyType.Other;
         }
     }
 }

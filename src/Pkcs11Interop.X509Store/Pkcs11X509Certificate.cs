@@ -160,10 +160,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>System.Security.Cryptography.RSA implementation for private key or null if RSA private key is not present on token</returns>
         public RSA GetRSAPrivateKey()
         {
-            if (this.Info.ParsedCertificate.PublicKey.Oid.Value != "1.2.840.113549.1.1.1")
-                return null;
-
-            if (!this.HasPrivateKeyObject)
+            if (_certContext.CertificateInfo.KeyType != AsymmetricKeyType.RSA || !this.HasPrivateKeyObject)
                 return null;
 
             return new Pkcs11RsaProvider(_certContext);
@@ -175,10 +172,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>System.Security.Cryptography.RSA implementation for public key or null if RSA public key is not present on token</returns>
         public RSA GetRSAPublicKey()
         {
-            if (this.Info.ParsedCertificate.PublicKey.Oid.Value != "1.2.840.113549.1.1.1")
-                return null;
-
-            if (!this.HasPublicKeyObject)
+            if (_certContext.CertificateInfo.KeyType != AsymmetricKeyType.RSA || !this.HasPublicKeyObject)
                 return null;
 
             return new Pkcs11RsaProvider(_certContext);
@@ -190,10 +184,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>System.Security.Cryptography.ECDsa implementation for private key or null if ECDsa private key is not present on token</returns>
         public ECDsa GetECDsaPrivateKey()
         {
-            if (this.Info.ParsedCertificate.PublicKey.Oid.Value != "1.2.840.10045.2.1")
-                return null;
-
-            if (!this.HasPrivateKeyObject)
+            if (_certContext.CertificateInfo.KeyType != AsymmetricKeyType.EC || !this.HasPrivateKeyObject)
                 return null;
 
             return new Pkcs11ECDsaProvider(_certContext);
@@ -205,10 +196,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>System.Security.Cryptography.ECDsa implementation for public key or null if ECDsa public key is not present on token</returns>
         public ECDsa GetECDsaPublicKey()
         {
-            if (this.Info.ParsedCertificate.PublicKey.Oid.Value != "1.2.840.10045.2.1")
-                return null;
-
-            if (!this.HasPublicKeyObject)
+            if (_certContext.CertificateInfo.KeyType != AsymmetricKeyType.EC || !this.HasPublicKeyObject)
                 return null;
 
             return new Pkcs11ECDsaProvider(_certContext);

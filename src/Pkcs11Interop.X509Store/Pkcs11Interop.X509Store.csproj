@@ -44,6 +44,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsymmetricKeyType.cs" />
     <Compile Include="GetPinResult.cs" />
     <Compile Include="IPinProvider.cs" />
     <Compile Include="LoginCancelledException.cs" />
