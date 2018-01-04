@@ -282,7 +282,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     new ObjectAttribute(CKA.CKA_LABEL, label),
                     new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     new ObjectAttribute(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
+                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
                     new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPrivKeyParams.PublicKeyParamSet.GetDerEncoded()),
                     new ObjectAttribute(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArrayUnsigned())
                 };
@@ -302,7 +302,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
                 new ObjectAttribute(CKA.CKA_LABEL, label),
                 new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_ECDSA),
+                new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
                 new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),
                 new ObjectAttribute(CKA.CKA_EC_POINT, new X9ECPoint(ecdsaPubKeyParams.Q).GetDerEncoded())
             };
