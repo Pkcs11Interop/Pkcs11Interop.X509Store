@@ -121,8 +121,16 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>Value of CKA_ALWAYS_AUTHENTICATE</returns>
         private bool GetCkaAlwaysAuthenticateValue(Session session, ObjectHandle privKeyHandle)
         {
-            List<ObjectAttribute> objectAttributes = session.GetAttributeValue(privKeyHandle, new List<CKA>() { CKA.CKA_ALWAYS_AUTHENTICATE });
-            return objectAttributes[0].GetValueAsBool();
+            try
+            {
+                List<ObjectAttribute> objectAttributes = session.GetAttributeValue(privKeyHandle, new List<CKA>() { CKA.CKA_ALWAYS_AUTHENTICATE });
+                return objectAttributes[0].GetValueAsBool();
+            }
+            catch
+            {
+                // When CKA_ALWAYS_AUTHENTICATE cannot be read we can assume its value is CK_FALSE
+                return false;
+            }
         }
 
         /// <summary>
