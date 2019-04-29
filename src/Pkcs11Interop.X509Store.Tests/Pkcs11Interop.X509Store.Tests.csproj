@@ -36,8 +36,8 @@
     <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Pkcs11Interop, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c10e9c2d8c006d2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pkcs11Interop.4.0.0\lib\net45\Pkcs11Interop.dll</HintPath>
+    <Reference Include="Pkcs11Interop, Version=5.0.0.0, Culture=neutral, PublicKeyToken=c10e9c2d8c006d2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pkcs11Interop.5.0.0-beta1\lib\net45\Pkcs11Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Security" />

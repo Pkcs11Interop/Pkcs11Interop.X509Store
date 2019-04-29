@@ -129,7 +129,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// Creates new instance of Pkcs11TokenInfo class
         /// </summary>
         /// <param name="tokenInfo">Information about PKCS#11 token (CK_TOKEN_INFO)</param>
-        internal Pkcs11TokenInfo(TokenInfo tokenInfo)
+        internal Pkcs11TokenInfo(ITokenInfo tokenInfo)
         {
             if (tokenInfo == null)
                 throw new ArgumentNullException(nameof(tokenInfo));

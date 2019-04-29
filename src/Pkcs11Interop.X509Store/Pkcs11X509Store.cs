@@ -100,20 +100,22 @@ namespace Net.Pkcs11Interop.X509Store
         /// <returns>Internal context for Pkcs11X509Store class</returns>
         private Pkcs11X509StoreContext GetStoreContext(string libraryPath, IPinProvider pinProvider)
         {
-            Pkcs11 pkcs11 = null;
+            Pkcs11InteropFactories factories = new Pkcs11InteropFactories();
+
+            IPkcs11Library pkcs11Library = null;
 
             try
             {
-                pkcs11 = new Pkcs11(libraryPath, AppType.MultiThreaded);
-                var storeInfo = new Pkcs11X509StoreInfo(libraryPath, pkcs11.GetInfo());
-                return new Pkcs11X509StoreContext(pkcs11, storeInfo, pinProvider);
+                pkcs11Library = factories.Pkcs11LibraryFactory.LoadPkcs11Library(factories, libraryPath, AppType.MultiThreaded);
+                var storeInfo = new Pkcs11X509StoreInfo(libraryPath, pkcs11Library.GetInfo());
+                return new Pkcs11X509StoreContext(pkcs11Library, storeInfo, pinProvider);
             }
             catch
             {
-                if (pkcs11 != null)
+                if (pkcs11Library != null)
                 {
-                    pkcs11.Dispose();
-                    pkcs11 = null;
+                    pkcs11Library.Dispose();
+                    pkcs11Library = null;
                 }
 
                 throw;
@@ -128,7 +130,7 @@ namespace Net.Pkcs11Interop.X509Store
         {
             var slots = new List<Pkcs11Slot>();
 
-            foreach (Slot slot in _storeContext.Pkcs11.GetSlotList(SlotsType.WithOrWithoutTokenPresent))
+            foreach (ISlot slot in _storeContext.Pkcs11Library.GetSlotList(SlotsType.WithOrWithoutTokenPresent))
             {
                 var pkcs11Slot = new Pkcs11Slot(slot, _storeContext);
                 slots.Add(pkcs11Slot);

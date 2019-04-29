@@ -58,11 +58,11 @@ namespace Net.Pkcs11Interop.X509Store
             if (hash == null || hash.Length == 0)
                 throw new ArgumentNullException(nameof(hash));
 
-            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-            using (var mechanism = new Mechanism(CKM.CKM_ECDSA))
+            using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+            using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_ECDSA))
             {
                 if (_certContext.KeyUsageRequiresLogin)
-                    return session.Sign(mechanism, _certContext.PrivKeyHandle, hash, PinProviderUtils.GetKeyPin(_certContext));
+                    return session.Sign(mechanism, _certContext.PrivKeyHandle, PinProviderUtils.GetKeyPin(_certContext), hash);
                 else
                     return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
             }
@@ -82,8 +82,8 @@ namespace Net.Pkcs11Interop.X509Store
             if (signature == null || signature.Length == 0)
                 throw new ArgumentNullException(nameof(signature));
 
-            using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-            using (var mechanism = new Mechanism(CKM.CKM_ECDSA))
+            using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+            using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_ECDSA))
             {
                 session.Verify(mechanism, _certContext.PubKeyHandle, hash, signature, out bool isValid);
                 return isValid;

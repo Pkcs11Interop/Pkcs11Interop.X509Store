@@ -82,7 +82,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// </summary>
         /// <param name="libraryPath">Name of or path to PKCS#11 library</param>
         /// <param name="libraryInfo">General information about PKCS#11 library (CK_INFO)</param>
-        internal Pkcs11X509StoreInfo(string libraryPath, LibraryInfo libraryInfo)
+        internal Pkcs11X509StoreInfo(string libraryPath, ILibraryInfo libraryInfo)
         {
             if (string.IsNullOrEmpty(libraryPath))
                 throw new ArgumentNullException(nameof(libraryPath));

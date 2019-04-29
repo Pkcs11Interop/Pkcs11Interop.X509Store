@@ -78,7 +78,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// </summary>
         /// <param name="slot">High level PKCS#11 slot</param>
         /// <param name="storeContext">Internal context for Pkcs11X509Store class</param>
-        internal Pkcs11Slot(Slot slot, Pkcs11X509StoreContext storeContext)
+        internal Pkcs11Slot(ISlot slot, Pkcs11X509StoreContext storeContext)
         {
             if (slot == null)
                 throw new ArgumentNullException(nameof(slot));
@@ -96,7 +96,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="slot">High level PKCS#11 slot</param>
         /// <param name="storeContext">Internal context for Pkcs11X509Store class</param>
         /// <returns>Internal context for Pkcs11Slot class</returns>
-        private Pkcs11SlotContext GetSlotContext(Slot slot, Pkcs11X509StoreContext storeContext)
+        private Pkcs11SlotContext GetSlotContext(ISlot slot, Pkcs11X509StoreContext storeContext)
         {
             var slotInfo = new Pkcs11SlotInfo(slot.GetSlotInfo());
             return new Pkcs11SlotContext(slot, slotInfo, storeContext);

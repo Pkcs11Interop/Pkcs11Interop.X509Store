@@ -58,24 +58,24 @@ LO8kPI+YVJ0lTN/q8IMjn4khmvweV5WfNt6iZ9LuMbhACFyEqgGVWbcXthsL+Yxr
 c4ATWyzwriXLPbamxo0Kf27oexY4F9n9d01u2j2XP8f2WkWHGhbRvg==
 -----END CERTIFICATE-----";
 
-        public static List<ObjectAttribute> GetTestCaCertAttributes(string label)
+        public static List<IObjectAttribute> GetTestCaCertAttributes(ISession session, string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestCaCert));
 
-            return new List<ObjectAttribute>()
+            return new List<IObjectAttribute>()
             {
-                new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
-                new ObjectAttribute(CKA.CKA_TOKEN, true),
-                new ObjectAttribute(CKA.CKA_PRIVATE, false),
-                new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, label),
-                new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
-                new ObjectAttribute(CKA.CKA_TRUSTED, false),
-                new ObjectAttribute(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                new ObjectAttribute(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_VALUE, x509Certificate.GetEncoded())
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TRUSTED, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_VALUE, x509Certificate.GetEncoded())
             };
         }
 
@@ -134,72 +134,72 @@ gUTWJbrzarovAUzgdbqDBYX2Gms35wBgverKYxnRurWID1GemHm7Z98+f5TPW0Qs
 W7ahGG6hOe+ZPHr78ZhqZdxN
 -----END PRIVATE KEY-----";
 
-        public static List<ObjectAttribute> GetTestUserRsaCertAttributes(string label)
+        public static List<IObjectAttribute> GetTestUserRsaCertAttributes(ISession session, string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserRsaCert));
 
-            return new List<ObjectAttribute>()
+            return new List<IObjectAttribute>()
             {
-                new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
-                new ObjectAttribute(CKA.CKA_TOKEN, true),
-                new ObjectAttribute(CKA.CKA_PRIVATE, false),
-                new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, label),
-                new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
-                new ObjectAttribute(CKA.CKA_TRUSTED, false),
-                new ObjectAttribute(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                new ObjectAttribute(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_VALUE, x509Certificate.GetEncoded())
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TRUSTED, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_VALUE, x509Certificate.GetEncoded())
             };
         }
 
-        public static List<ObjectAttribute> GetTestUserRsaPrivKeyAttributes(string label, bool alwaysAuthenticate)
+        public static List<IObjectAttribute> GetTestUserRsaPrivKeyAttributes(ISession session, string label, bool alwaysAuthenticate)
         {
             using (var stringReader = new StringReader(TestUserRsaPrivKey))
             {
                 var pemReader = new PemReader(stringReader);
                 var rsaPrivKeyParams = pemReader.ReadObject() as RsaPrivateCrtKeyParameters;
 
-                return new List<ObjectAttribute>()
+                return new List<IObjectAttribute>()
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_TOKEN, true),
-                    new ObjectAttribute(CKA.CKA_PRIVATE, true),
-                    new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                    new ObjectAttribute(CKA.CKA_LABEL, label),
-                    new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                    new ObjectAttribute(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                    new ObjectAttribute(CKA.CKA_MODULUS, rsaPrivKeyParams.Modulus.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPrivKeyParams.PublicExponent.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PRIVATE_EXPONENT, rsaPrivKeyParams.Exponent.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PRIME_1, rsaPrivKeyParams.P.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_PRIME_2, rsaPrivKeyParams.Q.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_EXPONENT_1, rsaPrivKeyParams.DP.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_EXPONENT_2, rsaPrivKeyParams.DQ.ToByteArrayUnsigned()),
-                    new ObjectAttribute(CKA.CKA_COEFFICIENT, rsaPrivKeyParams.QInv.ToByteArrayUnsigned())
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, true),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODULUS, rsaPrivKeyParams.Modulus.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPrivKeyParams.PublicExponent.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE_EXPONENT, rsaPrivKeyParams.Exponent.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIME_1, rsaPrivKeyParams.P.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIME_2, rsaPrivKeyParams.Q.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EXPONENT_1, rsaPrivKeyParams.DP.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EXPONENT_2, rsaPrivKeyParams.DQ.ToByteArrayUnsigned()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_COEFFICIENT, rsaPrivKeyParams.QInv.ToByteArrayUnsigned())
                 };
             }
         }
 
-        public static List<ObjectAttribute> GetTestUserRsaPubKeyAttributes(string label)
+        public static List<IObjectAttribute> GetTestUserRsaPubKeyAttributes(ISession session, string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserRsaCert));
             var rsaPubKeyParams = x509Certificate.GetPublicKey() as RsaKeyParameters;
 
-            return new List<ObjectAttribute>()
+            return new List<IObjectAttribute>()
             {
-                new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
-                new ObjectAttribute(CKA.CKA_TOKEN, true),
-                new ObjectAttribute(CKA.CKA_PRIVATE, false),
-                new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, label),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
-                new ObjectAttribute(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
-                new ObjectAttribute(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PUBLIC_EXPONENT, rsaPubKeyParams.Exponent.ToByteArrayUnsigned())
             };
         }
 
@@ -245,66 +245,66 @@ f0P9qq5vGhY/fiVfkG1CFsJlQ8uhRANCAARgf13QFUotRUJdi/E6pi4WHJrMRogW
 v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
 -----END PRIVATE KEY-----";
 
-        public static List<ObjectAttribute> GetTestUserEcdsaCertAttributes(string label)
+        public static List<IObjectAttribute> GetTestUserEcdsaCertAttributes(ISession session, string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserEcdsaCert));
 
-            return new List<ObjectAttribute>()
+            return new List<IObjectAttribute>()
             {
-                new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
-                new ObjectAttribute(CKA.CKA_TOKEN, true),
-                new ObjectAttribute(CKA.CKA_PRIVATE, false),
-                new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, label),
-                new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
-                new ObjectAttribute(CKA.CKA_TRUSTED, false),
-                new ObjectAttribute(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                new ObjectAttribute(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_VALUE, x509Certificate.GetEncoded())
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TRUSTED, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_SUBJECT, x509Certificate.SubjectDN.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ISSUER, x509Certificate.IssuerDN.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_SERIAL_NUMBER, new DerInteger(x509Certificate.SerialNumber).GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_VALUE, x509Certificate.GetEncoded())
             };
         }
 
-        public static List<ObjectAttribute> GetTestUserEcdsaPrivKeyAttributes(string label, bool alwaysAuthenticate)
+        public static List<IObjectAttribute> GetTestUserEcdsaPrivKeyAttributes(ISession session, string label, bool alwaysAuthenticate)
         {
             using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
             {
                 var pemReader = new PemReader(stringReader);
                 var ecdsaPrivKeyParams = pemReader.ReadObject() as ECPrivateKeyParameters;
 
-                return new List<ObjectAttribute>()
+                return new List<IObjectAttribute>()
                 {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
-                    new ObjectAttribute(CKA.CKA_TOKEN, true),
-                    new ObjectAttribute(CKA.CKA_PRIVATE, true),
-                    new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                    new ObjectAttribute(CKA.CKA_LABEL, label),
-                    new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                    new ObjectAttribute(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
-                    new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
-                    new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPrivKeyParams.PublicKeyParamSet.GetDerEncoded()),
-                    new ObjectAttribute(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArrayUnsigned())
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_PRIVATE_KEY),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, true),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_PARAMS, ecdsaPrivKeyParams.PublicKeyParamSet.GetDerEncoded()),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_VALUE, ecdsaPrivKeyParams.D.ToByteArrayUnsigned())
                 };
             }
         }
 
-        public static List<ObjectAttribute> GetTestUserEcdsaPubKeyAttributes(string label)
+        public static List<IObjectAttribute> GetTestUserEcdsaPubKeyAttributes(ISession session, string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserEcdsaCert));
             var ecdsaPubKeyParams = x509Certificate.GetPublicKey() as ECPublicKeyParameters;
 
-            return new List<ObjectAttribute>()
+            return new List<IObjectAttribute>()
             {
-                new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
-                new ObjectAttribute(CKA.CKA_TOKEN, true),
-                new ObjectAttribute(CKA.CKA_PRIVATE, false),
-                new ObjectAttribute(CKA.CKA_MODIFIABLE, true),
-                new ObjectAttribute(CKA.CKA_LABEL, label),
-                new ObjectAttribute(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
-                new ObjectAttribute(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
-                new ObjectAttribute(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),
-                new ObjectAttribute(CKA.CKA_EC_POINT, new X9ECPoint(ecdsaPubKeyParams.Q).GetDerEncoded())
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_PUBLIC_KEY),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_POINT, new X9ECPoint(ecdsaPubKeyParams.Q).GetDerEncoded())
             };
         }
 

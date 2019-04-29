@@ -56,12 +56,12 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// High level PKCS#11 session that preserves authenticated state of the token
         /// </summary>
-        private Session _authenticatedSession = null;
+        private ISession _authenticatedSession = null;
 
         /// <summary>
         /// High level PKCS#11 session that preserves authenticated state of the token
         /// </summary>
-        internal Session AuthenticatedSession
+        internal ISession AuthenticatedSession
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="tokenInfo">Detailed information about PKCS#11 token (cryptographic device)</param>
         /// <param name="authenticatedSession">High level PKCS#11 session that holds authenticated state of the token</param>
         /// <param name="slotContext">Internal context for Pkcs11Slot class</param>
-        internal Pkcs11TokenContext(Pkcs11TokenInfo tokenInfo, Session authenticatedSession, Pkcs11SlotContext slotContext)
+        internal Pkcs11TokenContext(Pkcs11TokenInfo tokenInfo, ISession authenticatedSession, Pkcs11SlotContext slotContext)
         {
             _tokenInfo = tokenInfo ?? throw new ArgumentNullException(nameof(tokenInfo));
             _authenticatedSession = authenticatedSession;
