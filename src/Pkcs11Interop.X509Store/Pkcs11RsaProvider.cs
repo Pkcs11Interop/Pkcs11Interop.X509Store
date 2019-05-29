@@ -26,18 +26,22 @@ using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 using Net.Pkcs11Interop.HighLevelAPI.MechanismParams;
 
+
 namespace Net.Pkcs11Interop.X509Store
 {
     /// <summary>
     /// PKCS#11 based implementation of the RSA algorithm
     /// </summary>
-    public class Pkcs11RsaProvider : RSA
+    public class Pkcs11RsaProvider : RSA, ICspAsymmetricAlgorithm
     {
+        /// <summary>
+        /// Internal csp blob data 
+        /// </summary>
+        private byte[] _cspBlob;
         /// <summary>
         /// Internal context for Pkcs11X509Certificate2 class
         /// </summary>
         private Pkcs11X509CertificateContext _certContext = null;
-
         /// <summary>
         /// Creates new instance of Pkcs11RsaProvider class
         /// </summary>
@@ -47,6 +51,11 @@ namespace Net.Pkcs11Interop.X509Store
             _certContext = certContext ?? throw new ArgumentNullException(nameof(certContext));
             base.KeySizeValue = _certContext.CertificateInfo.ParsedCertificate.GetRSAPublicKey().KeySize;
             base.LegalKeySizesValue = new KeySizes[] { new KeySizes(base.KeySizeValue, base.KeySizeValue, 0) };
+
+            // Load csp blob from public key RSACryptoServiceProvider
+            X509Certificate2 cert = new X509Certificate2(certContext.CertificateInfo.RawData);
+            RSACryptoServiceProvider RSApubkey = (RSACryptoServiceProvider)cert.PublicKey.Key;
+            this._cspBlob = RSApubkey.ExportCspBlob(false);
         }
 
         /// <summary>
@@ -319,5 +328,49 @@ namespace Net.Pkcs11Interop.X509Store
 
             return pssParams;
         }
+
+        /// <summary>
+        /// Returns information for the CSP container
+        /// </summary>
+        public CspKeyContainerInfo CspKeyContainerInfo
+        {
+            get
+            {
+                CspParameters cspParameters = new CspParameters();
+
+                // This could be updated/changed
+                cspParameters.ProviderName = "PKCS11Interop";
+                cspParameters.KeyContainerName = "unknown";
+                cspParameters.KeyNumber = 1; // privateKey.CspKeyContainerInfo.KeyNumber;
+                cspParameters.ProviderType = 1;
+                cspParameters.Flags = CspProviderFlags.UseNonExportableKey;
+
+                CspKeyContainerInfo cspKeyContainerInfo = new CspKeyContainerInfo(cspParameters);
+
+                return cspKeyContainerInfo;
+            }
+        }
+
+        /// <summary>
+        /// Exports csp blob data 
+        /// </summary>
+        /// <param name="includePrivateParameters">false not to include parameters </param>
+        /// <returns></returns>
+        public byte[] ExportCspBlob(bool includePrivateParameters)
+        {
+            if (includePrivateParameters)
+                throw new NotSupportedException("Private key export is not supported");
+            return this._cspBlob;
+        }
+
+        /// <summary>
+        /// Import csp blob data
+        /// </summary>
+        /// <param name="_cspBlob">csp blob data to import</param>
+        public void ImportCspBlob(byte[] _cspBlob)
+        {
+            this._cspBlob = _cspBlob;
+        }
     }
 }
+
