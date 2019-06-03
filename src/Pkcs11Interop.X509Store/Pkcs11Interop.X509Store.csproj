@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Pkcs11Interop, Version=5.0.0.0, Culture=neutral, PublicKeyToken=c10e9c2d8c006d2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pkcs11Interop.5.0.0-beta1\lib\net45\Pkcs11Interop.dll</HintPath>
+      <HintPath>..\packages\Pkcs11Interop.5.0.0\lib\net45\Pkcs11Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
