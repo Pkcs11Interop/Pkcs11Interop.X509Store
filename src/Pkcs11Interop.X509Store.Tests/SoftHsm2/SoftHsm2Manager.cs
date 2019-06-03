@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 
@@ -77,14 +78,18 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         static SoftHsm2Manager()
         {
+            // Create directory for SoftHSM2 tokens
+            if (!Directory.Exists(@"SoftHsm2\tokens\"))
+                Directory.CreateDirectory(@"SoftHsm2\tokens\");
+
             // Setup environment variable with path to configuration file
-            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"Pkcs11Interop.X509Store.Tests\SoftHsm2\softhsm2.conf");
+            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"SoftHsm2\softhsm2.conf");
 
             // Determine path to PKCS#11 library
             if (Platform.Uses64BitRuntime)
-                _libraryPath = @"Pkcs11Interop.X509Store.Tests\SoftHsm2\softhsm2-x64.dll";
+                _libraryPath = @"SoftHsm2\softhsm2-x64.dll";
             else
-                _libraryPath = @"Pkcs11Interop.X509Store.Tests\SoftHsm2\softhsm2.dll";
+                _libraryPath = @"SoftHsm2\softhsm2.dll";
 
             InitializeTokens();
         }

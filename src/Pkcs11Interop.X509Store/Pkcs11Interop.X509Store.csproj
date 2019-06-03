@@ -1,79 +1,48 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E5FB0C6D-E99A-4160-9F55-CE13EA7D131F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.3.0</Version>
+    <Authors>Jaroslav Imrich</Authors>
+    <Description>Easy to use PKCS#11 based X.509 certificate store</Description>
+    <Copyright>Copyright (c) 2017-2019 The Pkcs11Interop Project</Copyright>
+    <PackageLicenseUrl>https://www.pkcs11interop.net/nuget/pkcs11interop-apache-license-2.0.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://www.pkcs11interop.net/</PackageProjectUrl>
+    <PackageIconUrl>https://www.pkcs11interop.net/nuget/pkcs11interop-icon-64x64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>pkcs pkcs11 security crypto cryptography smartcard hsm</PackageTags>
+    <Company />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>Net.Pkcs11Interop.X509Store</RootNamespace>
-    <AssemblyName>Pkcs11Interop.X509Store</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Pkcs11Interop.X509Store.xml</DocumentationFile>
+
+  <ItemGroup>
+    <PackageReference Include="Pkcs11Interop" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="PackExtraContent">
+    <None Include="LICENSE.txt" pack="true" PackagePath="." />
+    <None Include="NOTICE.txt" pack="true" PackagePath="." />
+  </ItemGroup>
+  
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Pkcs11Interop.X509Store.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Pkcs11Interop.X509Store.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Pkcs11Interop, Version=5.0.0.0, Culture=neutral, PublicKeyToken=c10e9c2d8c006d2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pkcs11Interop.5.0.0\lib\net45\Pkcs11Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AsymmetricKeyType.cs" />
-    <Compile Include="GetPinResult.cs" />
-    <Compile Include="IPinProvider.cs" />
-    <Compile Include="LoginCancelledException.cs" />
-    <Compile Include="Pkcs11X509CertificateInfo.cs" />
-    <Compile Include="Pkcs11ECDsaProvider.cs" />
-    <Compile Include="Pkcs11RsaProvider.cs" />
-    <Compile Include="Pkcs11Slot.cs" />
-    <Compile Include="Pkcs11SlotContext.cs" />
-    <Compile Include="Pkcs11SlotInfo.cs" />
-    <Compile Include="Pkcs11Token.cs" />
-    <Compile Include="Pkcs11TokenContext.cs" />
-    <Compile Include="Pkcs11TokenInfo.cs" />
-    <Compile Include="Pkcs11X509Certificate.cs" />
-    <Compile Include="Pkcs11X509CertificateContext.cs" />
-    <Compile Include="Pkcs11X509StoreContext.cs" />
-    <Compile Include="Pkcs11X509StoreInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pkcs11X509Store.cs" />
-    <Compile Include="PinProviderUtils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Pkcs11Interop.X509Store.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CHANGELOG.txt" />
-    <Content Include="ISSUES.txt" />
-    <Content Include="LICENSE.txt" />
-    <Content Include="NOTICE.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
