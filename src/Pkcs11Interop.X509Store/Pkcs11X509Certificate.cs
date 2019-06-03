@@ -75,7 +75,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// </summary>
         /// <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
         /// <param name="tokenContext">Internal context for Pkcs11Token class</param>
-        internal Pkcs11X509Certificate(ObjectHandle certHandle, Pkcs11TokenContext tokenContext)
+        internal Pkcs11X509Certificate(IObjectHandle certHandle, Pkcs11TokenContext tokenContext)
         {
             if (certHandle == null)
                 throw new ArgumentNullException(nameof(certHandle));
@@ -92,11 +92,11 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
         /// <param name="tokenContext">Internal context for Pkcs11Token class</param>
         /// <returns>Internal context for Pkcs11X509Certificate class</returns>
-        private Pkcs11X509CertificateContext GetCertificateContext(ObjectHandle certHandle, Pkcs11TokenContext tokenContext)
+        private Pkcs11X509CertificateContext GetCertificateContext(IObjectHandle certHandle, Pkcs11TokenContext tokenContext)
         {
-            using (Session session = tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+            using (ISession session = tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
             {
-                List<ObjectAttribute> objectAttributes = session.GetAttributeValue(certHandle, new List<CKA>() { CKA.CKA_ID, CKA.CKA_LABEL, CKA.CKA_VALUE });
+                List<IObjectAttribute> objectAttributes = session.GetAttributeValue(certHandle, new List<CKA>() { CKA.CKA_ID, CKA.CKA_LABEL, CKA.CKA_VALUE });
 
                 byte[] ckaId = objectAttributes[0].GetValueAsByteArray();
                 string ckaLabel = objectAttributes[1].GetValueAsString();
@@ -104,8 +104,8 @@ namespace Net.Pkcs11Interop.X509Store
 
                 var certInfo = new Pkcs11X509CertificateInfo(ckaId, ckaLabel, ckaValue);
 
-                ObjectHandle privKeyHandle = FindKey(session, CKO.CKO_PRIVATE_KEY, ckaId, ckaLabel);
-                ObjectHandle pubKeyHandle = FindKey(session, CKO.CKO_PUBLIC_KEY, ckaId, ckaLabel);
+                IObjectHandle privKeyHandle = FindKey(session, CKO.CKO_PRIVATE_KEY, ckaId, ckaLabel);
+                IObjectHandle pubKeyHandle = FindKey(session, CKO.CKO_PUBLIC_KEY, ckaId, ckaLabel);
 
                 bool keyUsageRequiresLogin = (privKeyHandle == null) ? false : GetCkaAlwaysAuthenticateValue(session, privKeyHandle);
 
@@ -119,11 +119,11 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="session">PKCS#11 session for finding operation</param>
         /// <param name="privKeyHandle">Handle of private key object</param>
         /// <returns>Value of CKA_ALWAYS_AUTHENTICATE</returns>
-        private bool GetCkaAlwaysAuthenticateValue(Session session, ObjectHandle privKeyHandle)
+        private bool GetCkaAlwaysAuthenticateValue(ISession session, IObjectHandle privKeyHandle)
         {
             try
             {
-                List<ObjectAttribute> objectAttributes = session.GetAttributeValue(privKeyHandle, new List<CKA>() { CKA.CKA_ALWAYS_AUTHENTICATE });
+                List<IObjectAttribute> objectAttributes = session.GetAttributeValue(privKeyHandle, new List<CKA>() { CKA.CKA_ALWAYS_AUTHENTICATE });
                 return objectAttributes[0].GetValueAsBool();
             }
             catch
@@ -141,19 +141,19 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="ckaId">Value of CKA_ID attribute used in search template</param>
         /// <param name="ckaLabel">Value of CKA_LABEL attribute used in search template</param>
         /// <returns>Handle of key object present on token or null</returns>
-        private ObjectHandle FindKey(Session session, CKO keyClass, byte[] ckaId, string ckaLabel)
+        private IObjectHandle FindKey(ISession session, CKO keyClass, byte[] ckaId, string ckaLabel)
         {
-            ObjectHandle keyHandle = null;
+            IObjectHandle keyHandle = null;
 
-            var searchTemplate = new List<ObjectAttribute>()
+            var searchTemplate = new List<IObjectAttribute>()
             {
-                new ObjectAttribute(CKA.CKA_CLASS, keyClass),
-                new ObjectAttribute(CKA.CKA_TOKEN, true),
-                new ObjectAttribute(CKA.CKA_ID, ckaId),
-                new ObjectAttribute(CKA.CKA_LABEL, ckaLabel)
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, keyClass),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, ckaId),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, ckaLabel)
             };
 
-            foreach (ObjectHandle foundObjectHandle in session.FindAllObjects(searchTemplate))
+            foreach (IObjectHandle foundObjectHandle in session.FindAllObjects(searchTemplate))
             {
                 keyHandle = foundObjectHandle;
                 break;

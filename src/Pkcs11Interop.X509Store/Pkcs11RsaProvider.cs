@@ -24,6 +24,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
+using Net.Pkcs11Interop.HighLevelAPI.Factories;
 using Net.Pkcs11Interop.HighLevelAPI.MechanismParams;
 
 namespace Net.Pkcs11Interop.X509Store
@@ -73,26 +74,28 @@ namespace Net.Pkcs11Interop.X509Store
                 if (pkcs1DigestInfo == null)
                     throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
 
-                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
                 {
                     if (_certContext.KeyUsageRequiresLogin)
-                        return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo, PinProviderUtils.GetKeyPin(_certContext));
+                        return session.Sign(mechanism, _certContext.PrivKeyHandle, PinProviderUtils.GetKeyPin(_certContext), pkcs1DigestInfo);
                     else
                         return session.Sign(mechanism, _certContext.PrivKeyHandle, pkcs1DigestInfo);
                 }
             }
             else if (padding == RSASignaturePadding.Pss)
             {
-                CkRsaPkcsPssParams pssMechanismParams = CreateCkRsaPkcsPssParams(hash, hashAlgorithm);
+                IMechanismParamsFactory mechanismParamsFactory = _certContext.TokenContext.SlotContext.Slot.Factories.MechanismParamsFactory;
+
+                ICkRsaPkcsPssParams pssMechanismParams = CreateCkRsaPkcsPssParams(mechanismParamsFactory, hash, hashAlgorithm);
                 if (pssMechanismParams == null)
                     throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
 
-                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
                 {
                     if (_certContext.KeyUsageRequiresLogin)
-                        return session.Sign(mechanism, _certContext.PrivKeyHandle, hash, PinProviderUtils.GetKeyPin(_certContext));
+                        return session.Sign(mechanism, _certContext.PrivKeyHandle, PinProviderUtils.GetKeyPin(_certContext), hash);
                     else
                         return session.Sign(mechanism, _certContext.PrivKeyHandle, hash);
                 }
@@ -131,8 +134,8 @@ namespace Net.Pkcs11Interop.X509Store
                 if (pkcs1DigestInfo == null)
                     throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm));
 
-                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS))
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
                 {
                     session.Verify(mechanism, _certContext.PubKeyHandle, pkcs1DigestInfo, signature, out bool isValid);
                     return isValid;
@@ -140,12 +143,14 @@ namespace Net.Pkcs11Interop.X509Store
             }
             else if (padding == RSASignaturePadding.Pss)
             {
-                CkRsaPkcsPssParams pssMechanismParams = CreateCkRsaPkcsPssParams(hash, hashAlgorithm);
+                IMechanismParamsFactory mechanismParamsFactory = _certContext.TokenContext.SlotContext.Slot.Factories.MechanismParamsFactory;
+
+                ICkRsaPkcsPssParams pssMechanismParams = CreateCkRsaPkcsPssParams(mechanismParamsFactory, hash, hashAlgorithm);
                 if (pssMechanismParams == null)
                     throw new NotSupportedException(string.Format("Algorithm {0} is not supported", hashAlgorithm.Name));
 
-                using (Session session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
-                using (var mechanism = new Mechanism(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_PSS, pssMechanismParams))
                 {
                     session.Verify(mechanism, _certContext.PubKeyHandle, hash, signature, out bool isValid);
                     return isValid;
@@ -262,22 +267,23 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// Creates parameters for CKM_RSA_PKCS_PSS mechanism
         /// </summary>
+        /// <param name="mechanismParamsFactory">Factory for creation of IMechanismParams instances</param>
         /// <param name="hash">Hash value</param>
         /// <param name="hashAlgorithm">Hash algorithm</param>
         /// <returns>Parameters for CKM_RSA_PKCS_PSS mechanism or null</returns>
-        private static CkRsaPkcsPssParams CreateCkRsaPkcsPssParams(byte[] hash, HashAlgorithmName hashAlgorithm)
+        private static ICkRsaPkcsPssParams CreateCkRsaPkcsPssParams(IMechanismParamsFactory mechanismParamsFactory, byte[] hash, HashAlgorithmName hashAlgorithm)
         {
             if (hash == null || hash.Length == 0)
                 throw new ArgumentNullException(nameof(hash));
 
-            CkRsaPkcsPssParams pssParams = null;
+            ICkRsaPkcsPssParams pssParams = null;
 
             if (hashAlgorithm == HashAlgorithmName.SHA1)
             {
                 if (hash.Length != 20)
                     throw new ArgumentException("Invalid lenght of hash value");
 
-                pssParams = new CkRsaPkcsPssParams(
+                pssParams = mechanismParamsFactory.CreateCkRsaPkcsPssParams(
                     hashAlg: (ulong)CKM.CKM_SHA_1,
                     mgf: (ulong)CKG.CKG_MGF1_SHA1,
                     len: (ulong)hash.Length
@@ -288,7 +294,7 @@ namespace Net.Pkcs11Interop.X509Store
                 if (hash.Length != 32)
                     throw new ArgumentException("Invalid lenght of hash value");
 
-                pssParams = new CkRsaPkcsPssParams(
+                pssParams = mechanismParamsFactory.CreateCkRsaPkcsPssParams(
                     hashAlg: (ulong)CKM.CKM_SHA256,
                     mgf: (ulong)CKG.CKG_MGF1_SHA256,
                     len: (ulong)hash.Length
@@ -299,7 +305,7 @@ namespace Net.Pkcs11Interop.X509Store
                 if (hash.Length != 48)
                     throw new ArgumentException("Invalid lenght of hash value");
 
-                pssParams = new CkRsaPkcsPssParams(
+                pssParams = mechanismParamsFactory.CreateCkRsaPkcsPssParams(
                     hashAlg: (ulong)CKM.CKM_SHA384,
                     mgf: (ulong)CKG.CKG_MGF1_SHA384,
                     len: (ulong)hash.Length
@@ -310,7 +316,7 @@ namespace Net.Pkcs11Interop.X509Store
                 if (hash.Length != 64)
                     throw new ArgumentException("Invalid lenght of hash value");
 
-                pssParams = new CkRsaPkcsPssParams(
+                pssParams = mechanismParamsFactory.CreateCkRsaPkcsPssParams(
                     hashAlg: (ulong)CKM.CKM_SHA512,
                     mgf: (ulong)CKG.CKG_MGF1_SHA512,
                     len: (ulong)hash.Length

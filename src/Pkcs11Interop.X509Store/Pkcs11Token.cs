@@ -111,7 +111,7 @@ namespace Net.Pkcs11Interop.X509Store
         private Pkcs11TokenContext GetTokenContext(Pkcs11SlotContext slotContext)
         {
             var tokenInfo = new Pkcs11TokenInfo(slotContext.Slot.GetTokenInfo());
-            Session masterSession = (!tokenInfo.Initialized) ? null : slotContext.Slot.OpenSession(SessionType.ReadOnly);
+            ISession masterSession = (!tokenInfo.Initialized) ? null : slotContext.Slot.OpenSession(SessionType.ReadOnly);
             return new Pkcs11TokenContext(tokenInfo, masterSession, slotContext);
         }
 
@@ -125,7 +125,7 @@ namespace Net.Pkcs11Interop.X509Store
 
             if (_tokenContext.TokenInfo.Initialized)
             {
-                using (Session session = _tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (ISession session = _tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
                 {
                     if (!this.SessionIsAuthenticated(session))
                     {
@@ -140,14 +140,14 @@ namespace Net.Pkcs11Interop.X509Store
                         }
                     }
 
-                    var searchTemplate = new List<ObjectAttribute>()
-                {
-                    new ObjectAttribute(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
-                    new ObjectAttribute(CKA.CKA_TOKEN, true),
-                    new ObjectAttribute(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509)
-                };
+                    var searchTemplate = new List<IObjectAttribute>()
+                    {
+                        session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),
+                        session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
+                        session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CERTIFICATE_TYPE, CKC.CKC_X_509)
+                    };
 
-                    foreach (ObjectHandle certHandle in session.FindAllObjects(searchTemplate))
+                    foreach (IObjectHandle certHandle in session.FindAllObjects(searchTemplate))
                     {
                         var pkcs11cert = new Pkcs11X509Certificate(certHandle, _tokenContext);
                         certificates.Add(pkcs11cert);
@@ -163,9 +163,9 @@ namespace Net.Pkcs11Interop.X509Store
         /// </summary>
         /// <param name="session">Session to be checked</param>
         /// <returns>True if session is authenticated, false otherwise</returns>
-        private bool SessionIsAuthenticated(Session session)
+        private bool SessionIsAuthenticated(ISession session)
         {
-            SessionInfo sessionInfo = session.GetSessionInfo();
+            ISessionInfo sessionInfo = session.GetSessionInfo();
             switch (sessionInfo.State)
             {
                 case CKS.CKS_RO_PUBLIC_SESSION:

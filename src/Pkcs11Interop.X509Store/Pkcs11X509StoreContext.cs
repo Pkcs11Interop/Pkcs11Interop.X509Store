@@ -37,19 +37,19 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// High level PKCS#11 wrapper
         /// </summary>
-        private Pkcs11 _pkcs11 = null;
+        private IPkcs11Library _pkcs11Library = null;
 
         /// <summary>
         /// High level PKCS#11 wrapper
         /// </summary>
-        internal Pkcs11 Pkcs11
+        internal IPkcs11Library Pkcs11Library
         {
             get
             {
                 if (_disposed)
                     throw new ObjectDisposedException(this.GetType().FullName);
 
-                return _pkcs11;
+                return _pkcs11Library;
             }
         }
 
@@ -94,12 +94,12 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// Creates new instance of Pkcs11X509StoreContext class
         /// </summary>
-        /// <param name="pkcs11">High level PKCS#11 wrapper</param>
+        /// <param name="pkcs11Library">High level PKCS#11 wrapper</param>
         /// <param name="storeInfo">Detailed information about PKCS#11 based X.509 store</param>
         /// <param name="pinProvider">Provider of PIN codes for PKCS#11 tokens and keys</param>
-        internal Pkcs11X509StoreContext(Pkcs11 pkcs11, Pkcs11X509StoreInfo storeInfo, IPinProvider pinProvider)
+        internal Pkcs11X509StoreContext(IPkcs11Library pkcs11Library, Pkcs11X509StoreInfo storeInfo, IPinProvider pinProvider)
         {
-            _pkcs11 = pkcs11 ?? throw new ArgumentNullException(nameof(pkcs11));
+            _pkcs11Library = pkcs11Library ?? throw new ArgumentNullException(nameof(pkcs11Library));
             _storeInfo = storeInfo ?? throw new ArgumentNullException(nameof(storeInfo));
             _pinProvider = pinProvider ?? throw new ArgumentNullException(nameof(pinProvider));
         }
@@ -127,10 +127,10 @@ namespace Net.Pkcs11Interop.X509Store
                 {
                     // Dispose managed objects
 
-                    if (_pkcs11 != null)
+                    if (_pkcs11Library != null)
                     {
-                        _pkcs11.Dispose();
-                        _pkcs11 = null;
+                        _pkcs11Library.Dispose();
+                        _pkcs11Library = null;
                     }
                 }
 

@@ -65,7 +65,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// Creates new instance of Pkcs11SlotInfo class
         /// </summary>
         /// <param name="slotInfo">Information about PKCS#11 slot (CK_SLOT_INFO)</param>
-        internal Pkcs11SlotInfo(SlotInfo slotInfo)
+        internal Pkcs11SlotInfo(ISlotInfo slotInfo)
         {
             if (slotInfo == null)
                 throw new ArgumentNullException(nameof(slotInfo));

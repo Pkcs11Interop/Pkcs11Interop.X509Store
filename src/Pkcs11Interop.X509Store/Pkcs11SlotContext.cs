@@ -37,12 +37,12 @@ namespace Net.Pkcs11Interop.X509Store
         /// <summary>
         /// High level PKCS#11 slot
         /// </summary>
-        private Slot _slot = null;
+        private ISlot _slot = null;
 
         /// <summary>
         /// High level PKCS#11 slot
         /// </summary>
-        internal Slot Slot
+        internal ISlot Slot
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="slot">High level PKCS#11 slot</param>
         /// <param name="slotInfo">Detailed information about PKCS#11 slot</param>
         /// <param name="storeContext">Internal context for Pkcs11X509Store class</param>
-        internal Pkcs11SlotContext(Slot slot, Pkcs11SlotInfo slotInfo, Pkcs11X509StoreContext storeContext)
+        internal Pkcs11SlotContext(ISlot slot, Pkcs11SlotInfo slotInfo, Pkcs11X509StoreContext storeContext)
         {
             _slot = slot ?? throw new ArgumentNullException(nameof(slot));
             _slotInfo = slotInfo ?? throw new ArgumentNullException(nameof(slotInfo));

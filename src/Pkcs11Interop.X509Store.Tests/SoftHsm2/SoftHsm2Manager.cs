@@ -91,70 +91,72 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         private static void InitializeTokens()
         {
+            Pkcs11InteropFactories factories = new Pkcs11InteropFactories();
+
             // Initialize tokens and import objects
-            using (var pkcs11 = new Pkcs11(LibraryPath, AppType.MultiThreaded))
+            using (IPkcs11Library pkcs11Library = factories.Pkcs11LibraryFactory.LoadPkcs11Library(factories, LibraryPath, AppType.MultiThreaded))
             {
                 // Initialize first token
-                List<Slot> slots = pkcs11.GetSlotList(SlotsType.WithOrWithoutTokenPresent);
+                List<ISlot> slots = pkcs11Library.GetSlotList(SlotsType.WithOrWithoutTokenPresent);
                 if (slots.Count != 1)
                     return; // Already initialized
                 else
                     InitializeToken(slots[0], Token1Label, Token1SoPin, Token1UserPin);
 
                 // Initialize second token
-                slots = pkcs11.GetSlotList(SlotsType.WithOrWithoutTokenPresent);
+                slots = pkcs11Library.GetSlotList(SlotsType.WithOrWithoutTokenPresent);
                 if (slots.Count != 2)
                     throw new Exception("Unexpected number of slots");
                 else
                     InitializeToken(slots[1], Token2Label, Token2SoPin, Token2UserPin);
 
                 // Import objects to first token
-                using (Session session = slots[0].OpenSession(SessionType.ReadWrite))
+                using (ISession session = slots[0].OpenSession(SessionType.ReadWrite))
                 {
                     session.Login(CKU.CKU_USER, Token1UserPin);
 
                     // Import CA cert without private key
-                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(Token1TestCaLabel));
+                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(session, Token1TestCaLabel));
 
                     // Import user cert with RSA private and public keys
-                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(Token1TestUserRsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(Token1TestUserRsaLabel, false));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(Token1TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(session, Token1TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token1TestUserRsaLabel, false));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(session, Token1TestUserRsaLabel));
 
                     // Import user cert with ECDSA private and public keys
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(Token1TestUserEcdsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(Token1TestUserEcdsaLabel, false));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(Token1TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(session, Token1TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token1TestUserEcdsaLabel, false));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token1TestUserEcdsaLabel));
                 }
 
                 // Import objects to second token
-                using (Session session = slots[1].OpenSession(SessionType.ReadWrite))
+                using (ISession session = slots[1].OpenSession(SessionType.ReadWrite))
                 {
                     session.Login(CKU.CKU_USER, Token2UserPin);
 
                     // Import CA cert without private key
-                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(Token1TestCaLabel));
+                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(session, Token1TestCaLabel));
 
                     // Import user cert with RSA private and public keys
-                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(Token2TestUserRsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(Token2TestUserRsaLabel, true));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(Token2TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(session, Token2TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token2TestUserRsaLabel, true));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(session, Token2TestUserRsaLabel));
 
                     // Import user cert with ECDSA private and public keys
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(Token2TestUserEcdsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(Token2TestUserEcdsaLabel, true));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(Token2TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(session, Token2TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token2TestUserEcdsaLabel, true));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token2TestUserEcdsaLabel));
                 }
             }
         }
 
-        private static void InitializeToken(Slot slot, string label, string soPin, string userPin)
+        private static void InitializeToken(ISlot slot, string label, string soPin, string userPin)
         {
             if (slot.GetTokenInfo().TokenFlags.TokenInitialized)
                 throw new Exception("Token already initialized");
 
             slot.InitToken(soPin, label);
-            using (Session session = slot.OpenSession(SessionType.ReadWrite))
+            using (ISession session = slot.OpenSession(SessionType.ReadWrite))
             {
                 session.Login(CKU.CKU_SO, soPin);
                 session.InitPin(userPin);
