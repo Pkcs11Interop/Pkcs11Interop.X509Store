@@ -6,12 +6,9 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'vs2017-win2016'
 
 steps:
-- script: dir
-  displayName: 'Pleaaaaase'
-  workingDirectory: $(Build.SourcesDirectory)
 - task: BatchScript@1
   displayName: 'Execute build script'
   inputs:
