@@ -9,8 +9,11 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- script: dir
+  displayName: 'Pleaaaaase'
+  workingDirectory: $(Agent.BuildDirectory)
 - task: BatchScript@1
   displayName: 'Execute build script'
   inputs:
-    filename: ./nuget-build.bat
+    filename: ./build/nuget-build.bat
     workingFolder: $(Agent.BuildDirectory)/build
