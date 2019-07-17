@@ -1,5 +1,5 @@
 [Bb]in/
 [Oo]bj/
 .vs/
-packages/
-tokens/
+/build/nuget-signed
+/build/nuget-unsigned
