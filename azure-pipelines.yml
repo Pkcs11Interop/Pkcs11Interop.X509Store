@@ -16,4 +16,4 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
-    artifactName: MyBuildOutputs
+    artifactName: Pkcs11Interop.X509Store
