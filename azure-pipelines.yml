@@ -9,12 +9,7 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- script: date /t
-  displayName: Get the date
-- script: dir
-  workingDirectory: $(Agent.BuildDirectory)
-  displayName: List contents of a folder
-- script: |
-    cd build
-    nuget-build.bat
-  displayName: 'Run build script'
+- task: BatchScript@1
+  inputs:
+    filename: nuget-build.bat
+    workingFolder: $(Agent.BuildDirectory)\build
