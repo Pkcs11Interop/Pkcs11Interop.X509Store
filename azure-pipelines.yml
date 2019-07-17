@@ -1,6 +1,4 @@
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# YAML schema reference available at https://aka.ms/yaml
 
 trigger:
 - master
@@ -12,5 +10,5 @@ steps:
 - task: BatchScript@1
   displayName: 'Execute build script'
   inputs:
-    filename: ./nuget-build.bat
+    filename: ./build/nuget-build.bat
     workingFolder: $(Build.SourcesDirectory)/build
