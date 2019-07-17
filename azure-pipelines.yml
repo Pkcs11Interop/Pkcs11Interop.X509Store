@@ -10,6 +10,6 @@ pool:
 
 steps:
 - script: |
-    cd build 
-    build-nuget.bat
+    cd build
+    nuget-build.bat
   displayName: 'Run build script'
