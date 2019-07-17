@@ -10,6 +10,7 @@ pool:
 
 steps:
 - task: BatchScript@1
+  displayName: 'Execute build script'
   inputs:
-    filename: nuget-build.bat
-    workingFolder: $(Agent.BuildDirectory)\build
+    filename: ./nuget-build.bat
+    workingFolder: $(Agent.BuildDirectory)/build
