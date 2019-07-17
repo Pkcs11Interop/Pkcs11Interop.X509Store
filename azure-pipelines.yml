@@ -12,5 +12,5 @@ steps:
 - task: BatchScript@1
   displayName: 'Execute build script'
   inputs:
-    filename: ./build/nuget-build.bat
+    filename: ./nuget-build.bat
     workingFolder: $(Build.SourcesDirectory)/build
