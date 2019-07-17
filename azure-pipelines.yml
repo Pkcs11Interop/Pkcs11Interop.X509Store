@@ -12,3 +12,8 @@ steps:
   inputs:
     filename: ./build/nuget-build.bat
     workingFolder: $(Build.SourcesDirectory)/build
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
+    artifactName: MyBuildOutputs
