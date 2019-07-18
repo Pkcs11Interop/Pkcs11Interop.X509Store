@@ -3,17 +3,41 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'vs2017-win2016'
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
 
-steps:
-- task: BatchScript@1
-  displayName: 'Execute build script'
-  inputs:
-    filename: ./build/nuget-build.bat
-    workingFolder: $(Build.SourcesDirectory)/build
+  steps:
+  - task: BatchScript@1
+    displayName: 'Build on Windows'
+    inputs:
+      filename: ./build/nuget-build.bat
+      workingFolder: $(Build.SourcesDirectory)/build
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
-    artifactName: Pkcs11Interop.X509Store
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
+      artifactName: Pkcs11Interop.X509Store
+
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  steps:
+  - script: |
+      dotnet --info
+      dotnet restore ./src/
+      dotnet build ./src/
+    displayName: 'Build on Linux'
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.14'
+
+  steps:
+  - script: |
+      dotnet --info
+      dotnet restore ./src/
+      dotnet build ./src/
+    displayName: 'Build on macOS'
