@@ -30,3 +30,14 @@ jobs:
       dotnet restore ./src/
       dotnet build ./src/
     displayName: 'Build on Linux'
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.14'
+
+  steps:
+  - script: |
+      dotnet --info
+      dotnet restore ./src/
+      dotnet build ./src/
+    displayName: 'Build on macOS'
