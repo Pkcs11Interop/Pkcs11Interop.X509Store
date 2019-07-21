@@ -30,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SoftHsm2\libsofthsm2.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SoftHsm2\softhsm2-x64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

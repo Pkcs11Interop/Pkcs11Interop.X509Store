@@ -36,6 +36,7 @@ jobs:
       dotnet --info
       dotnet restore ./src/
       dotnet build ./src/
+      dotnet test ./src/Pkcs11Interop.X509Store.Tests/Pkcs11Interop.X509Store.Tests.csproj
     displayName: 'Build on Linux'
 
 - job: macOS

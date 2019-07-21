@@ -86,10 +86,24 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
             Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"SoftHsm2\softhsm2.conf");
 
             // Determine path to PKCS#11 library
-            if (Platform.Uses64BitRuntime)
-                _libraryPath = @"SoftHsm2\softhsm2-x64.dll";
+            if (Platform.IsWindows)
+            {
+                if (Platform.Uses64BitRuntime)
+                    _libraryPath = @"SoftHsm2\softhsm2-x64.dll";
+                else
+                    _libraryPath = @"SoftHsm2\softhsm2.dll";
+            }
+            else if (Platform.IsLinux)
+            {
+                if (Platform.Uses64BitRuntime)
+                    _libraryPath = @"SoftHsm2\libsofthsm2.so";
+                else
+                    throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit Linux");
+            }
             else
-                _libraryPath = @"SoftHsm2\softhsm2.dll";
+            {
+                throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on this platform");
+            }
 
             InitializeTokens();
         }
