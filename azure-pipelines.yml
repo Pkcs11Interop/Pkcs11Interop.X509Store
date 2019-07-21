@@ -10,19 +10,19 @@ jobs:
 
   steps:
   - task: BatchScript@1
-    displayName: 'Build source code'
+    displayName: 'Build'
     inputs:
       filename: ./build/nuget-build.bat
       workingFolder: $(Build.SourcesDirectory)/build
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run tests'
+    displayName: 'Test'
     inputs:
       command: 'test'
       projects: ./src/Pkcs11Interop.X509Store.Tests/Pkcs11Interop.X509Store.Tests.csproj
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish artifacts'
+    displayName: 'Publish'
     inputs:
       pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
       artifactName: Pkcs11Interop.X509Store
@@ -32,12 +32,23 @@ jobs:
     vmImage: 'ubuntu-16.04'
 
   steps:
-  - script: |
-      dotnet --info
-      dotnet restore ./src/
-      dotnet build ./src/
-      dotnet test ./src/Pkcs11Interop.X509Store.Tests/Pkcs11Interop.X509Store.Tests.csproj
-    displayName: 'Build on Linux'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: ./src/Pkcs11Interop.X509Store.sln
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: ./src/Pkcs11Interop.X509Store.sln
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Test'
+    inputs:
+      command: 'test'
+      projects: ./src/Pkcs11Interop.X509Store.Tests/Pkcs11Interop.X509Store.Tests.csproj
 
 - job: macOS
   pool:
