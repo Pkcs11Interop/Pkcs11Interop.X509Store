@@ -15,6 +15,10 @@ jobs:
       filename: ./build/nuget-build.bat
       workingFolder: $(Build.SourcesDirectory)/build
 
+  - script: |
+      dotnet vstest ./src/Pkcs11Interop.X509Store.Tests/bin/Release/netcoreapp2.1/Pkcs11Interop.X509Store.Tests.dll --Framework:".NETCoreApp,Version=v2.1"
+    displayName: 'Run tests'
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
