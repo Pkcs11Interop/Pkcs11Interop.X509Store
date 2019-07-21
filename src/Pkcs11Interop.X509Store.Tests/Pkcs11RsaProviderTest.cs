@@ -38,39 +38,31 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         [Test()]
         public void RsaPkcs1SelfTest()
         {
-            try
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
-                using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
+                Pkcs11X509Certificate cert1 = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserRsaLabel);
+                Pkcs11X509Certificate cert2 = Helpers.GetCertificate(store, SoftHsm2Manager.Token2Label, SoftHsm2Manager.Token2TestUserRsaLabel);
+
+                foreach (var cert in new Pkcs11X509Certificate[] { cert1, cert2 })
                 {
-                    Pkcs11X509Certificate cert1 = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserRsaLabel);
-                    Pkcs11X509Certificate cert2 = Helpers.GetCertificate(store, SoftHsm2Manager.Token2Label, SoftHsm2Manager.Token2TestUserRsaLabel);
+                    RSA p11PrivKey = cert.GetRSAPrivateKey();
+                    Assert.IsNotNull(p11PrivKey);
+                    RSA p11PubKey = cert.GetRSAPublicKey();
+                    Assert.IsNotNull(p11PubKey);
 
-                    foreach (var cert in new Pkcs11X509Certificate[] { cert1, cert2 })
+                    foreach (HashAlgorithmName hashAlgName in _hashNamesPkcs1)
                     {
-                        RSA p11PrivKey = cert.GetRSAPrivateKey();
-                        Assert.IsNotNull(p11PrivKey);
-                        RSA p11PubKey = cert.GetRSAPublicKey();
-                        Assert.IsNotNull(p11PubKey);
+                        byte[] hash1 = Helpers.ComputeHash(_data1, hashAlgName);
+                        byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
 
-                        foreach (HashAlgorithmName hashAlgName in _hashNamesPkcs1)
-                        {
-                            byte[] hash1 = Helpers.ComputeHash(_data1, hashAlgName);
-                            byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
-
-                            byte[] signature = p11PrivKey.SignHash(hash1, hashAlgName, RSASignaturePadding.Pkcs1);
-                            Assert.IsNotNull(signature);
-                            bool result1 = p11PubKey.VerifyHash(hash1, signature, hashAlgName, RSASignaturePadding.Pkcs1);
-                            Assert.IsTrue(result1);
-                            bool result2 = p11PubKey.VerifyHash(hash2, signature, hashAlgName, RSASignaturePadding.Pkcs1);
-                            Assert.IsFalse(result2);
-                        }
+                        byte[] signature = p11PrivKey.SignHash(hash1, hashAlgName, RSASignaturePadding.Pkcs1);
+                        Assert.IsNotNull(signature);
+                        bool result1 = p11PubKey.VerifyHash(hash1, signature, hashAlgName, RSASignaturePadding.Pkcs1);
+                        Assert.IsTrue(result1);
+                        bool result2 = p11PubKey.VerifyHash(hash2, signature, hashAlgName, RSASignaturePadding.Pkcs1);
+                        Assert.IsFalse(result2);
                     }
                 }
-            }
-            catch (Pkcs11Exception)
-            {
-                var syslog = System.IO.File.ReadAllText(@"/var/log/syslog");
-                throw new System.Exception(syslog);
             }
         }
 
