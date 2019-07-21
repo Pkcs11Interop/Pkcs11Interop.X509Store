@@ -10,17 +10,19 @@ jobs:
 
   steps:
   - task: BatchScript@1
-    displayName: 'Build on Windows'
+    displayName: 'Build source code'
     inputs:
       filename: ./build/nuget-build.bat
       workingFolder: $(Build.SourcesDirectory)/build
 
   - task: DotNetCoreCLI@2
+    displayName: 'Run tests'
     inputs:
       command: 'test'
       projects: ./src/Pkcs11Interop.X509Store.Tests/Pkcs11Interop.X509Store.Tests.csproj
 
   - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifacts'
     inputs:
       pathtoPublish: '$(Build.SourcesDirectory)/build/nuget-unsigned'
       artifactName: Pkcs11Interop.X509Store
