@@ -172,7 +172,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
             }
             catch (Pkcs11Exception)
             {
-                var syslog = System.IO.File.ReadAllText(@"/var/log/syslog");
+                var syslog = System.IO.File.ReadAllText(@"softhsm.log");
                 throw new System.Exception(syslog);
             }
         }
