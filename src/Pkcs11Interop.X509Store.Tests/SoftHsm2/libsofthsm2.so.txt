@@ -3,7 +3,7 @@ Linux version of SoftHSM library was built on Ubuntu 16.04.6 Desktop 64-bit with
 $ wget https://github.com/disig/SoftHSM2-for-Windows/raw/2.5.0/SoftHSM/softhsm-2.5.0.tar.gz
 $ tar -xvf softhsm-2.5.0.tar.gz
 $ cd softhsm-2.5.0/
-$ ./configure --prefix=/opt/softhsm2/ --enable-64bit --enable-ecc --disable-gost --disable-eddsa --disable-p11-kit --disable-non-paged-memory --with-crypto-backend=openssl
+$ ./configure --prefix=/opt/softhsm2/ --enable-64bit --enable-ecc --disable-gost --disable-eddsa --disable-p11-kit --with-crypto-backend=openssl
 $ make
 $ sudo make install
 $ sudo strip --strip-all /opt/softhsm2/lib/softhsm/libsofthsm2.so

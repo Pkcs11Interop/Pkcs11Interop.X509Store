@@ -83,7 +83,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                 Directory.CreateDirectory($@"SoftHsm2{Path.DirectorySeparatorChar}tokens{Path.DirectorySeparatorChar}");
 
             // Setup environment variable with path to configuration file
-            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", $@"SoftHsm2{Path.DirectorySeparatorChar}softhsm2.conf");
+            EnvironmentHelper.SetEnvironmentVariable("SOFTHSM2_CONF", $@"SoftHsm2{Path.DirectorySeparatorChar}softhsm2.conf");
 
             // Determine path to PKCS#11 library
             if (Platform.IsWindows)
