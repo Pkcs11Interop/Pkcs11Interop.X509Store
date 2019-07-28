@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net47</TargetFrameworks>
     <IsPackable>false</IsPackable>
 	<IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <PackageReference Include="Pkcs11Interop" Version="5.0.0" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
     <PackageReference Include="System.Security.Cryptography.Cng" Version="4.5.0" />
+    <PackageReference Include="System.Security.Cryptography.OpenSsl" Version="4.5.1" />
     <PackageReference Include="System.Security.Cryptography.Xml" Version="4.5.0" />
   </ItemGroup>
 
