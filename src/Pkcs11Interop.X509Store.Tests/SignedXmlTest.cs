@@ -51,7 +51,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 CreateSomeXml("Example.xml");
 
                 // Sign the XML that was just created and save it in a new file
-                SignXmlFile("Example.xml", "signedExample.xml", rsaPrivateKey);
+                SignXmlFile("Example.xml", "SignedExample.xml", rsaPrivateKey);
 
                 // Verify the signature of the signed XML
                 bool result = VerifyXmlFile("SignedExample.xml", rsaPublicKey);
