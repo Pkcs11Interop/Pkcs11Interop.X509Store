@@ -221,21 +221,6 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 rsaParams.Q = rsaPrivKeyParams.Q.ToByteArrayUnsigned();
 
                 return RSA.Create(rsaParams);
-
-                /*
-                if (Platform.IsWindows)
-                {
-                    RSACng rsa = new RSACng();
-                    rsa.ImportParameters(rsaParams);
-                    return rsa;
-                }
-                else
-                {
-                    RSAOpenSsl rsa = new RSAOpenSsl();
-                    rsa.ImportParameters(rsaParams);
-                    return rsa;
-                }
-                */
             }
         }
 
@@ -352,21 +337,6 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 };
 
                 return ECDsa.Create(ecParams);
-
-                /*
-                if (Platform.IsWindows)
-                {
-                    ECDsaCng ecdsa = new ECDsaCng();
-                    ecdsa.ImportParameters(ecParams);
-                    return ecdsa;
-                }
-                else
-                {
-                    ECDsaOpenSsl ecdsa = new ECDsaOpenSsl();
-                    ecdsa.ImportParameters(ecParams);
-                    return ecdsa;
-                }
-                */
             }
         }
 
