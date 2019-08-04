@@ -220,6 +220,9 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 rsaParams.P = rsaPrivKeyParams.P.ToByteArrayUnsigned();
                 rsaParams.Q = rsaPrivKeyParams.Q.ToByteArrayUnsigned();
 
+                return RSA.Create(rsaParams);
+
+                /*
                 if (Platform.IsWindows)
                 {
                     RSACng rsa = new RSACng();
@@ -232,6 +235,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                     rsa.ImportParameters(rsaParams);
                     return rsa;
                 }
+                */
             }
         }
 
@@ -347,6 +351,9 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     }
                 };
 
+                return ECDsa.Create(ecParams);
+
+                /*
                 if (Platform.IsWindows)
                 {
                     ECDsaCng ecdsa = new ECDsaCng();
@@ -359,6 +366,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     ecdsa.ImportParameters(ecParams);
                     return ecdsa;
                 }
+                */
             }
         }
 
