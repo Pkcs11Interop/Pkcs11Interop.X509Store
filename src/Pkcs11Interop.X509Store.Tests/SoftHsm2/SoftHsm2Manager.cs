@@ -100,6 +100,13 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                 else
                     throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit Linux");
             }
+            else if (Platform.IsMacOsX)
+            {
+                if (Platform.Uses64BitRuntime)
+                    _libraryPath = $@"SoftHsm2/osx/libsofthsm2.so";
+                else
+                    throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit OSX");
+            }
             else
             {
                 throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on this platform");

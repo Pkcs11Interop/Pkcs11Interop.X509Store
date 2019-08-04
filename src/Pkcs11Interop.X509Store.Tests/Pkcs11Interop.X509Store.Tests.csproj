@@ -34,6 +34,9 @@
     <None Update="SoftHsm2\linux\libsofthsm2.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SoftHsm2\osx\libsofthsm2.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SoftHsm2\windows\softhsm2-x64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

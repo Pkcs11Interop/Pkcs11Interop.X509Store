@@ -55,8 +55,20 @@ jobs:
     vmImage: 'macOS-10.14'
 
   steps:
-  - script: |
-      dotnet --info
-      dotnet restore ./src/
-      dotnet build ./src/
-    displayName: 'Build on macOS'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: ./src/Pkcs11Interop.X509Store.sln
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: ./src/Pkcs11Interop.X509Store.sln
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Test'
+    inputs:
+      command: 'test'
+      projects: ./src/Pkcs11Interop.X509Store.Tests/Pkcs11Interop.X509Store.Tests.csproj
