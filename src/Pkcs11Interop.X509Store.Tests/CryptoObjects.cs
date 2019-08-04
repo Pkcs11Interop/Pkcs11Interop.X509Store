@@ -29,7 +29,6 @@ using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;
-using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.X509;
 
 namespace Net.Pkcs11Interop.X509Store.Tests

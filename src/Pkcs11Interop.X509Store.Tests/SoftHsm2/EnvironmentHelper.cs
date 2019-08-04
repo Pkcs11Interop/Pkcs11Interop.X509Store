@@ -19,9 +19,9 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
-using Net.Pkcs11Interop.Common;
 using System;
 using System.Runtime.InteropServices;
+using Net.Pkcs11Interop.Common;
 
 namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 {

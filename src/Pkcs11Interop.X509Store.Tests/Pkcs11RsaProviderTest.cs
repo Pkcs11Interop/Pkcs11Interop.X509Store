@@ -21,7 +21,6 @@
 
 using System.Security.Cryptography;
 using System.Text;
-using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 using NUnit.Framework;
 
