@@ -89,14 +89,14 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
             if (Platform.IsWindows)
             {
                 if (Platform.Uses64BitRuntime)
-                    _libraryPath = $@"SoftHsm2{Path.DirectorySeparatorChar}softhsm2-x64.dll";
+                    _libraryPath = $@"SoftHsm2\windows\softhsm2-x64.dll";
                 else
-                    _libraryPath = $@"SoftHsm2{Path.DirectorySeparatorChar}softhsm2.dll";
+                    _libraryPath = $@"SoftHsm2\windows\softhsm2.dll";
             }
             else if (Platform.IsLinux)
             {
                 if (Platform.Uses64BitRuntime)
-                    _libraryPath = $@"SoftHsm2{Path.DirectorySeparatorChar}libsofthsm2.so";
+                    _libraryPath = $@"SoftHsm2/linux/libsofthsm2.so";
                 else
                     throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit Linux");
             }
