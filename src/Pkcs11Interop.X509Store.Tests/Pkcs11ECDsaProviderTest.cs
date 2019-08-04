@@ -65,7 +65,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void EcdsaCngTest()
+        public void EcdsaPlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -75,7 +75,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 Assert.IsNotNull(p11PrivKey);
                 ECDsa p11PubKey = cert.GetECDsaPublicKey();
                 Assert.IsNotNull(p11PubKey);
-                ECDsa cngKey = CryptoObjects.GetTestUserEcdsaCngProvider();
+                ECDsa cngKey = CryptoObjects.GetTestUserPlatformEcdsaProvider();
                 Assert.IsNotNull(cngKey);
 
                 foreach (HashAlgorithmName hashAlgName in _hashNames)

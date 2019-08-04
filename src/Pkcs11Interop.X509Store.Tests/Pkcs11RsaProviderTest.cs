@@ -66,7 +66,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void RsaPkcs1CngTest()
+        public void RsaPkcs1PlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -76,7 +76,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 Assert.IsNotNull(p11PrivKey);
                 RSA p11PubKey = cert.GetRSAPublicKey();
                 Assert.IsNotNull(p11PubKey);
-                RSA cngKey = CryptoObjects.GetTestUserRsaCngProvider();
+                RSA cngKey = CryptoObjects.GetTestUserPlatformRsaProvider();
                 Assert.IsNotNull(cngKey);
 
                 foreach (HashAlgorithmName hashAlgName in _hashNamesPkcs1)
@@ -133,7 +133,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test()]
-        public void RsaPssCngTest()
+        public void RsaPssPlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -143,7 +143,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 Assert.IsNotNull(p11PrivKey);
                 RSA p11PubKey = cert.GetRSAPublicKey();
                 Assert.IsNotNull(p11PubKey);
-                RSA cngKey = CryptoObjects.GetTestUserRsaCngProvider();
+                RSA cngKey = CryptoObjects.GetTestUserPlatformRsaProvider();
                 Assert.IsNotNull(cngKey);
 
                 foreach (HashAlgorithmName hashAlgName in _hashNamesPss)

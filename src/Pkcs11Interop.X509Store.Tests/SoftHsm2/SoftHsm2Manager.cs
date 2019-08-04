@@ -79,17 +79,38 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
         static SoftHsm2Manager()
         {
             // Create directory for SoftHSM2 tokens
-            if (!Directory.Exists(@"SoftHsm2\tokens\"))
-                Directory.CreateDirectory(@"SoftHsm2\tokens\");
+            if (!Directory.Exists($@"SoftHsm2{Path.DirectorySeparatorChar}tokens{Path.DirectorySeparatorChar}"))
+                Directory.CreateDirectory($@"SoftHsm2{Path.DirectorySeparatorChar}tokens{Path.DirectorySeparatorChar}");
 
             // Setup environment variable with path to configuration file
-            Environment.SetEnvironmentVariable("SOFTHSM2_CONF", @"SoftHsm2\softhsm2.conf");
+            EnvironmentHelper.SetEnvironmentVariable("SOFTHSM2_CONF", $@"SoftHsm2{Path.DirectorySeparatorChar}softhsm2.conf");
 
             // Determine path to PKCS#11 library
-            if (Platform.Uses64BitRuntime)
-                _libraryPath = @"SoftHsm2\softhsm2-x64.dll";
+            if (Platform.IsWindows)
+            {
+                if (Platform.Uses64BitRuntime)
+                    _libraryPath = $@"SoftHsm2\windows\softhsm2-x64.dll";
+                else
+                    _libraryPath = $@"SoftHsm2\windows\softhsm2.dll";
+            }
+            else if (Platform.IsLinux)
+            {
+                if (Platform.Uses64BitRuntime)
+                    _libraryPath = $@"SoftHsm2/linux/libsofthsm2.so";
+                else
+                    throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit Linux");
+            }
+            else if (Platform.IsMacOsX)
+            {
+                if (Platform.Uses64BitRuntime)
+                    _libraryPath = $@"SoftHsm2/osx/libsofthsm2.so";
+                else
+                    throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit OSX");
+            }
             else
-                _libraryPath = @"SoftHsm2\softhsm2.dll";
+            {
+                throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on this platform");
+            }
 
             InitializeTokens();
         }

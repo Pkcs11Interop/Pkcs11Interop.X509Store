@@ -29,7 +29,6 @@ using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;
-using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.X509;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
@@ -203,17 +202,24 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
             };
         }
 
-        public static RSA GetTestUserRsaCngProvider()
+        public static RSA GetTestUserPlatformRsaProvider()
         {
             using (var stringReader = new StringReader(TestUserRsaPrivKey))
             {
                 var pemReader = new PemReader(stringReader);
                 var rsaPrivKeyParams = pemReader.ReadObject() as RsaPrivateCrtKeyParameters;
 
-                byte[] pkcs8 = PrivateKeyInfoFactory.CreatePrivateKeyInfo(rsaPrivKeyParams).GetDerEncoded();
+                RSAParameters rsaParams = new RSAParameters();
+                rsaParams.D = rsaPrivKeyParams.Exponent.ToByteArrayUnsigned();
+                rsaParams.DP = rsaPrivKeyParams.DP.ToByteArrayUnsigned();
+                rsaParams.DQ = rsaPrivKeyParams.DQ.ToByteArrayUnsigned();
+                rsaParams.Exponent = rsaPrivKeyParams.PublicExponent.ToByteArrayUnsigned();
+                rsaParams.InverseQ = rsaPrivKeyParams.QInv.ToByteArrayUnsigned();
+                rsaParams.Modulus = rsaPrivKeyParams.Modulus.ToByteArrayUnsigned();
+                rsaParams.P = rsaPrivKeyParams.P.ToByteArrayUnsigned();
+                rsaParams.Q = rsaPrivKeyParams.Q.ToByteArrayUnsigned();
 
-                CngKey cngKey = CngKey.Import(pkcs8, CngKeyBlobFormat.Pkcs8PrivateBlob);
-                return new RSACng(cngKey);
+                return RSA.Create(rsaParams);
             }
         }
 
@@ -308,17 +314,28 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             };
         }
 
-        public static ECDsaCng GetTestUserEcdsaCngProvider()
+        public static ECDsa GetTestUserPlatformEcdsaProvider()
         {
             using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
             {
                 var pemReader = new PemReader(stringReader);
                 var ecdsaPrivKeyParams = pemReader.ReadObject() as ECPrivateKeyParameters;
 
-                byte[] pkcs8 = PrivateKeyInfoFactory.CreatePrivateKeyInfo(ecdsaPrivKeyParams).GetDerEncoded();
+                var Q = ecdsaPrivKeyParams.Parameters.G.Multiply(ecdsaPrivKeyParams.D);
+                var ecdsaPubKeyParams = new ECPublicKeyParameters(Q, ecdsaPrivKeyParams.Parameters);
 
-                CngKey cngKey = CngKey.Import(pkcs8, CngKeyBlobFormat.Pkcs8PrivateBlob);
-                return new ECDsaCng(cngKey);
+                ECParameters ecParams = new ECParameters()
+                {
+                    Curve = ECCurve.CreateFromValue(ecdsaPrivKeyParams.PublicKeyParamSet.Id),
+                    D = ecdsaPrivKeyParams.D.ToByteArrayUnsigned(),
+                    Q = new ECPoint()
+                    {
+                        X = ecdsaPubKeyParams.Q.XCoord.ToBigInteger().ToByteArrayUnsigned(),
+                        Y = ecdsaPubKeyParams.Q.YCoord.ToBigInteger().ToByteArrayUnsigned()
+                    }
+                };
+
+                return ECDsa.Create(ecParams);
             }
         }
 
