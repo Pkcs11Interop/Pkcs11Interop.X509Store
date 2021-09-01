@@ -28,4 +28,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: Push Nuget
-      run: dotnet nuget push "Pkcs11Interop.X509Store/bin/Release/*.nupkg" --skip-duplicate --no-symbols true
+      run: dotnet nuget push "Pkcs11Interop.X509Store/bin/Release/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate --no-symbols true
