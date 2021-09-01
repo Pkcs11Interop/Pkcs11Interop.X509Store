@@ -24,7 +24,7 @@ jobs:
       id: get_repo
       uses: ASzc/change-string-case-action@v1
       with:
-        string: ${{ github.repository }}
+        string: ${{ github.repository_owner }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
