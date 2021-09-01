@@ -25,6 +25,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: Authenticate Nuget-Repo
-      run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+      run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository }}/index.json"
     - name: Push Nuget
       run: dotnet nuget push "Pkcs11Interop.X509Store/bin/Release/Pkcs11Interop.X509Store.*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
