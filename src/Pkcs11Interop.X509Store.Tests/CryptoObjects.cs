@@ -136,7 +136,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
         public static List<IObjectAttribute> GetTestUserRsaCertAttributes(ISession session, string label)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserRsaCert));
-
+            
             return new List<IObjectAttribute>()
             {
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, CKO.CKO_CERTIFICATE),

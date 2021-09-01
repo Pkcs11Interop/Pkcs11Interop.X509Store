@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 
@@ -55,16 +56,18 @@ namespace Net.Pkcs11Interop.X509Store
             }
         }
 
+      
+
         /// <summary>
         /// Certificates present on token.
         /// </summary>
-        private List<Pkcs11X509Certificate> _certificates = null;
+        private IReadOnlyList<Pkcs11X509Certificate> _certificates = null;
 
         /// <summary>
         /// Certificates present on token.
         /// This property may use provider of PIN codes (IPinProvider) on access.
         /// </summary>
-        public List<Pkcs11X509Certificate> Certificates
+        public IReadOnlyList<Pkcs11X509Certificate> Certificates
         {
             get
             {
@@ -103,6 +106,38 @@ namespace Net.Pkcs11Interop.X509Store
             _certificates = FindCertificates();
         }
 
+        public void AddCertificate(X509Certificate2 certificate, bool blnPrivateKey)
+        {
+            if (_tokenContext.TokenInfo.Initialized)
+            {
+                using (ISession session = _tokenContext.SlotContext.Slot.OpenSession(SessionType.ReadWrite))
+                {
+                    if (!this.SessionIsAuthenticated(session))
+                    {
+                        try
+                        {
+                            byte[] pin = PinProviderUtils.GetTokenPin(_tokenContext);
+                            _tokenContext.AuthenticatedSession.Login(CKU.CKU_USER, pin);
+                        }
+                        catch (LoginCancelledException)
+                        {
+                            // Ignore and continue without login
+                        }
+                    }
+
+                    session.CreateObject(Pkcs11X509CryptoObjectHelper.GetRsaCertAttributes(certificate, session, certificate.Subject));
+                    if (blnPrivateKey)
+                        session.CreateObject(Pkcs11X509CryptoObjectHelper.GetRsaPrivKeyAttributes(certificate, session, certificate.Subject, true));
+                    session.CreateObject(Pkcs11X509CryptoObjectHelper.GetRsaPubKeyAttributes(certificate, session, certificate.Subject));
+                   
+                }
+            }
+        }
+
+        public void RemoveCertificate(Pkcs11X509Certificate cert)
+        {
+        }
+
         /// <summary>
         /// Constructs internal context for Pkcs11Token class
         /// </summary>
@@ -119,7 +154,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// Finds all X.509 certificates present on token
         /// </summary>
         /// <returns>All X.509 certificates present on token</returns>
-        private List<Pkcs11X509Certificate> FindCertificates()
+        private IReadOnlyList<Pkcs11X509Certificate> FindCertificates()
         {
             var certificates = new List<Pkcs11X509Certificate>();
 
@@ -155,7 +190,7 @@ namespace Net.Pkcs11Interop.X509Store
                 }
             }
 
-            return certificates;
+            return certificates.AsReadOnly();
         }
 
         /// <summary>
