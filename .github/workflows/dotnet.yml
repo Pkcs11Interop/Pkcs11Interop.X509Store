@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        source-url: https://nuget.pkg.github.com/bobiene/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Restore dependencies
@@ -28,4 +28,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration release
     - name: Push Nuget
-      run: dotnet nuget push "Pkcs11Interop.X509Store/bin/Release/*.nupkg" --skip-duplicate 
+      run: dotnet nuget push "Pkcs11Interop.X509Store/bin/Release/*.nupkg" --skip-duplicate --no-symbols true
