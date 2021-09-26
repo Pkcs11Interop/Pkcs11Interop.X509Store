@@ -3,7 +3,9 @@ Pkcs11Interop.X509Store
 **Easy to use PKCS#11 based X.509 certificate store**
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/blob/master/LICENSE.md)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/l5hr66s6dnmajh0y/branch/master?svg=true)](https://ci.appveyor.com/project/pkcs11interop/pkcs11interop-x509store/branch/master)
 [![NuGet](https://img.shields.io/badge/nuget-pkcs11interop.x509store-blue.svg)](https://www.nuget.org/packages/Pkcs11Interop.X509Store/)
+[![Stack Overflow](https://img.shields.io/badge/stack-pkcs11interop-blue.svg)](https://stackoverflow.com/questions/tagged/pkcs11interop)
 [![Twitter](https://img.shields.io/badge/twitter-p11interop-blue.svg)](https://twitter.com/p11interop)
 
 **WARNING: Pkcs11Interop.X509Store is still in a very early stage of development and its API may fundamentally change with any subsequent release.**
