@@ -46,6 +46,7 @@ copy %inputdir%\*.snupkg . || goto :error
 rmdir /S /Q lib || goto :error
 del /Q *.nuspec || goto :error
 del /Q *.txt || goto :error
+del /Q *.png || goto :error
 
 @echo *** SIGN SUCCESSFUL ***
 @endlocal
