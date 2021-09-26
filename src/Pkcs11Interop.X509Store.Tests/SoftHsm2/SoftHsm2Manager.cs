@@ -88,8 +88,16 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
             if (!Directory.Exists(tokensDir))
                 Directory.CreateDirectory(tokensDir);
 
+            // Determine path of configuration file
+            string configPath = Path.Combine(basePath, "SoftHsm2", "softhsm2.conf");
+
+            // Update contents of configuration file
+            string configContent = File.ReadAllText(configPath);
+            configContent = configContent.Replace("__TOKENDIR__", tokensDir);
+            File.WriteAllText(configPath, configContent);
+
             // Setup environment variable with path to configuration file
-            EnvironmentHelper.SetEnvironmentVariable("SOFTHSM2_CONF", Path.Combine(basePath, "SoftHsm2", "softhsm2.conf"));
+            EnvironmentHelper.SetEnvironmentVariable("SOFTHSM2_CONF", configPath);
 
             // Determine path to PKCS#11 library
             if (Platform.IsWindows)
