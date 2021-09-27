@@ -1,4 +1,13 @@
-Pkcs11Interop 0.2.0 (2018-01-02)
+Pkcs11Interop.X509Store 0.3.0 (2021-09-27)
+- Added support for .NET Standard 2.0
+- Upgraded to Pkcs11Interop 5.1.2
+- Added AppVeyor CI that runs tests with .NET Framework 4.8 on Windows and .NET Core 3.1 on Windows, Linux and macOS
+- When CKA_ALWAYS_AUTHENTICATE attribute cannot be read its value is assumed to be CK_FALSE
+- Added Pkcs11X509CertificateInfo::KeyType and AsymmetricKeyType enum
+- Pkcs11TokenInfo::SupportsProtectedLogin renamed to Pkcs11TokenInfo::HasProtectedAuthenticationPath
+- Introduced various API breaking changes in GetPinResult class
+
+Pkcs11Interop.X509Store 0.2.0 (2018-01-02)
 - Fixed PKCS#1 DigestInfo encoding
 - Added support for RSASSA-PSS signature scheme
 - Added support for ECDSA signatures
@@ -7,5 +16,5 @@ Pkcs11Interop 0.2.0 (2018-01-02)
 - Removed Pkcs11SlotInfo::TokenPresent property.  
   If token is not present then Pkcs11Slot::Token is null.
 
-Pkcs11Interop 0.1.0 (2017-12-27)
+Pkcs11Interop.X509Store 0.1.0 (2017-12-27)
  - Initial development release
