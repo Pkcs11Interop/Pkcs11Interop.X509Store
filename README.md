@@ -38,7 +38,7 @@ Archives with the source code and binaries can be downloaded from [our releases 
 
 ## License
 
-Pkcs11Interop.X509Store is available under the terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).  
+Pkcs11Interop.X509Store is available under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).  
 [Human friendly license summary](https://tldrlegal.com/l/apache2) is available at tldrlegal.com but the [full license text](LICENSE.md) always prevails.
 
 ## Support
@@ -47,9 +47,9 @@ Pkcs11Interop.X509Store is still in a very early stage of development so if you 
 
 ## Related projects
 
-* [Pkcs11Interop](http://www.pkcs11interop.net/)  
+* [Pkcs11Interop](https://www.pkcs11interop.net/)  
   Managed .NET wrapper for unmanaged PKCS#11 libraries.
-* [Pkcs11Admin](http://www.pkcs11admin.net/)  
+* [Pkcs11Admin](https://www.pkcs11admin.net/)  
   GUI tool for administration of PKCS#11 enabled devices based on Pkcs11Interop library.
 * [PKCS11-LOGGER](https://github.com/Pkcs11Interop/pkcs11-logger)  
   PKCS#11 logging proxy module useful for debugging of PKCS#11 enabled applications.
@@ -58,5 +58,5 @@ Pkcs11Interop.X509Store is still in a very early stage of development so if you 
 
 ## About
 
-Pkcs11Interop.X509Store has been written for the Pkcs11Interop project by [Jaroslav Imrich](http://www.jimrich.sk).  
-Please visit project website - [pkcs11interop.net](http://www.pkcs11interop.net) - for more information.
+Pkcs11Interop.X509Store has been written for the Pkcs11Interop project by [Jaroslav Imrich](https://www.jimrich.sk).  
+Please visit project website - [pkcs11interop.net](https://www.pkcs11interop.net) - for more information.
