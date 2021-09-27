@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright 2017-2018 The Pkcs11Interop Project
+ *  Copyright 2017-2021 The Pkcs11Interop Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -47,14 +48,19 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 // Get software based public key
                 RSA rsaPublicKey = cert.Info.ParsedCertificate.PublicKey.Key as RSA;
 
+                // Determine paths
+                string basePath = GetBasePath();
+                string plainXmlFilePath = Path.Combine(basePath, "Example.xml");
+                string signedXmlFilePath = Path.Combine(basePath, "SignedExample.xml");
+
                 // Create an XML file to sign
-                CreateSomeXml("Example.xml");
+                CreateSomeXml(plainXmlFilePath);
 
                 // Sign the XML that was just created and save it in a new file
-                SignXmlFile("Example.xml", "SignedExample.xml", rsaPrivateKey);
+                SignXmlFile(plainXmlFilePath, signedXmlFilePath, rsaPrivateKey);
 
                 // Verify the signature of the signed XML
-                bool result = VerifyXmlFile("SignedExample.xml", rsaPublicKey);
+                bool result = VerifyXmlFile(signedXmlFilePath, rsaPublicKey);
 
                 // Check the results of the signature verification
                 Assert.IsTrue(result);
@@ -158,6 +164,17 @@ namespace Net.Pkcs11Interop.X509Store.Tests
             XmlTextWriter xmltw = new XmlTextWriter(FileName, new UTF8Encoding(false));
             document.WriteTo(xmltw);
             xmltw.Close();
+        }
+
+        /// <summary>
+        /// Gets absolute path of directory where the test assembly is located
+        /// </summary>
+        /// <returns>Absolute path of directory where the test assembly is located</returns>
+        public static string GetBasePath()
+        {
+            string basePath = typeof(SoftHsm2Manager).Assembly.CodeBase;
+            basePath = new Uri(basePath).LocalPath;
+            return Path.GetDirectoryName(basePath);
         }
     }
 }

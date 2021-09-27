@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright 2017-2018 The Pkcs11Interop Project
+ *  Copyright 2017-2021 The Pkcs11Interop Project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -78,34 +78,48 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         static SoftHsm2Manager()
         {
+            // Determine base path
+            string basePath = typeof(SoftHsm2Manager).Assembly.CodeBase;
+            basePath = new Uri(basePath).LocalPath;
+            basePath = Path.GetDirectoryName(basePath);
+
             // Create directory for SoftHSM2 tokens
-            if (!Directory.Exists($@"SoftHsm2{Path.DirectorySeparatorChar}tokens{Path.DirectorySeparatorChar}"))
-                Directory.CreateDirectory($@"SoftHsm2{Path.DirectorySeparatorChar}tokens{Path.DirectorySeparatorChar}");
+            string tokensDir = Path.Combine(basePath, "SoftHsm2", "tokens");
+            if (!Directory.Exists(tokensDir))
+                Directory.CreateDirectory(tokensDir);
+
+            // Determine path of configuration file
+            string configPath = Path.Combine(basePath, "SoftHsm2", "softhsm2.conf");
+
+            // Update contents of configuration file
+            string configContent = File.ReadAllText(configPath);
+            configContent = configContent.Replace("__TOKENDIR__", tokensDir);
+            File.WriteAllText(configPath, configContent);
 
             // Setup environment variable with path to configuration file
-            EnvironmentHelper.SetEnvironmentVariable("SOFTHSM2_CONF", $@"SoftHsm2{Path.DirectorySeparatorChar}softhsm2.conf");
+            EnvironmentHelper.SetEnvironmentVariable("SOFTHSM2_CONF", configPath);
 
             // Determine path to PKCS#11 library
             if (Platform.IsWindows)
             {
                 if (Platform.Uses64BitRuntime)
-                    _libraryPath = $@"SoftHsm2\windows\softhsm2-x64.dll";
+                    _libraryPath = Path.Combine(basePath, "SoftHsm2", "windows", "softhsm2-x64.dll");
                 else
-                    _libraryPath = $@"SoftHsm2\windows\softhsm2.dll";
+                    _libraryPath = Path.Combine(basePath, "SoftHsm2", "windows", "softhsm2.dll");
             }
             else if (Platform.IsLinux)
             {
                 if (Platform.Uses64BitRuntime)
-                    _libraryPath = $@"SoftHsm2/linux/libsofthsm2.so";
+                    _libraryPath = Path.Combine(basePath, "SoftHsm2", "linux", "libsofthsm2.so");
                 else
                     throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit Linux");
             }
             else if (Platform.IsMacOsX)
             {
                 if (Platform.Uses64BitRuntime)
-                    _libraryPath = $@"SoftHsm2/osx/libsofthsm2.so";
+                    _libraryPath = Path.Combine(basePath, "SoftHsm2", "osx", "libsofthsm2.so");
                 else
-                    throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit OSX");
+                    throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on 32-bit macOS");
             }
             else
             {

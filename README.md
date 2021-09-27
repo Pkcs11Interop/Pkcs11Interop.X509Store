@@ -2,9 +2,10 @@ Pkcs11Interop.X509Store
 =======================
 **Easy to use PKCS#11 based X.509 certificate store**
 
-[![Build Status](https://dev.azure.com/Pkcs11Interop/Pkcs11Interop.X509Store/_apis/build/status/Pkcs11Interop.Pkcs11Interop.X509Store?branchName=master)](https://dev.azure.com/Pkcs11Interop/Pkcs11Interop.X509Store/_build/latest?definitionId=1&branchName=master)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/blob/master/LICENSE.md)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/l5hr66s6dnmajh0y/branch/master?svg=true)](https://ci.appveyor.com/project/pkcs11interop/pkcs11interop-x509store/branch/master)
 [![NuGet](https://img.shields.io/badge/nuget-pkcs11interop.x509store-blue.svg)](https://www.nuget.org/packages/Pkcs11Interop.X509Store/)
+[![Stack Overflow](https://img.shields.io/badge/stack-pkcs11interop-blue.svg)](https://stackoverflow.com/questions/tagged/pkcs11interop)
 [![Twitter](https://img.shields.io/badge/twitter-p11interop-blue.svg)](https://twitter.com/p11interop)
 
 **WARNING: Pkcs11Interop.X509Store is still in a very early stage of development and its API may fundamentally change with any subsequent release.**
@@ -37,7 +38,7 @@ Archives with the source code and binaries can be downloaded from [our releases 
 
 ## License
 
-Pkcs11Interop.X509Store is available under the terms of the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).  
+Pkcs11Interop.X509Store is available under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).  
 [Human friendly license summary](https://tldrlegal.com/l/apache2) is available at tldrlegal.com but the [full license text](LICENSE.md) always prevails.
 
 ## Support
@@ -46,9 +47,9 @@ Pkcs11Interop.X509Store is still in a very early stage of development so if you 
 
 ## Related projects
 
-* [Pkcs11Interop](http://www.pkcs11interop.net/)  
+* [Pkcs11Interop](https://www.pkcs11interop.net/)  
   Managed .NET wrapper for unmanaged PKCS#11 libraries.
-* [Pkcs11Admin](http://www.pkcs11admin.net/)  
+* [Pkcs11Admin](https://www.pkcs11admin.net/)  
   GUI tool for administration of PKCS#11 enabled devices based on Pkcs11Interop library.
 * [PKCS11-LOGGER](https://github.com/Pkcs11Interop/pkcs11-logger)  
   PKCS#11 logging proxy module useful for debugging of PKCS#11 enabled applications.
@@ -57,5 +58,5 @@ Pkcs11Interop.X509Store is still in a very early stage of development so if you 
 
 ## About
 
-Pkcs11Interop.X509Store has been written for the Pkcs11Interop project by [Jaroslav Imrich](http://www.jimrich.sk).  
-Please visit project website - [pkcs11interop.net](http://www.pkcs11interop.net) - for more information.
+Pkcs11Interop.X509Store has been written for the Pkcs11Interop project by [Jaroslav Imrich](https://www.jimrich.sk).  
+Please visit project website - [pkcs11interop.net](https://www.pkcs11interop.net) - for more information.
