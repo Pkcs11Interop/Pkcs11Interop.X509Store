@@ -209,5 +209,39 @@ namespace Net.Pkcs11Interop.X509Store
 
             return new Pkcs11ECDsaProvider(_certContext);
         }
+
+        /// <summary>
+        /// Gets the System.Security.Cryptography.AsymmetricAlgorithm implementation for private key
+        /// </summary>
+        /// <returns>System.Security.Cryptography.AsymmetricAlgorithm implementation for private key or null if private key is not present on token</returns>
+        public AsymmetricAlgorithm GetPrivateKey()
+        {
+            switch (_certContext.CertificateInfo.KeyType)
+            {
+                case AsymmetricKeyType.RSA:
+                    return GetRSAPrivateKey();
+                case AsymmetricKeyType.EC:
+                    return GetECDsaPrivateKey();
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the System.Security.Cryptography.AsymmetricAlgorithm implementation for public key
+        /// </summary>
+        /// <returns>System.Security.Cryptography.AsymmetricAlgorithm implementation for public key or null if public key is not present on token</returns>
+        public AsymmetricAlgorithm GetPublicKey()
+        {
+            switch (_certContext.CertificateInfo.KeyType)
+            {
+                case AsymmetricKeyType.RSA:
+                    return GetRSAPublicKey();
+                case AsymmetricKeyType.EC:
+                    return GetECDsaPublicKey();
+                default:
+                    return null;
+            }
+        }
     }
 }
