@@ -13,6 +13,7 @@ Pkcs11Interop.X509Store
 ## Table of Contents
 
 * [Overview](#overview)
+* [Architecture](#architecture)
 * [Documentation](#documentation)
 * [Download](#download)
 * [License](#license)
@@ -27,6 +28,10 @@ PKCS#11 is cryptography standard maintained by the OASIS PKCS 11 Technical Commi
 Pkcs11Interop is managed library written in C# that brings full power of PKCS#11 API to the .NET environment. It loads unmanaged PKCS#11 library provided by the cryptographic device vendor and makes its functions accessible to .NET application.
 
 Pkcs11Interop.X509Store is managed library built on top of Pkcs11Interop. It's main goal is to provide easy to use PKCS#11 based read-only X.509 certificate store that can be easily integrated with standard .NET ecosystem.
+
+## Architecture
+
+![Pkcs11Interop.X509Store architecture](doc/images/Pkcs11Interop.X509Store.png?raw=true)
 
 ## Documentation
 
