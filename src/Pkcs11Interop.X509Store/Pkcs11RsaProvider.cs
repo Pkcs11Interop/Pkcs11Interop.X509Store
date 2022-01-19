@@ -208,6 +208,38 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
+        /// Computing Hash based on the given algorithmName 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <param name="hashAlgorithm"></param>
+        /// <returns></returns>
+        protected override byte[] HashData(byte[] data, int offset, int count, HashAlgorithmName hashAlgorithm)
+        {
+            if (offset >= data.Length)
+            {
+                throw new ArgumentException("Invalid value of offset. offset cannot be larger then or equal to data lenght");
+            }
+
+            if ((offset + count) > data.Length)
+            {
+                throw new ArgumentException("Invalid value of count. offset + count exceeds data length");
+            }
+
+            var dataToHash = new byte[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                dataToHash[i] = data[offset];
+                offset++;
+            }
+
+            using (HashAlgorithm hashAlg = HashAlgorithm.Create(hashAlgorithm.Name))
+                return hashAlg.ComputeHash(dataToHash);
+        }
+
+        /// <summary>
         /// Creates DER encoded PKCS#1 DigestInfo structure defined in RFC 8017
         /// </summary>
         /// <param name="hash">Hash value</param>

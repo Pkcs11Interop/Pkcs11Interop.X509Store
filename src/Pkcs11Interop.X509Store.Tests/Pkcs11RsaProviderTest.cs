@@ -19,10 +19,16 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
+using System;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 using NUnit.Framework;
+using Org.BouncyCastle.Crypto.Prng;
+using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Utilities;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
@@ -164,6 +170,68 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                     Assert.IsTrue(result3);
                     bool result4 = p11PubKey.VerifyHash(hash2, cngSignature, hashAlgName, RSASignaturePadding.Pss);
                     Assert.IsFalse(result4);
+                }
+            }
+        }
+
+        [Test()]
+        public void SignCSRTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
+            {
+                using (RSA rsa = RSA.Create(4096))
+                {
+                    var countryName = "IN";
+                    var stateOrProvinceName = "RAJ";
+                    var localityName = "UDR";
+                    var organizationName = "ARTECH";
+                    var commonName = "ARTECH";
+
+                    X500DistinguishedName distinguishedName = new X500DistinguishedName("C=" + countryName + ",ST=" + stateOrProvinceName + ",L=" + localityName + ",O=" + organizationName + ",CN=" + commonName);
+
+
+                    CertificateRequest certificateRequest = new CertificateRequest(
+                            distinguishedName,
+                            rsa,
+                            HashAlgorithmName.SHA256,
+                            RSASignaturePadding.Pkcs1);
+
+                    certificateRequest.CertificateExtensions.Add(
+                        new X509BasicConstraintsExtension(false, false, 0, false));
+
+                    certificateRequest.CertificateExtensions.Add(
+                        new X509KeyUsageExtension(
+                            X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.NonRepudiation,
+                            false));
+
+                    certificateRequest.CertificateExtensions.Add(
+                        new X509EnhancedKeyUsageExtension(
+                            new OidCollection { new Oid("1.3.6.1.5.5.7.3.8") },
+                            true));
+
+                    certificateRequest.CertificateExtensions.Add(
+                        new X509SubjectKeyIdentifierExtension(certificateRequest.PublicKey, false));
+
+                    CryptoApiRandomGenerator randomGenerator = new CryptoApiRandomGenerator();
+                    SecureRandom random = new SecureRandom(randomGenerator);
+                    // Serial Number
+                    BigInteger serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
+
+                    Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserRsaLabel);
+
+                    string issuerName = cert.Info.ParsedCertificate.IssuerName.Name;
+                    var distName = new X500DistinguishedName(issuerName);
+                    var generator = X509SignatureGenerator.CreateForRSA(cert.GetRSAPrivateKey(), RSASignaturePadding.Pkcs1);
+
+                    using (X509Certificate2 signedCert = certificateRequest.Create(
+                        distName,
+                        generator,
+                        DateTimeOffset.UtcNow.AddDays(-1),
+                        DateTimeOffset.UtcNow.AddDays(90),
+                        serialNumber.ToByteArray()))
+                    {
+                        Assert.IsNotNull(signedCert);
+                    }
                 }
             }
         }
