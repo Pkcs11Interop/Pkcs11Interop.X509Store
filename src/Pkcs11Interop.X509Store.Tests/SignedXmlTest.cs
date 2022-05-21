@@ -49,7 +49,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 RSA rsaPublicKey = cert.Info.ParsedCertificate.PublicKey.Key as RSA;
 
                 // Determine paths
-                string basePath = GetBasePath();
+                string basePath = Helpers.GetBasePath();
                 string plainXmlFilePath = Path.Combine(basePath, "Example.xml");
                 string signedXmlFilePath = Path.Combine(basePath, "SignedExample.xml");
 
@@ -164,17 +164,6 @@ namespace Net.Pkcs11Interop.X509Store.Tests
             XmlTextWriter xmltw = new XmlTextWriter(FileName, new UTF8Encoding(false));
             document.WriteTo(xmltw);
             xmltw.Close();
-        }
-
-        /// <summary>
-        /// Gets absolute path of directory where the test assembly is located
-        /// </summary>
-        /// <returns>Absolute path of directory where the test assembly is located</returns>
-        public static string GetBasePath()
-        {
-            string basePath = typeof(SoftHsm2Manager).Assembly.CodeBase;
-            basePath = new Uri(basePath).LocalPath;
-            return Path.GetDirectoryName(basePath);
         }
     }
 }
