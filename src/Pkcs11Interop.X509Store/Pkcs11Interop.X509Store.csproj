@@ -12,7 +12,7 @@
     <Version>0.3.0</Version>
     <Authors>Jaroslav Imrich</Authors>
     <Description>Easy to use PKCS#11 based X.509 certificate store</Description>
-    <Copyright>Copyright (c) 2017-2021 The Pkcs11Interop Project</Copyright>
+    <Copyright>Copyright (c) 2017-2022 The Pkcs11Interop Project</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://www.pkcs11interop.net/</PackageProjectUrl>
     <PackageIcon>Pkcs11Interop.png</PackageIcon>
