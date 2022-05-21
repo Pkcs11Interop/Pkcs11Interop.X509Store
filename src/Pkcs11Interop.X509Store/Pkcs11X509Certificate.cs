@@ -150,7 +150,6 @@ namespace Net.Pkcs11Interop.X509Store
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_CLASS, keyClass),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, ckaId),
-                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, ckaLabel)
             };
 
             foreach (IObjectHandle foundObjectHandle in session.FindAllObjects(searchTemplate))

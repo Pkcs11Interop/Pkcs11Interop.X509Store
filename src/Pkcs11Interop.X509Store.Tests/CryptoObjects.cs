@@ -154,7 +154,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
             };
         }
 
-        public static List<IObjectAttribute> GetTestUserRsaPrivKeyAttributes(ISession session, string label, bool alwaysAuthenticate)
+        public static List<IObjectAttribute> GetTestUserRsaPrivKeyAttributes(ISession session, string label, string labelSuffix, bool alwaysAuthenticate)
         {
             using (var stringReader = new StringReader(TestUserRsaPrivKey))
             {
@@ -167,7 +167,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, true),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
-                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label + labelSuffix),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
@@ -183,7 +183,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
             }
         }
 
-        public static List<IObjectAttribute> GetTestUserRsaPubKeyAttributes(ISession session, string label)
+        public static List<IObjectAttribute> GetTestUserRsaPubKeyAttributes(ISession session, string label, string labelSuffix)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserRsaCert));
             var rsaPubKeyParams = x509Certificate.GetPublicKey() as RsaKeyParameters;
@@ -194,7 +194,7 @@ W7ahGG6hOe+ZPHr78ZhqZdxN
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
-                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label + labelSuffix),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_RSA),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODULUS, rsaPubKeyParams.Modulus.ToByteArrayUnsigned()),
@@ -272,7 +272,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             };
         }
 
-        public static List<IObjectAttribute> GetTestUserEcdsaPrivKeyAttributes(ISession session, string label, bool alwaysAuthenticate)
+        public static List<IObjectAttribute> GetTestUserEcdsaPrivKeyAttributes(ISession session, string label, string labelSuffix, bool alwaysAuthenticate)
         {
             using (var stringReader = new StringReader(TestUserEcdsaPrivKey))
             {
@@ -285,7 +285,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, true),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
-                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                    session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label + labelSuffix),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ALWAYS_AUTHENTICATE, alwaysAuthenticate),
                     session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
@@ -295,7 +295,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
             }
         }
 
-        public static List<IObjectAttribute> GetTestUserEcdsaPubKeyAttributes(ISession session, string label)
+        public static List<IObjectAttribute> GetTestUserEcdsaPubKeyAttributes(ISession session, string label, string labelSuffix)
         {
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(Encoding.ASCII.GetBytes(TestUserEcdsaCert));
             var ecdsaPubKeyParams = x509Certificate.GetPublicKey() as ECPublicKeyParameters;
@@ -306,7 +306,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_TOKEN, true),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_PRIVATE, false),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_MODIFIABLE, true),
-                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label),
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_LABEL, label + labelSuffix),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),

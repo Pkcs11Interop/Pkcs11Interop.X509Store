@@ -160,13 +160,13 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
                     // Import user cert with RSA private and public keys
                     session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(session, Token1TestUserRsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token1TestUserRsaLabel, false));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(session, Token1TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token1TestUserRsaLabel, "PrivKey", false));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(session, Token1TestUserRsaLabel, "PubKey"));
 
                     // Import user cert with ECDSA private and public keys
                     session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(session, Token1TestUserEcdsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token1TestUserEcdsaLabel, false));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token1TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token1TestUserEcdsaLabel, "PrivKey", false));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token1TestUserEcdsaLabel, "PubKey"));
                 }
 
                 // Import objects to second token
@@ -179,13 +179,13 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
                     // Import user cert with RSA private and public keys
                     session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(session, Token2TestUserRsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token2TestUserRsaLabel, true));
-                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(session, Token2TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token2TestUserRsaLabel, "PrivKey", true));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPubKeyAttributes(session, Token2TestUserRsaLabel, "PubKey"));
 
                     // Import user cert with ECDSA private and public keys
                     session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(session, Token2TestUserEcdsaLabel));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token2TestUserEcdsaLabel, true));
-                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token2TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token2TestUserEcdsaLabel, "PrivKey", true));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token2TestUserEcdsaLabel, "PubKey"));
                 }
             }
         }
