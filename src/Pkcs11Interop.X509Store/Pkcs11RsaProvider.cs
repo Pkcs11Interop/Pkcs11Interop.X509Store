@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Net.Pkcs11Interop.Common;
@@ -182,6 +183,54 @@ namespace Net.Pkcs11Interop.X509Store
         {
             // Note: NotSupportedException should be thrown starting with the .NET Framework 4.6.
             throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Computes the hash value of a specified portion of a byte array by using a specified hashing algorithm
+        /// </summary>
+        /// <param name="data">The data to be hashed</param>
+        /// <param name="offset">The index of the first byte in data that is to be hashed</param>
+        /// <param name="count">The number of bytes to hash</param>
+        /// <param name="hashAlgorithm">The algorithm to use in hash the data</param>
+        /// <returns>The hashed data</returns>
+        protected override byte[] HashData(byte[] data, int offset, int count, HashAlgorithmName hashAlgorithm)
+        {
+            if (data == null || data.Length == 0)
+                throw new ArgumentNullException(nameof(data));
+
+            if (offset < 0 || offset >= data.Length)
+                throw new ArgumentException($"Invalid value of {nameof(offset)} parameter");
+
+            if (count < 1 || (offset + count) > data.Length)
+                throw new ArgumentException($"Invalid value of {nameof(count)} parameter");
+
+            if (hashAlgorithm == null)
+                throw new ArgumentNullException(nameof(hashAlgorithm));
+
+            using (var hashAlg = HashAlgorithm.Create(hashAlgorithm.Name))
+            {
+                return hashAlg.ComputeHash(data, offset, count);
+            }
+        }
+
+        /// <summary>
+        /// Computes the hash value of a specified binary stream by using a specified hashing algorithm
+        /// </summary>
+        /// <param name="data">The binary stream to hash</param>
+        /// <param name="hashAlgorithm">The hash algorithm</param>
+        /// <returns>The hashed data</returns>
+        protected override byte[] HashData(Stream data, HashAlgorithmName hashAlgorithm)
+        {
+            if (data == null) // Note: data.Length might throw NotSupportedException
+                throw new ArgumentNullException(nameof(data));
+
+            if (hashAlgorithm == null)
+                throw new ArgumentNullException(nameof(hashAlgorithm));
+
+            using (var hashAlg = HashAlgorithm.Create(hashAlgorithm.Name))
+            {
+                return hashAlg.ComputeHash(data);
+            }
         }
 
         /// <summary>

@@ -19,8 +19,11 @@
  *  Jaroslav IMRICH <jimrich@jimrich.sk>
  */
 
+using System;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
@@ -39,6 +42,17 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         {
             using (HashAlgorithm hashAlg = HashAlgorithm.Create(hashAlgName.Name))
                 return hashAlg.ComputeHash(data);
+        }
+
+        /// <summary>
+        /// Gets absolute path of directory where the test assembly is located
+        /// </summary>
+        /// <returns>Absolute path of directory where the test assembly is located</returns>
+        public static string GetBasePath()
+        {
+            string basePath = typeof(SoftHsm2Manager).Assembly.CodeBase;
+            basePath = new Uri(basePath).LocalPath;
+            return Path.GetDirectoryName(basePath);
         }
     }
 }
