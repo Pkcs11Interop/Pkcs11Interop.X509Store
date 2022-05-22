@@ -1,3 +1,10 @@
+Pkcs11Interop.X509Store 0.4.0 (2022-05-22)
+- Added support for System.Security.Cryptography.Pkcs.SignedCms
+- CKA_LABEL is not used when searching for key objects  
+  Feature suggested by @DadOfTheDead and based on code provided by @dalmohub in #29
+- Added support for System.Security.Cryptography.X509Certificates.CertificateRequest  
+  Based on code provided by @anshulv1401 in #28
+
 Pkcs11Interop.X509Store 0.3.0 (2021-09-27)
 - Added support for .NET Standard 2.0
 - Upgraded to Pkcs11Interop 5.1.2
@@ -12,7 +19,7 @@ Pkcs11Interop.X509Store 0.2.0 (2018-01-02)
 - Added support for RSASSA-PSS signature scheme
 - Added support for ECDSA signatures
 - Added support for private keys protected with PIN.  
-  Those with CKA_ALWAYS_AUTHENTICATE attribute is set to CK_TRUE.
+  Those with CKA_ALWAYS_AUTHENTICATE attribute set to CK_TRUE.
 - Removed Pkcs11SlotInfo::TokenPresent property.  
   If token is not present then Pkcs11Slot::Token is null.
 
