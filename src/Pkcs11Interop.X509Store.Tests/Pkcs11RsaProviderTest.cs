@@ -61,6 +61,18 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                         bool result2 = p11PubKey.VerifyHash(hash2, signature, hashAlgName, RSASignaturePadding.Pkcs1);
                         Assert.IsFalse(result2);
                     }
+
+                    /* Soft HSM library does not provide support for encryption and decryption.
+                    for(int i = 0; i <= 245; i++)
+					{
+                        byte[] data = Helpers.GetRandomData(i);
+                        byte[] cipher = p11PubKey.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                        Assert.IsNotNull(cipher);
+                        byte[] result = p11PrivKey.Decrypt(cipher, RSAEncryptionPadding.Pkcs1);
+                        Assert.IsNotNull(result);
+                        CollectionAssert.AreEqual(data, result);
+                    }
+                    */
                 }
             }
         }

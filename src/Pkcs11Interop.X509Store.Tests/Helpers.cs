@@ -44,6 +44,15 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 return hashAlg.ComputeHash(data);
         }
 
+        public static byte[] GetRandomData(int size)
+		{
+            Random rand = new Random((int)DateTime.Now.Ticks);
+            byte[] data = new byte[size];
+            for (int i = 0; i < data.Length; i++)
+                data[i] = (byte)rand.Next(byte.MinValue, byte.MaxValue);
+            return data;
+		}
+
         /// <summary>
         /// Gets absolute path of directory where the test assembly is located
         /// </summary>
