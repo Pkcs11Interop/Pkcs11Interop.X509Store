@@ -164,11 +164,55 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
-        /// Decrypts the input data using the private key
+        /// Decrypts single part data with the specified padding.
         /// </summary>
-        /// <param name="rgb">The cipher text to be decrypted</param>
-        /// <returns>The resulting decryption of the rgb parameter in plain text</returns>
-        public override byte[] DecryptValue(byte[] rgb)
+        /// <param name="data">The cipher text to be decrypted.</param>
+        /// <param name="padding"><see cref="RSAEncryptionPadding"/> to be used while decrypting.</param>
+        /// <returns>Unencrypted data.</returns>
+		public override byte[] Decrypt(byte[] data, RSAEncryptionPadding padding)
+		{
+            if (padding == RSAEncryptionPadding.Pkcs1)
+            {
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                {
+                    return session.Decrypt(mechanism, _certContext.PrivKeyHandle, data);
+                }
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+            }
+        }
+
+        /// <summary>
+        /// Encrypts single-part data with the specified padding.
+        /// </summary>
+        /// <param name="data">Data to be encrypted.</param>
+        /// <param name="padding"><see cref="RSAEncryptionPadding"/> to be used while encrypting.</param>
+        /// <returns>Cipher text representing encrypted <paramref name="data"/>.</returns>
+		public override byte[] Encrypt(byte[] data, RSAEncryptionPadding padding)
+		{
+            if (padding == RSAEncryptionPadding.Pkcs1)
+            {
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                {
+                    return session.Encrypt(mechanism, _certContext.PrivKeyHandle, data);
+                }
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+            }
+        }
+
+		/// <summary>
+		/// Decrypts the input data using the private key
+		/// </summary>
+		/// <param name="rgb">The cipher text to be decrypted</param>
+		/// <returns>The resulting decryption of the rgb parameter in plain text</returns>
+		public override byte[] DecryptValue(byte[] rgb)
         {
             // Note: NotSupportedException should be thrown starting with the .NET Framework 4.6.
             throw new NotSupportedException();
