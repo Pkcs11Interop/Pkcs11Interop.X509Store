@@ -132,8 +132,18 @@ namespace Net.Pkcs11Interop.X509Store
 
             foreach (ISlot slot in _storeContext.Pkcs11Library.GetSlotList(SlotsType.WithOrWithoutTokenPresent))
             {
-                var pkcs11Slot = new Pkcs11Slot(slot, _storeContext);
-                slots.Add(pkcs11Slot);
+                try
+                {
+                    var pkcs11Slot = new Pkcs11Slot(slot, _storeContext);
+                    slots.Add(pkcs11Slot);
+                }
+                catch (Pkcs11Exception ex)
+                {
+                    if (ex.RV != CKR.CKR_TOKEN_NOT_RECOGNIZED && ex.RV != CKR.CKR_TOKEN_NOT_PRESENT)
+                    {
+                        throw;
+                    }
+                }
             }
 
             return slots;
