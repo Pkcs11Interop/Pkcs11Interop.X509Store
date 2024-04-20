@@ -50,9 +50,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         /// <returns>Absolute path of directory where the test assembly is located</returns>
         public static string GetBasePath()
         {
-            string basePath = typeof(SoftHsm2Manager).Assembly.CodeBase;
-            basePath = new Uri(basePath).LocalPath;
-            return Path.GetDirectoryName(basePath);
+            return Path.GetDirectoryName(typeof(SoftHsm2Manager).Assembly.Location);
         }
     }
 }

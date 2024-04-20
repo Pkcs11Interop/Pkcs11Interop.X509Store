@@ -79,9 +79,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
         static SoftHsm2Manager()
         {
             // Determine base path
-            string basePath = typeof(SoftHsm2Manager).Assembly.CodeBase;
-            basePath = new Uri(basePath).LocalPath;
-            basePath = Path.GetDirectoryName(basePath);
+            string basePath = Helpers.GetBasePath();
 
             // Create directory for SoftHSM2 tokens
             string tokensDir = Path.Combine(basePath, "SoftHsm2", "tokens");

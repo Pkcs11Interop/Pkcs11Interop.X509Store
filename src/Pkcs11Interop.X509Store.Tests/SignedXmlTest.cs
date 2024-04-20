@@ -22,6 +22,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
@@ -46,7 +47,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 RSA rsaPrivateKey = cert.GetRSAPrivateKey();
 
                 // Get software based public key
-                RSA rsaPublicKey = cert.Info.ParsedCertificate.PublicKey.Key as RSA;
+                RSA rsaPublicKey = cert.Info.ParsedCertificate.GetRSAPublicKey();
 
                 // Determine paths
                 string basePath = Helpers.GetBasePath();
