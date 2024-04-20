@@ -22,9 +22,9 @@ build_script:
 - sh: dotnet --info && dotnet restore -p:Configuration=Release -p:Platform="Any CPU" -v normal ./src/ && dotnet build -p:Configuration=Release -p:Platform="Any CPU" -v normal ./src/
 
 test_script:
-- cmd: IF "%Platform%"=="net461" (nunit3-console .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net48\Pkcs11Interop.X509Store.Tests.dll --result=myresults.xml;format=AppVeyor)
+- cmd: IF "%Platform%"=="net461" (nunit3-console .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net481\Pkcs11Interop.X509Store.Tests.dll --result=myresults.xml;format=AppVeyor)
 - cmd: IF "%Platform%"=="netstandard2.0" (cd .\src\Pkcs11Interop.X509Store.Tests\ && nuget install Appveyor.TestLogger && cd ..\..)
-- cmd: IF "%Platform%"=="netstandard2.0" (dotnet vstest .\src\Pkcs11Interop.X509Store.Tests\bin\Release\netcoreapp3.1\Pkcs11Interop.X509Store.Tests.dll --Framework:".NETCoreApp,Version=v3.1" --TestAdapterPath:. --logger:Appveyor)
+- cmd: IF "%Platform%"=="netstandard2.0" (dotnet vstest .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net60\Pkcs11Interop.X509Store.Tests.dll --Framework:"net6.0" --TestAdapterPath:. --logger:Appveyor)
 - sh: cd ./src/Pkcs11Interop.X509Store.Tests/ && nuget install -Source https://api.nuget.org/v3/index.json Appveyor.TestLogger && cd ../..
 - sh: dotnet test -f netcoreapp3.1 --test-adapter-path:. --logger:Appveyor ./src/Pkcs11Interop.X509Store.Tests/
 
