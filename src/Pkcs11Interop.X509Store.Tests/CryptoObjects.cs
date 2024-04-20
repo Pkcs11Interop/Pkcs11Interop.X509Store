@@ -310,7 +310,7 @@ v7W2vnCuanapn2asCC185UnYM/jOaN8GX7vLd8eYGVCmcAHTs2jCg2q+
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_ID, Encoding.ASCII.GetBytes(label)),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_KEY_TYPE, CKK.CKK_EC),
                 session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_PARAMS, ecdsaPubKeyParams.PublicKeyParamSet.GetDerEncoded()),
-                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_POINT, new X9ECPoint(ecdsaPubKeyParams.Q).GetDerEncoded())
+                session.Factories.ObjectAttributeFactory.Create(CKA.CKA_EC_POINT, new X9ECPoint(ecdsaPubKeyParams.Q, false).GetDerEncoded())
             };
         }
 

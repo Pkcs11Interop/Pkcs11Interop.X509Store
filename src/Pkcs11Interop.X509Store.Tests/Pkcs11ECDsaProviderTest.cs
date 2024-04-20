@@ -23,17 +23,17 @@ using System.Security.Cryptography;
 using System.Text;
 using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
-    [TestFixture()]
     public class Pkcs11ECDsaProviderTest
     {
         private HashAlgorithmName[] _hashNames = new HashAlgorithmName[] { HashAlgorithmName.MD5, HashAlgorithmName.SHA1, HashAlgorithmName.SHA256, HashAlgorithmName.SHA384, HashAlgorithmName.SHA512 };
         private byte[] _data1 = Encoding.UTF8.GetBytes("Hello world!");
         private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
-        [Test()]
+        [Test]
         public void EcdsaSelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
@@ -44,9 +44,9 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 foreach (var cert in new Pkcs11X509Certificate[] { cert1, cert2 })
                 {
                     ECDsa p11PrivKey = cert.GetECDsaPrivateKey();
-                    Assert.IsNotNull(p11PrivKey);
+                    ClassicAssert.IsNotNull(p11PrivKey);
                     ECDsa p11PubKey = cert.GetECDsaPublicKey();
-                    Assert.IsNotNull(p11PubKey);
+                    ClassicAssert.IsNotNull(p11PubKey);
 
                     foreach (HashAlgorithmName hashAlgName in _hashNames)
                     {
@@ -54,17 +54,17 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                         byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
 
                         byte[] signature = p11PrivKey.SignHash(hash1);
-                        Assert.IsNotNull(signature);
+                        ClassicAssert.IsNotNull(signature);
                         bool result1 = p11PubKey.VerifyHash(hash1, signature);
-                        Assert.IsTrue(result1);
+                        ClassicAssert.IsTrue(result1);
                         bool result2 = p11PubKey.VerifyHash(hash2, signature);
-                        Assert.IsFalse(result2);
+                        ClassicAssert.IsFalse(result2);
                     }
                 }
             }
         }
 
-        [Test()]
+        [Test]
         public void EcdsaPlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
@@ -72,11 +72,11 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserEcdsaLabel);
 
                 ECDsa p11PrivKey = cert.GetECDsaPrivateKey();
-                Assert.IsNotNull(p11PrivKey);
+                ClassicAssert.IsNotNull(p11PrivKey);
                 ECDsa p11PubKey = cert.GetECDsaPublicKey();
-                Assert.IsNotNull(p11PubKey);
+                ClassicAssert.IsNotNull(p11PubKey);
                 ECDsa cngKey = CryptoObjects.GetTestUserPlatformEcdsaProvider();
-                Assert.IsNotNull(cngKey);
+                ClassicAssert.IsNotNull(cngKey);
 
                 foreach (HashAlgorithmName hashAlgName in _hashNames)
                 {
@@ -84,18 +84,18 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                     byte[] hash2 = Helpers.ComputeHash(_data2, hashAlgName);
 
                     byte[] p11Signature = p11PrivKey.SignHash(hash1);
-                    Assert.IsNotNull(p11Signature);
+                    ClassicAssert.IsNotNull(p11Signature);
                     bool result1 = cngKey.VerifyHash(hash1, p11Signature);
-                    Assert.IsTrue(result1);
+                    ClassicAssert.IsTrue(result1);
                     bool result2 = cngKey.VerifyHash(hash2, p11Signature);
-                    Assert.IsFalse(result2);
+                    ClassicAssert.IsFalse(result2);
 
                     byte[] cngSignature = cngKey.SignHash(hash1);
-                    Assert.IsNotNull(cngSignature);
+                    ClassicAssert.IsNotNull(cngSignature);
                     bool result3 = p11PubKey.VerifyHash(hash1, cngSignature);
-                    Assert.IsTrue(result3);
+                    ClassicAssert.IsTrue(result3);
                     bool result4 = p11PubKey.VerifyHash(hash2, cngSignature);
-                    Assert.IsFalse(result4);
+                    ClassicAssert.IsFalse(result4);
                 }
             }
         }

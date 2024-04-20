@@ -26,13 +26,13 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
-    [TestFixture()]
     public class CertificateRequestTest
     {
-        [Test()]
+        [Test]
         public void BasicRsaCertificateRequestTest()
         {
             // Load PKCS#11 based store
@@ -65,7 +65,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                     new BigInteger(1).ToByteArray());
 
                 // Verify signature on X.509 certificate for end entity
-                Assert.IsTrue(CaCertSignedEndEntityCert(pkcs11CertOfCertificateAuthority.Info.ParsedCertificate.RawData, certificateOfEndEntity.RawData));
+                ClassicAssert.IsTrue(CaCertSignedEndEntityCert(pkcs11CertOfCertificateAuthority.Info.ParsedCertificate.RawData, certificateOfEndEntity.RawData));
 
                 // Asociate end entity certificate with its private key
                 certificateOfEndEntity = certificateOfEndEntity.CopyWithPrivateKey(rsaKeyPairOfEndEntity);
@@ -77,7 +77,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
             }
         }
 
-        [Test()]
+        [Test]
         public void BasicEcdsaCertificateRequestTest()
         {
             // Load PKCS#11 based store
@@ -109,7 +109,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                     new BigInteger(1).ToByteArray());
 
                 // Verify signature on X.509 certificate for end entity
-                Assert.IsTrue(CaCertSignedEndEntityCert(pkcs11CertOfCertificateAuthority.Info.ParsedCertificate.RawData, certificateOfEndEntity.RawData));
+                ClassicAssert.IsTrue(CaCertSignedEndEntityCert(pkcs11CertOfCertificateAuthority.Info.ParsedCertificate.RawData, certificateOfEndEntity.RawData));
 
                 // Asociate end entity certificate with its private key
                 certificateOfEndEntity = certificateOfEndEntity.CopyWithPrivateKey(ecKeyPairOfEndEntity);

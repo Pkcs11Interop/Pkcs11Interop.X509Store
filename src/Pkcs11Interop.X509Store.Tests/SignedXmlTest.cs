@@ -27,14 +27,14 @@ using System.Text;
 using System.Xml;
 using Net.Pkcs11Interop.X509Store.Tests.SoftHsm2;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
-    [TestFixture()]
     public class SignedXmlTest
     {
         // Modified sample from https://msdn.microsoft.com/en-us/library/system.security.cryptography.xml.signedxml(v=vs.110).aspx
-        [Test()]
+        [Test]
         public void MsdnSignedXmlTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
@@ -63,7 +63,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 bool result = VerifyXmlFile(signedXmlFilePath, rsaPublicKey);
 
                 // Check the results of the signature verification
-                Assert.IsTrue(result);
+                ClassicAssert.IsTrue(result);
             }
         }
 

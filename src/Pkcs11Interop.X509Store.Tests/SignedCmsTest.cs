@@ -6,11 +6,10 @@ using NUnit.Framework;
 
 namespace Net.Pkcs11Interop.X509Store.Tests
 {
-    [TestFixture()]
     public class SignedCmsTest
     {
-#if NETCOREAPP3_0_OR_GREATER
-        [Test()]
+#if NET6_0_OR_GREATER
+        [Test]
         public void BasicSignedCmsTest()
         {
             // Load PKCS#11 based store
