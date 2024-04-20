@@ -26,7 +26,7 @@ test_script:
 - cmd: IF "%Platform%"=="netstandard2.0" (cd .\src\Pkcs11Interop.X509Store.Tests\ && nuget install Appveyor.TestLogger && cd ..\..)
 - cmd: IF "%Platform%"=="netstandard2.0" (dotnet vstest .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net60\Pkcs11Interop.X509Store.Tests.dll /Framework:"net6.0" /TestAdapterPath:. /logger:Appveyor)
 - sh: cd ./src/Pkcs11Interop.X509Store.Tests/ && nuget install -Source https://api.nuget.org/v3/index.json Appveyor.TestLogger && cd ../..
-- sh: dotnet test -f net6.0 --test-adapter-path:. --logger:Appveyor ./src/Pkcs11Interop.X509Store.Tests/
+- sh: dotnet test -f net6.0 --test-adapter-path:. --logger:Appveyor ./src/Pkcs11Interop.X509Store.Tests/bin/Release/net60/Pkcs11Interop.X509Store.Tests.dll
 
 artifacts:
 - path: build/nuget-unsigned/
