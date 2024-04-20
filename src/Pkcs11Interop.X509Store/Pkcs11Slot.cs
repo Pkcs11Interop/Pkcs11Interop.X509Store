@@ -110,8 +110,18 @@ namespace Net.Pkcs11Interop.X509Store
         {
             if (!_slotContext.Slot.GetSlotInfo().SlotFlags.TokenPresent)
                 return null;
-            else
+
+            try
+            {
                 return new Pkcs11Token(_slotContext);
+            }
+            catch (Pkcs11Exception ex)
+            {
+                if (ex.RV == CKR.CKR_TOKEN_NOT_RECOGNIZED || ex.RV == CKR.CKR_TOKEN_NOT_PRESENT)
+                    return null;
+
+                throw;
+            }
         }
 
         #region IDisposable
