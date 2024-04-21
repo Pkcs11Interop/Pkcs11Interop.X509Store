@@ -94,12 +94,12 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
-        /// Flag indicating whether key usage requires context specific login to be perfromed
+        /// Flag indicating whether key usage requires context specific login to be performed
         /// </summary>
         private bool _keyUsageRequiresLogin = false;
 
         /// <summary>
-        /// Flag indicating whether key usage requires context specific login to be perfromed
+        /// Flag indicating whether key usage requires context specific login to be performed
         /// </summary>
         internal bool KeyUsageRequiresLogin
         {
@@ -132,7 +132,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="certHandle">High level PKCS#11 object handle of certificate object</param>
         /// <param name="privKeyHandle">High level PKCS#11 object handle of private key object</param>
         /// <param name="pubKeyHandle">High level PKCS#11 object handle of public key object</param>
-        /// <param name="keyUsageRequiresLogin">Flag indicating whether key usage requires context specific login to be perfromed</param>
+        /// <param name="keyUsageRequiresLogin">Flag indicating whether key usage requires context specific login to be performed</param>
         /// <param name="tokenContext">Internal context for Pkcs11Token class</param>
         internal Pkcs11X509CertificateContext(Pkcs11X509CertificateInfo certificateInfo, IObjectHandle certHandle, IObjectHandle privKeyHandle, IObjectHandle pubKeyHandle, bool keyUsageRequiresLogin, Pkcs11TokenContext tokenContext)
         {

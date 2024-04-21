@@ -183,7 +183,7 @@ namespace Net.Pkcs11Interop.X509Store
                 using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
                 {
                     if (_certContext.KeyUsageRequiresLogin)
-                        throw new NotSupportedException("Decryption with key that requires context specific login to be perfromed is not supported");
+                        throw new NotSupportedException("Decryption with key that requires context specific login to be performed is not supported");
                     else
                         return session.Decrypt(mechanism, _certContext.PrivKeyHandle, data);
                 }

@@ -46,13 +46,13 @@ namespace Net.Pkcs11Interop.X509Store
 
         /// <summary>
         /// Value of PIN that should be used for the login.
-        /// Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).
+        /// Null value indicates that login should be performed using protected authentication path (e.g. pin pad).
         /// </summary>
         private byte[] _pin = null;
 
         /// <summary>
         /// Value of PIN that should be used for the login.
-        /// Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).
+        /// Null value indicates that login should be performed using protected authentication path (e.g. pin pad).
         /// </summary>
         public byte[] Pin
         {
@@ -66,7 +66,7 @@ namespace Net.Pkcs11Interop.X509Store
         /// Creates new instance of GetPinResult class
         /// </summary>
         /// <param name="cancel">Flag indicating whether login should be cancelled</param>
-        /// <param name="pin">Value of PIN that should be used for the login. Null value indicates that login should be perfromed using protected authentication path (e.g. pin pad).</param>
+        /// <param name="pin">Value of PIN that should be used for the login. Null value indicates that login should be performed using protected authentication path (e.g. pin pad).</param>
         public GetPinResult(bool cancel, byte[] pin)
         {
             if (cancel && pin != null)
