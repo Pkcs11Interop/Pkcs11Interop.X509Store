@@ -35,7 +35,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
         [Test]
-        public void RsaPkcs1SelfTest()
+        public void RsaSigningPkcs1SelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -66,7 +66,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test]
-        public void RsaPkcs1PlatformTest()
+        public void RsaSigningPkcs1PlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -102,7 +102,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test]
-        public void RsaPssSelfTest()
+        public void RsaSigningPssSelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -133,7 +133,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test]
-        public void RsaPssPlatformTest()
+        public void RsaSigningPssPlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -165,6 +165,56 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                     bool result4 = p11PubKey.VerifyHash(hash2, cngSignature, hashAlgName, RSASignaturePadding.Pss);
                     ClassicAssert.IsFalse(result4);
                 }
+            }
+        }
+
+        [Test]
+        public void RsaEncryptionPkcs1SelfTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
+            {
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserRsaLabel);
+
+                RSA p11PrivKey = cert.GetRSAPrivateKey();
+                ClassicAssert.IsNotNull(p11PrivKey);
+                RSA p11PubKey = cert.GetRSAPublicKey();
+                ClassicAssert.IsNotNull(p11PubKey);
+
+                byte[] encData = p11PubKey.Encrypt(_data1, RSAEncryptionPadding.Pkcs1);
+                ClassicAssert.IsNotNull(encData);
+
+                byte[] decData = p11PrivKey.Decrypt(encData, RSAEncryptionPadding.Pkcs1);
+                ClassicAssert.IsNotNull(decData);
+
+                CollectionAssert.AreEqual(decData, _data1);
+            }
+        }
+
+        [Test]
+        public void RsaEncryptionPkcs1PlatformTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
+            {
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token1Label, SoftHsm2Manager.Token1TestUserRsaLabel);
+
+                RSA p11PrivKey = cert.GetRSAPrivateKey();
+                ClassicAssert.IsNotNull(p11PrivKey);
+                RSA p11PubKey = cert.GetRSAPublicKey();
+                ClassicAssert.IsNotNull(p11PubKey);
+                RSA cngKey = CryptoObjects.GetTestUserPlatformRsaProvider();
+                ClassicAssert.IsNotNull(cngKey);
+
+                byte[] encData1 = p11PubKey.Encrypt(_data1, RSAEncryptionPadding.Pkcs1);
+                ClassicAssert.IsNotNull(encData1);
+                byte[] decData1 = cngKey.Decrypt(encData1, RSAEncryptionPadding.Pkcs1);
+                ClassicAssert.IsNotNull(decData1);
+                CollectionAssert.AreEqual(decData1, _data1);
+
+                byte[] encData2 = cngKey.Encrypt(_data2, RSAEncryptionPadding.Pkcs1);
+                ClassicAssert.IsNotNull(encData2);
+                byte[] decData2 = p11PrivKey.Decrypt(encData2, RSAEncryptionPadding.Pkcs1);
+                ClassicAssert.IsNotNull(decData2);
+                CollectionAssert.AreEqual(decData2, _data2);
             }
         }
     }

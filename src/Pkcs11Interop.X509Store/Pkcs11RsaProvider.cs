@@ -164,6 +164,65 @@ namespace Net.Pkcs11Interop.X509Store
         }
 
         /// <summary>
+        /// Decrypts the input data using the specified padding mode
+        /// </summary>
+        /// <param name="data">The data to decrypt</param>
+        /// <param name="padding">The padding mode</param>
+        /// <returns>The decrypted data</returns>
+        public override byte[] Decrypt(byte[] data, RSAEncryptionPadding padding)
+        {
+            if (data == null || data.Length == 0)
+                throw new ArgumentNullException(nameof(data));
+
+            if (padding == null)
+                throw new ArgumentNullException(nameof(padding));
+
+            if (padding == RSAEncryptionPadding.Pkcs1)
+            {
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                {
+                    if (_certContext.KeyUsageRequiresLogin)
+                        throw new NotSupportedException("Decryption with key that requires context specific login to be perfromed is not supported");
+                    else
+                        return session.Decrypt(mechanism, _certContext.PrivKeyHandle, data);
+                }
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+            }
+        }
+
+        /// <summary>
+        /// Encrypts the input data using the specified padding mode
+        /// </summary>
+        /// <param name="data">The data to encrypt</param>
+        /// <param name="padding">The padding mode</param>
+        /// <returns>The encrypted data</returns>
+        public override byte[] Encrypt(byte[] data, RSAEncryptionPadding padding)
+        {
+            if (data == null || data.Length == 0)
+                throw new ArgumentNullException(nameof(data));
+
+            if (padding == null)
+                throw new ArgumentNullException(nameof(padding));
+
+            if (padding == RSAEncryptionPadding.Pkcs1)
+            {
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                {
+                    return session.Encrypt(mechanism, _certContext.PubKeyHandle, data);
+                }
+            }
+            else
+            {
+                throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+            }
+        }
+
+        /// <summary>
         /// Decrypts the input data using the private key
         /// </summary>
         /// <param name="rgb">The cipher text to be decrypted</param>
