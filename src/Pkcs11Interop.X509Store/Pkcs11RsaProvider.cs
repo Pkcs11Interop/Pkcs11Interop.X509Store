@@ -188,6 +188,26 @@ namespace Net.Pkcs11Interop.X509Store
                         return session.Decrypt(mechanism, _certContext.PrivKeyHandle, data);
                 }
             }
+            else if (padding == RSAEncryptionPadding.OaepSHA1 ||
+                     padding == RSAEncryptionPadding.OaepSHA256 ||
+                     padding == RSAEncryptionPadding.OaepSHA384 ||
+                     padding == RSAEncryptionPadding.OaepSHA512)
+            {
+                IMechanismParamsFactory mechanismParamsFactory = _certContext.TokenContext.SlotContext.Slot.Factories.MechanismParamsFactory;
+
+                ICkRsaPkcsOaepParams oaepMechanismParams = CreateCkRsaPkcsOaepParams(mechanismParamsFactory, padding);
+                if (oaepMechanismParams == null)
+                    throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_OAEP, oaepMechanismParams))
+                {
+                    if (_certContext.KeyUsageRequiresLogin)
+                        throw new NotSupportedException("Decryption with key that requires context specific login to be performed is not supported");
+                    else
+                        return session.Decrypt(mechanism, _certContext.PrivKeyHandle, data);
+                }
+            }
             else
             {
                 throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
@@ -212,6 +232,23 @@ namespace Net.Pkcs11Interop.X509Store
             {
                 using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
                 using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS))
+                {
+                    return session.Encrypt(mechanism, _certContext.PubKeyHandle, data);
+                }
+            }
+            else if (padding == RSAEncryptionPadding.OaepSHA1 ||
+                     padding == RSAEncryptionPadding.OaepSHA256 ||
+                     padding == RSAEncryptionPadding.OaepSHA384 ||
+                     padding == RSAEncryptionPadding.OaepSHA512)
+            {
+                IMechanismParamsFactory mechanismParamsFactory = _certContext.TokenContext.SlotContext.Slot.Factories.MechanismParamsFactory;
+
+                ICkRsaPkcsOaepParams oaepMechanismParams = CreateCkRsaPkcsOaepParams(mechanismParamsFactory, padding);
+                if (oaepMechanismParams == null)
+                    throw new NotSupportedException(string.Format("Padding {0} is not supported", padding));
+
+                using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
+                using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_RSA_PKCS_OAEP, oaepMechanismParams))
                 {
                     return session.Encrypt(mechanism, _certContext.PubKeyHandle, data);
                 }
@@ -432,6 +469,56 @@ namespace Net.Pkcs11Interop.X509Store
             }
 
             return pssParams;
+        }
+
+        /// <summary>
+        /// Creates parameters for CKM_RSA_PKCS_OAEP mechanism
+        /// </summary>
+        /// <param name="mechanismParamsFactory">Factory for creation of IMechanismParams instances</param>
+        /// <param name="padding">Padding mode and parameters to use with RSA encryption or decryption operations</param>
+        /// <returns>Parameters for CKM_RSA_PKCS_OAEP mechanism or null</returns>
+        private static ICkRsaPkcsOaepParams CreateCkRsaPkcsOaepParams(IMechanismParamsFactory mechanismParamsFactory, RSAEncryptionPadding padding)
+        {
+            ICkRsaPkcsOaepParams oaepParams = null;
+
+            if (padding == RSAEncryptionPadding.OaepSHA1)
+            {
+                oaepParams = mechanismParamsFactory.CreateCkRsaPkcsOaepParams(
+                    hashAlg: ConvertUtils.UInt64FromCKM(CKM.CKM_SHA_1),
+                    mgf: ConvertUtils.UInt64FromCKG(CKG.CKG_MGF1_SHA1),
+                    source: ConvertUtils.UInt64FromUInt32(CKZ.CKZ_DATA_SPECIFIED),
+                    sourceData: null
+                );
+            }
+            else if (padding == RSAEncryptionPadding.OaepSHA256)
+            {
+                oaepParams = mechanismParamsFactory.CreateCkRsaPkcsOaepParams(
+                    hashAlg: ConvertUtils.UInt64FromCKM(CKM.CKM_SHA256),
+                    mgf: ConvertUtils.UInt64FromCKG(CKG.CKG_MGF1_SHA256),
+                    source: ConvertUtils.UInt64FromUInt32(CKZ.CKZ_DATA_SPECIFIED),
+                    sourceData: null
+                );
+            }
+            else if (padding == RSAEncryptionPadding.OaepSHA384)
+            {
+                oaepParams = mechanismParamsFactory.CreateCkRsaPkcsOaepParams(
+                    hashAlg: ConvertUtils.UInt64FromCKM(CKM.CKM_SHA384),
+                    mgf: ConvertUtils.UInt64FromCKG(CKG.CKG_MGF1_SHA384),
+                    source: ConvertUtils.UInt64FromUInt32(CKZ.CKZ_DATA_SPECIFIED),
+                    sourceData: null
+                );
+            }
+            else if (padding == RSAEncryptionPadding.OaepSHA512)
+            {
+                oaepParams = mechanismParamsFactory.CreateCkRsaPkcsOaepParams(
+                    hashAlg: ConvertUtils.UInt64FromCKM(CKM.CKM_SHA512),
+                    mgf: ConvertUtils.UInt64FromCKG(CKG.CKG_MGF1_SHA512),
+                    source: ConvertUtils.UInt64FromUInt32(CKZ.CKZ_DATA_SPECIFIED),
+                    sourceData: null
+                );
+            }
+
+            return oaepParams;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
     {
         private HashAlgorithmName[] _hashNamesPkcs1 = new HashAlgorithmName[] { HashAlgorithmName.MD5, HashAlgorithmName.SHA1, HashAlgorithmName.SHA256, HashAlgorithmName.SHA384, HashAlgorithmName.SHA512 };
         private HashAlgorithmName[] _hashNamesPss = new HashAlgorithmName[] { HashAlgorithmName.SHA1, HashAlgorithmName.SHA256, HashAlgorithmName.SHA384, HashAlgorithmName.SHA512 };
+        private RSAEncryptionPadding[] _encryptionPaddings = new RSAEncryptionPadding[] { RSAEncryptionPadding.Pkcs1, RSAEncryptionPadding.OaepSHA1 /*, RSAEncryptionPadding.OaepSHA256, RSAEncryptionPadding.OaepSHA384, RSAEncryptionPadding.OaepSHA512 */ };
         private byte[] _data1 = Encoding.UTF8.GetBytes("Hello world!");
         private byte[] _data2 = Encoding.UTF8.GetBytes("Hola mundo!");
 
@@ -169,7 +170,7 @@ namespace Net.Pkcs11Interop.X509Store.Tests
         }
 
         [Test]
-        public void RsaEncryptionPkcs1SelfTest()
+        public void RsaEncryptionSelfTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -180,18 +181,19 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 RSA p11PubKey = cert.GetRSAPublicKey();
                 ClassicAssert.IsNotNull(p11PubKey);
 
-                byte[] encData = p11PubKey.Encrypt(_data1, RSAEncryptionPadding.Pkcs1);
-                ClassicAssert.IsNotNull(encData);
-
-                byte[] decData = p11PrivKey.Decrypt(encData, RSAEncryptionPadding.Pkcs1);
-                ClassicAssert.IsNotNull(decData);
-
-                CollectionAssert.AreEqual(decData, _data1);
+                foreach (RSAEncryptionPadding encryptionPadding in _encryptionPaddings)
+                {
+                    byte[] encData = p11PubKey.Encrypt(_data1, encryptionPadding);
+                    ClassicAssert.IsNotNull(encData);
+                    byte[] decData = p11PrivKey.Decrypt(encData, encryptionPadding);
+                    ClassicAssert.IsNotNull(decData);
+                    CollectionAssert.AreEqual(decData, _data1);
+                }
             }
         }
 
         [Test]
-        public void RsaEncryptionPkcs1PlatformTest()
+        public void RsaEncryptionPlatformTest()
         {
             using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
             {
@@ -204,17 +206,20 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 RSA cngKey = CryptoObjects.GetTestUserPlatformRsaProvider();
                 ClassicAssert.IsNotNull(cngKey);
 
-                byte[] encData1 = p11PubKey.Encrypt(_data1, RSAEncryptionPadding.Pkcs1);
-                ClassicAssert.IsNotNull(encData1);
-                byte[] decData1 = cngKey.Decrypt(encData1, RSAEncryptionPadding.Pkcs1);
-                ClassicAssert.IsNotNull(decData1);
-                CollectionAssert.AreEqual(decData1, _data1);
+                foreach (RSAEncryptionPadding encryptionPadding in _encryptionPaddings)
+                {
+                    byte[] encData1 = p11PubKey.Encrypt(_data1, encryptionPadding);
+                    ClassicAssert.IsNotNull(encData1);
+                    byte[] decData1 = cngKey.Decrypt(encData1, encryptionPadding);
+                    ClassicAssert.IsNotNull(decData1);
+                    CollectionAssert.AreEqual(decData1, _data1);
 
-                byte[] encData2 = cngKey.Encrypt(_data2, RSAEncryptionPadding.Pkcs1);
-                ClassicAssert.IsNotNull(encData2);
-                byte[] decData2 = p11PrivKey.Decrypt(encData2, RSAEncryptionPadding.Pkcs1);
-                ClassicAssert.IsNotNull(decData2);
-                CollectionAssert.AreEqual(decData2, _data2);
+                    byte[] encData2 = cngKey.Encrypt(_data2, encryptionPadding);
+                    ClassicAssert.IsNotNull(encData2);
+                    byte[] decData2 = p11PrivKey.Decrypt(encData2, encryptionPadding);
+                    ClassicAssert.IsNotNull(decData2);
+                    CollectionAssert.AreEqual(decData2, _data2);
+                }
             }
         }
     }
