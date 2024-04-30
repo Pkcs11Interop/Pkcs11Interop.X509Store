@@ -1,0 +1,235 @@
+<mxfile host="Electron" modified="2024-04-28T18:08:03.763Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="asP3HIYCAi7fe2LQAsZm" version="24.2.5" type="device">
+  <diagram id="hUkgy9nw9HBFLK84aLKN" name="Page-1">
+    <mxGraphModel dx="1434" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-74" value="&lt;div style=&quot;font-size: 28px&quot;&gt;&lt;font style=&quot;font-size: 28px&quot;&gt;&lt;b&gt;&lt;font style=&quot;font-size: 28px&quot;&gt;Pkcs11Interop.X509Store&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=none;fontSize=10;fontColor=#333333;strokeColor=#666666;fillColor=#f5f5f5;shadow=0;glass=0;sketch=0;align=center;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="350" y="30" width="790" height="770" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-2" value="&lt;div&gt;&lt;b&gt;IPinProvider&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Provider of PIN codes&lt;br&gt; for tokens and private keys&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="649" y="80" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-3" value="&lt;div&gt;&lt;font&gt;&lt;b&gt;Pkcs11X509Store&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px&quot;&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Easy to use X.509 certificate store&lt;br&gt;that uses any PKCS#11 library&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="649" y="190" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-4" value="&lt;div&gt;&lt;b&gt;Pkcs11X509StoreInfo&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Detailed information about&lt;br&gt;Pkcs11X509Store instance&lt;/font&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="909" y="190" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-66" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.998;entryY=0.077;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;labelBackgroundColor=default;fontSize=12;fontColor=default;strokeColor=default;fillColor=default;" parent="1" source="SQeS_49Xw8ITQnIFGydn-5" target="SQeS_49Xw8ITQnIFGydn-64" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-5" value="&lt;div&gt;&lt;b&gt;Pkcs11X509StoreContext&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Internal class&lt;/font&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=default;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="389" y="190" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-6" value="&lt;div&gt;&lt;b&gt;Pkcs11Slot&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px&quot;&gt;Logical reader (e.g. smartcard reader)&lt;br&gt;that potentially contains a token&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="649" y="300" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-7" value="&lt;div&gt;&lt;b&gt;Pkcs11SlotInfo&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Detailed information about&lt;br&gt; Pkcs11Slot instance&lt;/font&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="909" y="300" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-68" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.007;entryY=0.36;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;labelBackgroundColor=default;fontSize=12;fontColor=default;strokeColor=default;fillColor=default;" parent="1" source="SQeS_49Xw8ITQnIFGydn-8" target="SQeS_49Xw8ITQnIFGydn-64" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-8" value="&lt;div&gt;&lt;b&gt;Pkcs11SlotContext&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Internal class&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="389" y="300" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-9" value="&lt;div&gt;&lt;b&gt;Pkcs11Token&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Cryptographic device (e.g. smartcard)&lt;br&gt; that is present in the slot&lt;/font&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="649" y="410" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-10" value="&lt;div&gt;&lt;b&gt;Pkcs11TokenInfo&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Detailed information about&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt; Pkcs11Token instance&lt;/font&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="909" y="410" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-11" value="&lt;div&gt;&lt;b&gt;Pkcs11TokenContext&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Internal class&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="389" y="410" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-12" value="&lt;div&gt;&lt;b&gt;Pkcs11X509Certificate&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 10px&quot;&gt;X.509 certificate stored on token&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="649" y="520" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-13" value="&lt;div&gt;&lt;b&gt;Pkcs11X509CertificateInfo&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Detailed information about&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt; Pkcs11X509Certificate instance&lt;/font&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="909" y="520" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-14" value="&lt;div&gt;&lt;b&gt;Pkcs11X509CertificateContext&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Internal class&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;labelBackgroundColor=default;" parent="1" vertex="1">
+          <mxGeometry x="389" y="520" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-15" value="&lt;div&gt;&lt;b&gt;Pkcs11RsaProvider&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Private RSA key associated with X.509 certificate&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; This class is PKCS#11 based implementation&lt;br&gt; of System.Security.Cryptography.RSA algorithm.&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;It can be easily integrated with other .NET classes such as System.Security.Cryptography.Pkcs.SignedCms.&lt;/font&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="389" y="630" width="350" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-16" value="&lt;div&gt;&lt;b&gt;Pkcs11ECDsaProvider&lt;/b&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Private EC key associated with X.509 certificate&lt;/font&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; This class is PKCS#11 based implementation&lt;br&gt; of System.Security.Cryptography.ECDsa algorithm.&lt;/font&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;It can be easily integrated with other .NET classes such as &lt;br&gt;System.Security.Cryptography.Pkcs.SignedCms..&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="769" y="630" width="350" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-27" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fillColor=default;dashed=1;" parent="1" source="SQeS_49Xw8ITQnIFGydn-3" target="SQeS_49Xw8ITQnIFGydn-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="999" y="660" as="sourcePoint" />
+            <mxPoint x="1049" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-29" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fillColor=default;dashed=1;" parent="1" source="SQeS_49Xw8ITQnIFGydn-6" target="SQeS_49Xw8ITQnIFGydn-8" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="719" y="560" as="sourcePoint" />
+            <mxPoint x="769" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-30" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fillColor=default;dashed=1;" parent="1" source="SQeS_49Xw8ITQnIFGydn-9" target="SQeS_49Xw8ITQnIFGydn-11" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="859" y="630" as="sourcePoint" />
+            <mxPoint x="909" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-31" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fillColor=default;dashed=1;" parent="1" source="SQeS_49Xw8ITQnIFGydn-12" target="SQeS_49Xw8ITQnIFGydn-14" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1239" y="590" as="sourcePoint" />
+            <mxPoint x="1289" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-32" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;dashed=1;fillColor=default;" parent="1" source="SQeS_49Xw8ITQnIFGydn-14" target="SQeS_49Xw8ITQnIFGydn-11" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="639" y="540" as="sourcePoint" />
+            <mxPoint x="689" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-33" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;fillColor=default;" parent="1" source="SQeS_49Xw8ITQnIFGydn-11" target="SQeS_49Xw8ITQnIFGydn-8" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="849" y="500" as="sourcePoint" />
+            <mxPoint x="899" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-34" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;fillColor=default;" parent="1" source="SQeS_49Xw8ITQnIFGydn-8" target="SQeS_49Xw8ITQnIFGydn-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="649" y="590" as="sourcePoint" />
+            <mxPoint x="699" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-37" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;fillColor=default;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;spacingLeft=0;spacingRight=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-3" target="SQeS_49Xw8ITQnIFGydn-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="909" y="130" as="sourcePoint" />
+            <mxPoint x="1009" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-38" value="Info" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;fontColor=default;strokeColor=default;fillColor=default;spacing=2;labelBackgroundColor=#F5F5F5;fontSize=11;" parent="SQeS_49Xw8ITQnIFGydn-37" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-40" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-6" target="SQeS_49Xw8ITQnIFGydn-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="929" y="150" as="sourcePoint" />
+            <mxPoint x="1029" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-41" value="Info" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-40" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-44" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-9" target="SQeS_49Xw8ITQnIFGydn-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="859" y="430" as="sourcePoint" />
+            <mxPoint x="959" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-45" value="Info" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-44" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-47" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-12" target="SQeS_49Xw8ITQnIFGydn-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="879" y="580" as="sourcePoint" />
+            <mxPoint x="979" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-48" value="Info" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-47" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-50" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-3" target="SQeS_49Xw8ITQnIFGydn-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="719" y="380" as="sourcePoint" />
+            <mxPoint x="819" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-51" value="&lt;span style=&quot;&quot;&gt;Slots&lt;/span&gt;" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;labelBorderColor=none;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-50" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-52" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-6" target="SQeS_49Xw8ITQnIFGydn-9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="749" y="380" as="sourcePoint" />
+            <mxPoint x="849" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-53" value="Token" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;labelBorderColor=none;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-52" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-54" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-9" target="SQeS_49Xw8ITQnIFGydn-12" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="719" y="480" as="sourcePoint" />
+            <mxPoint x="819" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-55" value="Certificates" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;labelBorderColor=none;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-54" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-56" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-3" target="SQeS_49Xw8ITQnIFGydn-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="769" y="170" as="sourcePoint" />
+            <mxPoint x="869" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-57" value="constructor needs" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;labelBorderColor=none;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-56" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-58" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-12" target="SQeS_49Xw8ITQnIFGydn-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="479" y="630" as="sourcePoint" />
+            <mxPoint x="579" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-59" value="&lt;div&gt;GetRSAPrivateKey()&lt;/div&gt;" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;labelBorderColor=none;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-58" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-60" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-12" target="SQeS_49Xw8ITQnIFGydn-16" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="859" y="620" as="sourcePoint" />
+            <mxPoint x="959" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-61" value="&lt;div&gt;GetECDsaPrivateKey()&lt;/div&gt;" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;labelBackgroundColor=#F5F5F5;labelBorderColor=none;fontSize=11;fontColor=default;strokeColor=default;fillColor=default;" parent="SQeS_49Xw8ITQnIFGydn-60" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-62" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;labelBackgroundColor=default;fontSize=10;fontColor=default;strokeColor=default;fillColor=default;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.45;exitY=-0.008;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-15" target="SQeS_49Xw8ITQnIFGydn-14" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="547" y="626" as="sourcePoint" />
+            <mxPoint x="290" y="586" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-63" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;labelBackgroundColor=default;fontSize=10;fontColor=default;strokeColor=default;fillColor=default;entryX=0.25;entryY=1;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-16" target="SQeS_49Xw8ITQnIFGydn-14" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1060" y="776" as="sourcePoint" />
+            <mxPoint x="320" y="696" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="944" y="779" />
+              <mxPoint x="370" y="779" />
+              <mxPoint x="370" y="609" />
+              <mxPoint x="442" y="609" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-73" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;fontSize=12;fontColor=default;strokeColor=default;fillColor=default;dashed=1;" parent="1" source="SQeS_49Xw8ITQnIFGydn-64" target="SQeS_49Xw8ITQnIFGydn-71" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-64" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;Pkcs11Interop&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;Managed .NET wrapper for unmanaged PKCS#11 libraries&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=none;fontSize=10;fontColor=#333333;strokeColor=#666666;fillColor=#f5f5f5;" parent="1" vertex="1">
+          <mxGeometry x="190" y="190" width="120" height="389" as="geometry" />
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-69" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;labelBackgroundColor=default;fontSize=12;fontColor=default;strokeColor=default;fillColor=default;entryX=1.001;entryY=0.642;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-11" target="SQeS_49Xw8ITQnIFGydn-64" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="469" as="sourcePoint" />
+            <mxPoint x="400" y="419" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-70" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;labelBackgroundColor=default;fontSize=12;fontColor=default;strokeColor=default;fillColor=default;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.004;entryY=0.926;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="SQeS_49Xw8ITQnIFGydn-14" target="SQeS_49Xw8ITQnIFGydn-64" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="509" as="sourcePoint" />
+            <mxPoint x="390" y="459" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SQeS_49Xw8ITQnIFGydn-71" value="&lt;div&gt;&lt;b&gt;PKCS#11 library&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Unmanaged PKCS#11 library usually provided by the cryptographic device vendor&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=none;fontSize=10;fontColor=#333333;strokeColor=#666666;fillColor=#f5f5f5;" parent="1" vertex="1">
+          <mxGeometry x="30" y="190" width="120" height="389" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
