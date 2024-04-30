@@ -8,16 +8,6 @@ Pkcs11Interop.X509Store
 [![Stack Overflow](https://img.shields.io/badge/stack-pkcs11interop-blue.svg)](https://stackoverflow.com/questions/tagged/pkcs11interop)
 [![Twitter](https://img.shields.io/badge/twitter-p11interop-blue.svg)](https://twitter.com/p11interop)
 
-## Table of Contents
-
-* [Overview](#overview)
-* [Documentation](#documentation)
-* [Download](#download)
-* [License](#license)
-* [Support](#support)
-* [Related projects](#related-projects)
-* [About](#about)
-
 ## Overview
 
 The PKCS#11 API offers unparalleled versatility and functionality across platforms and cryptographic scenarios. However, its inherent complexity, rooted in C language design and low-level concepts, can present a steep learning curve for developers. Pkcs11Interop emerged as a .NET wrapper for PKCS#11, aiming to provide a more developer-friendly interface while retaining the power of the underlying PKCS#11 API. Despite its advancements, Pkcs11Interop still demands a deep understanding of cryptographic principles and the PKCS#11 specification, making it challenging to use correctly. To bridge this gap, Pkcs11Interop.X509Store comes into play.
@@ -48,7 +38,8 @@ Pkcs11Interop.X509Store is available under the terms of the [Apache License, Ver
 
 ## Support
 
-Have you found a bug, want to suggest a new feature, or just need help? Don't hesitate to open an issue in our public [issue tracker](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/issues).
+Have you found a bug, want to suggest a new feature, or just need help?  
+Don't hesitate to open an issue in our public [issue tracker](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/issues).
 
 ## Related projects
 

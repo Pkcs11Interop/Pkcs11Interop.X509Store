@@ -4,7 +4,7 @@ The following figure represents the architecture of the `Pkcs11Interop.X509Store
 
 *Note: Click on a picture for a larger image.*
 
-![Pkcs11Interop.X509Store architecture](images/Pkcs11Interop.X509Store.png?raw=true)
+![Pkcs11Interop.X509Store architecture](images/Pkcs11Interop.X509Store.png)
 
 Here's a brief  explanation of the colors used for the individual items:
 * The yellow item represents the `IPinProvider` interface, which you must implement yourself. It provides PIN codes needed to access PKCS#11 tokens and private keys. Your implementation can display a dialog window, console prompt, or read the PIN code from a configuration file.
