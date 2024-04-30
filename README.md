@@ -8,12 +8,9 @@ Pkcs11Interop.X509Store
 [![Stack Overflow](https://img.shields.io/badge/stack-pkcs11interop-blue.svg)](https://stackoverflow.com/questions/tagged/pkcs11interop)
 [![Twitter](https://img.shields.io/badge/twitter-p11interop-blue.svg)](https://twitter.com/p11interop)
 
-**WARNING: Pkcs11Interop.X509Store is still in a very early stage of development and its API may fundamentally change with any subsequent release.**
-
 ## Table of Contents
 
 * [Overview](#overview)
-* [Architecture](#architecture)
 * [Documentation](#documentation)
 * [Download](#download)
 * [License](#license)
@@ -23,32 +20,35 @@ Pkcs11Interop.X509Store
 
 ## Overview
 
-PKCS#11 is cryptography standard maintained by the OASIS PKCS 11 Technical Committee (originally published by RSA Laboratories) that defines ANSI C API to access smart cards and other types of cryptographic hardware.
+The PKCS#11 API offers unparalleled versatility and functionality across platforms and cryptographic scenarios. However, its inherent complexity, rooted in C language design and low-level concepts, can present a steep learning curve for developers. Pkcs11Interop emerged as a .NET wrapper for PKCS#11, aiming to provide a more developer-friendly interface while retaining the power of the underlying PKCS#11 API. Despite its advancements, Pkcs11Interop still demands a deep understanding of cryptographic principles and the PKCS#11 specification, making it challenging to use correctly. To bridge this gap, Pkcs11Interop.X509Store comes into play.
 
-Pkcs11Interop is managed library written in C# that brings full power of PKCS#11 API to the .NET environment. It loads unmanaged PKCS#11 library provided by the cryptographic device vendor and makes its functions accessible to .NET application.
-
-Pkcs11Interop.X509Store is managed library built on top of Pkcs11Interop. It's main goal is to provide easy to use PKCS#11 based read-only X.509 certificate store that can be easily integrated with standard .NET ecosystem.
-
-## Architecture
-
-![Pkcs11Interop.X509Store architecture](doc/images/Pkcs11Interop.X509Store.png?raw=true)
+Pkcs11Interop.X509Store is born out of the necessity to simplify the integration of PKCS#11 into .NET applications. Designed to cover common use cases seamlessly, Pkcs11Interop.X509Store eliminates the need for developers to delve into low-level PKCS#11 intricacies. By abstracting away the complexities, it provides a straightforward, intuitive interface that seamlessly integrates with other .NET classes. With Pkcs11Interop.X509Store, developers can harness the power of PKCS#11 without dealing with its complexities.
 
 ## Documentation
 
 Pkcs11Interop.X509Store API is fully documented with the inline XML documentation that is displayed by the most of the modern IDEs during the application development.
 
+The following topics are covered by standalone documents:
+* [Basic PKCS#11 related terms](doc/01_BASIC_TERMS.md)
+* [Architecture of the Pkcs11Interop.X509Store library](doc/02_ARCHITECTURE.md)
+* [Getting started with Pkcs11Interop.X509Store](doc/03_GETTING_STARTED.md)
+* [Pkcs11Interop.X509Store code samples](doc/04_CODE_SAMPLES.md)
+* [Frequently Asked Questions](doc/05_FAQ.md)
+
 ## Download
 
-Archives with the source code and binaries can be downloaded from [our releases page](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/releases/). [Official NuGet packages](https://www.nuget.org/packages/Pkcs11Interop.X509Store/) are published in nuget.org repository. All official items are signed with [GnuPG key or code-signing certificate of Jaroslav Imrich](https://www.jimrich.sk/crypto/).
+[Official NuGet packages](https://www.nuget.org/packages/Pkcs11Interop.X509Store/) are published in nuget.org repository.  
+Archives with the source code and binaries can be downloaded from [our releases page](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/releases/).  
+All official items are signed with [GnuPG key or code-signing certificate of Jaroslav Imrich](https://www.jimrich.sk/crypto/).
 
 ## License
 
 Pkcs11Interop.X509Store is available under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).  
-[Human friendly license summary](https://tldrlegal.com/l/apache2) is available at tldrlegal.com but the [full license text](LICENSE.md) always prevails.
+[Human friendly license summary](https://www.tldrlegal.com/license/apache-license-2-0-apache-2-0) is available at tldrlegal.com but the [full license text](LICENSE.md) always prevails.
 
 ## Support
 
-Pkcs11Interop.X509Store is still in a very early stage of development so if you need help, please open an issue in our public [issue tracker](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/issues).
+Have you found a bug, want to suggest a new feature, or just need help? Don't hesitate to open an issue in our public [issue tracker](https://github.com/Pkcs11Interop/Pkcs11Interop.X509Store/issues).
 
 ## Related projects
 
@@ -60,6 +60,8 @@ Pkcs11Interop.X509Store is still in a very early stage of development so if you 
   PKCS#11 logging proxy module useful for debugging of PKCS#11 enabled applications.
 * [SoftHSM2-for-Windows](https://github.com/disig/SoftHSM2-for-Windows)  
   Pure software implementation of a cryptographic store accessible through a PKCS#11 interface.
+* [Bouncy HSM](https://github.com/harrison314/BouncyHsm)  
+  HSM and smartcard simulator with HTML UI, REST API and PKCS#11 interface.
 
 ## About
 
