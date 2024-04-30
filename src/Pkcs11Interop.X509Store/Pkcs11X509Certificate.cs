@@ -104,8 +104,8 @@ namespace Net.Pkcs11Interop.X509Store
 
                 var certInfo = new Pkcs11X509CertificateInfo(ckaId, ckaLabel, ckaValue);
 
-                IObjectHandle privKeyHandle = FindKey(session, CKO.CKO_PRIVATE_KEY, ckaId, ckaLabel);
-                IObjectHandle pubKeyHandle = FindKey(session, CKO.CKO_PUBLIC_KEY, ckaId, ckaLabel);
+                IObjectHandle privKeyHandle = FindKey(session, CKO.CKO_PRIVATE_KEY, ckaId);
+                IObjectHandle pubKeyHandle = FindKey(session, CKO.CKO_PUBLIC_KEY, ckaId);
 
                 bool keyUsageRequiresLogin = (privKeyHandle == null) ? false : GetCkaAlwaysAuthenticateValue(session, privKeyHandle);
 
@@ -139,9 +139,8 @@ namespace Net.Pkcs11Interop.X509Store
         /// <param name="session">PKCS#11 session for finding operation</param>
         /// <param name="keyClass">Value of CKA_CLASS attribute used in search template</param>
         /// <param name="ckaId">Value of CKA_ID attribute used in search template</param>
-        /// <param name="ckaLabel">Value of CKA_LABEL attribute used in search template</param>
         /// <returns>Handle of key object present on token or null</returns>
-        private IObjectHandle FindKey(ISession session, CKO keyClass, byte[] ckaId, string ckaLabel)
+        private IObjectHandle FindKey(ISession session, CKO keyClass, byte[] ckaId)
         {
             IObjectHandle keyHandle = null;
 
