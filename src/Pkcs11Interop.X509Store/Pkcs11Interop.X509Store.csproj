@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.4.0</Version>
+    <Version>1.0.0</Version>
     <Authors>Jaroslav Imrich</Authors>
     <Description>Easy to use PKCS#11 based X.509 certificate store</Description>
     <Copyright>Copyright (c) 2017-2024 The Pkcs11Interop Project</Copyright>

@@ -1,3 +1,12 @@
+Pkcs11Interop.X509Store 1.0.0 (2024-05-01)
+- Pkcs11RsaProvider supports encryption and decryption with Pkcs1 padding
+  Based on code provided by @dunkleyr in #32
+- Pkcs11RsaProvider supports encryption and decryption with OAEP padding
+- Unrecognized tokens are ignored
+  Based on code provided by @dalmohub in #33
+- Introduced PrivateKeyObjectNotFoundException and PublicKeyObjectNotFoundException
+- Improved documentation
+
 Pkcs11Interop.X509Store 0.4.0 (2022-05-22)
 - Added support for System.Security.Cryptography.Pkcs.SignedCms
 - CKA_LABEL is not used when searching for key objects  
@@ -24,4 +33,4 @@ Pkcs11Interop.X509Store 0.2.0 (2018-01-02)
   If token is not present then Pkcs11Slot::Token is null.
 
 Pkcs11Interop.X509Store 0.1.0 (2017-12-27)
- - Initial development release
+- Initial development release
