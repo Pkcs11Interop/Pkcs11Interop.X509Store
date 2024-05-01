@@ -222,5 +222,49 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 }
             }
         }
+
+        [Test]
+        public void PrivateKeyObjectNotFoundTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, new CancellingPinProvider()))
+            {
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token2Label, SoftHsm2Manager.Token2TestUserRsaLabel);
+                ClassicAssert.IsFalse(cert.HasPrivateKeyObject);
+                ClassicAssert.IsTrue(cert.HasPublicKeyObject);
+
+                RSA rsa = cert.GetRSAPublicKey();
+
+                foreach (HashAlgorithmName hashAlgName in _hashNamesPkcs1)
+                    ClassicAssert.Catch(typeof(PrivateKeyObjectNotFoundException), () => { rsa.SignHash(Helpers.ComputeHash(_data1, hashAlgName), hashAlgName, RSASignaturePadding.Pkcs1); });
+
+                foreach (HashAlgorithmName hashAlgName in _hashNamesPss)
+                    ClassicAssert.Catch(typeof(PrivateKeyObjectNotFoundException), () => { rsa.SignHash(Helpers.ComputeHash(_data1, hashAlgName), hashAlgName, RSASignaturePadding.Pss); });
+
+                foreach (RSAEncryptionPadding encryptionPadding in _encryptionPaddings)
+                    ClassicAssert.Catch(typeof(PrivateKeyObjectNotFoundException), () => { rsa.Decrypt(_data1, encryptionPadding); });
+            }
+        }
+
+        [Test]
+        public void PublicKeyObjectNotFoundTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
+            {
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token3Label, SoftHsm2Manager.Token3TestUserRsaLabel);
+                ClassicAssert.IsTrue(cert.HasPrivateKeyObject);
+                ClassicAssert.IsFalse(cert.HasPublicKeyObject);
+
+                RSA rsa = cert.GetRSAPrivateKey();
+
+                foreach (HashAlgorithmName hashAlgName in _hashNamesPkcs1)
+                    ClassicAssert.Catch(typeof(PublicKeyObjectNotFoundException), () => { rsa.VerifyHash(_data1, _data2, hashAlgName, RSASignaturePadding.Pkcs1); });
+
+                foreach (HashAlgorithmName hashAlgName in _hashNamesPss)
+                    ClassicAssert.Catch(typeof(PublicKeyObjectNotFoundException), () => { rsa.VerifyHash(_data1, _data2, hashAlgName, RSASignaturePadding.Pss); });
+
+                foreach (RSAEncryptionPadding encryptionPadding in _encryptionPaddings)
+                    ClassicAssert.Catch(typeof(PublicKeyObjectNotFoundException), () => { rsa.Encrypt(_data1, encryptionPadding); });
+            }
+        }
     }
 }

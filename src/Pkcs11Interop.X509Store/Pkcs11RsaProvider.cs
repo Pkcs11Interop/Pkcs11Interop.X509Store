@@ -69,6 +69,9 @@ namespace Net.Pkcs11Interop.X509Store
             if (padding == null)
                 throw new ArgumentNullException(nameof(padding));
 
+            if (_certContext.PrivKeyHandle == null)
+                throw new PrivateKeyObjectNotFoundException();
+
             if (padding == RSASignaturePadding.Pkcs1)
             {
                 byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
@@ -129,6 +132,9 @@ namespace Net.Pkcs11Interop.X509Store
             if (padding == null)
                 throw new ArgumentNullException(nameof(padding));
 
+            if (_certContext.PubKeyHandle == null)
+                throw new PublicKeyObjectNotFoundException();
+
             if (padding == RSASignaturePadding.Pkcs1)
             {
                 byte[] pkcs1DigestInfo = CreatePkcs1DigestInfo(hash, hashAlgorithm);
@@ -176,6 +182,9 @@ namespace Net.Pkcs11Interop.X509Store
 
             if (padding == null)
                 throw new ArgumentNullException(nameof(padding));
+
+            if (_certContext.PrivKeyHandle == null)
+                throw new PrivateKeyObjectNotFoundException();
 
             if (padding == RSAEncryptionPadding.Pkcs1)
             {
@@ -227,6 +236,9 @@ namespace Net.Pkcs11Interop.X509Store
 
             if (padding == null)
                 throw new ArgumentNullException(nameof(padding));
+            
+            if (_certContext.PubKeyHandle == null)
+                throw new PublicKeyObjectNotFoundException();
 
             if (padding == RSAEncryptionPadding.Pkcs1)
             {

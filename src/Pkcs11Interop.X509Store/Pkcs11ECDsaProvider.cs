@@ -59,6 +59,9 @@ namespace Net.Pkcs11Interop.X509Store
             if (hash == null || hash.Length == 0)
                 throw new ArgumentNullException(nameof(hash));
 
+            if (_certContext.PrivKeyHandle == null)
+                throw new PrivateKeyObjectNotFoundException();
+
             using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
             using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_ECDSA))
             {
@@ -82,6 +85,9 @@ namespace Net.Pkcs11Interop.X509Store
 
             if (signature == null || signature.Length == 0)
                 throw new ArgumentNullException(nameof(signature));
+            
+            if (_certContext.PubKeyHandle == null)
+                throw new PublicKeyObjectNotFoundException();
 
             using (ISession session = _certContext.TokenContext.SlotContext.Slot.OpenSession(SessionType.ReadOnly))
             using (IMechanism mechanism = session.Factories.MechanismFactory.Create(CKM.CKM_ECDSA))

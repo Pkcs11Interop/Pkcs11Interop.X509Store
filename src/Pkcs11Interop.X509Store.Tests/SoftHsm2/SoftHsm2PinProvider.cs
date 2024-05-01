@@ -31,6 +31,8 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                 return new GetPinResult(false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token1UserPin));
             else if (tokenInfo.Label == SoftHsm2Manager.Token2Label)
                 return new GetPinResult(false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token2UserPin));
+            else if (tokenInfo.Label == SoftHsm2Manager.Token3Label)
+                return new GetPinResult(false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token3UserPin));
             else
                 return new GetPinResult(true, null);
         }
@@ -41,6 +43,8 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                 return new GetPinResult(false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token1UserPin));
             else if (tokenInfo.Label == SoftHsm2Manager.Token2Label)
                 return new GetPinResult(false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token2UserPin));
+            else if (tokenInfo.Label == SoftHsm2Manager.Token3Label)
+                return new GetPinResult(false, Encoding.UTF8.GetBytes(SoftHsm2Manager.Token3UserPin));
             else
                 return new GetPinResult(true, null);
         }

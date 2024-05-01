@@ -29,6 +29,8 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 {
     public static class SoftHsm2Manager
     {
+        #region Token1
+
         public const string Token1Label = "First token";
 
         public const string Token1SoPin = "1111111111";
@@ -41,6 +43,10 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
 
         public const string Token1TestUserEcdsaLabel = "Token1TestUserEcdsa";
 
+        #endregion
+
+        #region Token2
+
         public const string Token2Label = "Second token";
 
         public const string Token2SoPin = "2222222222";
@@ -52,6 +58,24 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
         public const string Token2TestUserRsaLabel = "Token2TestUserRsa";
 
         public const string Token2TestUserEcdsaLabel = "Token2TestUserEcdsa";
+
+        #endregion
+
+        #region Token3
+
+        public const string Token3Label = "Third token";
+
+        public const string Token3SoPin = "3333333333";
+
+        public const string Token3UserPin = "33333333";
+
+        public const string Token3TestCaLabel = "Token3TestCa";
+
+        public const string Token3TestUserRsaLabel = "Token3TestUserRsa";
+
+        public const string Token3TestUserEcdsaLabel = "Token3TestUserEcdsa";
+
+        #endregion
 
         private static string _libraryPath = null;
 
@@ -148,6 +172,13 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                 else
                     InitializeToken(slots[1], Token2Label, Token2SoPin, Token2UserPin);
 
+                // Initialize third token
+                slots = pkcs11Library.GetSlotList(SlotsType.WithOrWithoutTokenPresent);
+                if (slots.Count != 3)
+                    throw new Exception("Unexpected number of slots");
+                else
+                    InitializeToken(slots[2], Token3Label, Token3SoPin, Token3UserPin);
+
                 // Import objects to first token
                 using (ISession session = slots[0].OpenSession(SessionType.ReadWrite))
                 {
@@ -184,6 +215,23 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                     session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(session, Token2TestUserEcdsaLabel));
                     session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token2TestUserEcdsaLabel, "PrivKey", true));
                     session.CreateObject(CryptoObjects.GetTestUserEcdsaPubKeyAttributes(session, Token2TestUserEcdsaLabel, "PubKey"));
+                }
+
+                // Import objects to third token
+                using (ISession session = slots[2].OpenSession(SessionType.ReadWrite))
+                {
+                    session.Login(CKU.CKU_USER, Token3UserPin);
+
+                    // Import CA cert without private key
+                    session.CreateObject(CryptoObjects.GetTestCaCertAttributes(session, Token3TestCaLabel));
+
+                    // Import user cert with RSA private key only
+                    session.CreateObject(CryptoObjects.GetTestUserRsaCertAttributes(session, Token3TestUserRsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserRsaPrivKeyAttributes(session, Token3TestUserRsaLabel, "PrivKey", true));
+
+                    // Import user cert with ECDSA private key only
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaCertAttributes(session, Token3TestUserEcdsaLabel));
+                    session.CreateObject(CryptoObjects.GetTestUserEcdsaPrivKeyAttributes(session, Token3TestUserEcdsaLabel, "PrivKey", true));
                 }
             }
         }

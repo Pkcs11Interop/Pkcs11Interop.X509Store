@@ -99,5 +99,37 @@ namespace Net.Pkcs11Interop.X509Store.Tests
                 }
             }
         }
+
+        [Test]
+        public void PrivateKeyObjectNotFoundTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, new CancellingPinProvider()))
+            {
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token2Label, SoftHsm2Manager.Token2TestUserEcdsaLabel);
+                ClassicAssert.IsFalse(cert.HasPrivateKeyObject);
+                ClassicAssert.IsTrue(cert.HasPublicKeyObject);
+
+                ECDsa ecdsa = cert.GetECDsaPublicKey();
+
+                foreach (HashAlgorithmName hashAlgName in _hashNames)
+                    ClassicAssert.Catch(typeof(PrivateKeyObjectNotFoundException), () => { ecdsa.SignHash(_data1); });
+            }
+        }
+
+        [Test]
+        public void PublicKeyObjectNotFoundTest()
+        {
+            using (var store = new Pkcs11X509Store(SoftHsm2Manager.LibraryPath, SoftHsm2Manager.PinProvider))
+            {
+                Pkcs11X509Certificate cert = Helpers.GetCertificate(store, SoftHsm2Manager.Token3Label, SoftHsm2Manager.Token3TestUserEcdsaLabel);
+                ClassicAssert.IsTrue(cert.HasPrivateKeyObject);
+                ClassicAssert.IsFalse(cert.HasPublicKeyObject);
+
+                ECDsa ecdsa = cert.GetECDsaPrivateKey();
+
+                foreach (HashAlgorithmName hashAlgName in _hashNames)
+                    ClassicAssert.Catch(typeof(PublicKeyObjectNotFoundException), () => { ecdsa.VerifyHash(_data1, _data2); });
+            }
+        }
     }
 }
