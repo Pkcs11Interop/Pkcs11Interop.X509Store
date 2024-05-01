@@ -13,6 +13,7 @@
     <Authors>Jaroslav Imrich</Authors>
     <Description>Easy to use PKCS#11 based X.509 certificate store</Description>
     <Copyright>Copyright (c) 2017-2024 The Pkcs11Interop Project</Copyright>
+    <PackageReadmeFile>NUGET_README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://www.pkcs11interop.net/</PackageProjectUrl>
     <PackageIcon>Pkcs11Interop.png</PackageIcon>
@@ -35,6 +36,7 @@
   <ItemGroup Label="PackExtraContent">
     <None Include="LICENSE.txt" pack="true" PackagePath="." />
     <None Include="NOTICE.txt" pack="true" PackagePath="." />
+    <None Include="NUGET_README.md" pack="true" PackagePath="." />
     <None Include="Pkcs11Interop.png" pack="true" PackagePath="." />
   </ItemGroup>
   
