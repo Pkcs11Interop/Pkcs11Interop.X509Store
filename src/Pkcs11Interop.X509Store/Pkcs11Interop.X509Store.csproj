@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pkcs11Interop" Version="5.1.2" />
+    <PackageReference Include="Pkcs11Interop" Version="5.3.0" />
   </ItemGroup>
 
   <ItemGroup Label="PackExtraContent">
