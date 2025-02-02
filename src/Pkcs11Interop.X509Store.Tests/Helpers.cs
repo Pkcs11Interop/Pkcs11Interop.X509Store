@@ -40,8 +40,35 @@ namespace Net.Pkcs11Interop.X509Store.Tests
 
         public static byte[] ComputeHash(byte[] data, HashAlgorithmName hashAlgName)
         {
-            using (HashAlgorithm hashAlg = HashAlgorithm.Create(hashAlgName.Name))
-                return hashAlg.ComputeHash(data);
+            if (hashAlgName == HashAlgorithmName.MD5)
+            {
+                using (HashAlgorithm hashAlg = MD5.Create())
+                    return hashAlg.ComputeHash(data);
+            }
+            else if (hashAlgName == HashAlgorithmName.SHA1)
+            {
+                using (HashAlgorithm hashAlg = SHA1.Create())
+                    return hashAlg.ComputeHash(data);
+            }
+            else if (hashAlgName == HashAlgorithmName.SHA256)
+            {
+                using (HashAlgorithm hashAlg = SHA256.Create())
+                    return hashAlg.ComputeHash(data);
+            }
+            else if (hashAlgName == HashAlgorithmName.SHA384)
+            {
+                using (HashAlgorithm hashAlg = SHA384.Create())
+                    return hashAlg.ComputeHash(data);
+            }
+            else if (hashAlgName == HashAlgorithmName.SHA512)
+            {
+                using (HashAlgorithm hashAlg = SHA512.Create())
+                    return hashAlg.ComputeHash(data);
+            }
+            else
+            {
+                throw new NotSupportedException($"Hash algorithm {hashAlgName.Name} is not supported.");
+            }
         }
 
         /// <summary>
