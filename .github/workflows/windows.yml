@@ -1,0 +1,38 @@
+name: Windows
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Set up OS
+      run: |
+        choco install --no-progress nunit-console-runner
+    
+    - name: Set up msbuild
+      uses: microsoft/setup-msbuild@v2
+    
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Build source code
+      shell: cmd
+      run: |
+        msbuild .\src\Pkcs11Interop.X509Store.sln /p:Configuration=Release /p:Platform="Any CPU" /target:Restore
+        msbuild .\src\Pkcs11Interop.X509Store.sln /p:Configuration=Release /p:Platform="Any CPU" /target:Rebuild
+
+    - name: Test net462 assembly
+      shell: cmd
+      run: |
+        nunit3-console .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net481\Pkcs11Interop.X509Store.Tests.dll
+
+    - name: Test netstandard2.0 assembly in net80 application
+      shell: cmd
+      run: |
+        dotnet vstest .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net80\Pkcs11Interop.X509Store.Tests.dll /Framework:"net8.0"
