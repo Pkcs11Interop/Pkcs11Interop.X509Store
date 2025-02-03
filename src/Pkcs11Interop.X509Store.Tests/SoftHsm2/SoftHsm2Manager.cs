@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using Net.Pkcs11Interop.Common;
 using Net.Pkcs11Interop.HighLevelAPI;
 
@@ -148,7 +149,36 @@ namespace Net.Pkcs11Interop.X509Store.Tests.SoftHsm2
                 throw new UnsupportedPlatformException("Pkcs11Interop.X509Store.Tests cannot be run on this platform");
             }
 
+            // Set up a custom DllImportResolver that may be needed on some Linux distributions
+            SetupCustomDllImportResolver();
+
             InitializeTokens();
+        }
+
+        /// <summary>
+        /// Sets up a custom DllImportResolver that may be needed when Pkcs11Interop is running on Linux with .NET 5 or later
+        /// </summary>
+        static void SetupCustomDllImportResolver()
+        {
+#if NET5_0_OR_GREATER
+            if (Platform.IsLinux)
+            {
+                // Pkcs11Interop uses native functions from "libdl.so", but Ubuntu 22.04 and possibly also other distros have "libdl.so.2".
+                // Therefore, we need to set up a DllImportResolver to remap "libdl" to "libdl.so.2".
+                NativeLibrary.SetDllImportResolver(typeof(Pkcs11InteropFactories).Assembly, (libraryName, assembly, dllImportSearchPath) =>
+                {
+                    if (libraryName == "libdl")
+                    {
+                        // Note: This mapping might need to be modified if your distribution uses a different version of libdl.
+                        return NativeLibrary.Load("libdl.so.2", assembly, dllImportSearchPath);
+                    }
+                    else
+                    {
+                        return NativeLibrary.Load(libraryName, assembly, dllImportSearchPath);
+                    }
+                });
+            }
+#endif
         }
 
         private static void InitializeTokens()
