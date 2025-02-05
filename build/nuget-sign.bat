@@ -11,7 +11,7 @@ set SEVENZIP="c:\Program Files\7-Zip\7z.exe"
 set SIGNTOOL="C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool.exe"
 
 @rem Define signing options
-set CERTHASH=3336dc12261fed71ab08ab364bf5d0f53083b00d
+set CERTHASH=7e26cd682dc453927843a514f2110977a0e4709f
 set TSAURL=http://time.certum.pl/
 set LIBNAME=Pkcs11Interop.X509Store
 set LIBURL=https://www.pkcs11interop.net/
@@ -33,7 +33,7 @@ del /Q *.nupkg || goto :error
 
 @rem Sign all assemblies using SHA256withRSA algorithm
 %SIGNTOOL% sign /sha1 %CERTHASH% /fd sha256 /tr %TSAURL% /td sha256 /d %LIBNAME% /du %LIBURL% ^
-lib\net461\Pkcs11Interop.X509Store.dll ^
+lib\net462\Pkcs11Interop.X509Store.dll ^
 lib\netstandard2.0\Pkcs11Interop.X509Store.dll || goto :error
 
 @rem Create signed package with signed assemblies
@@ -47,6 +47,7 @@ rmdir /S /Q lib || goto :error
 del /Q *.nuspec || goto :error
 del /Q *.txt || goto :error
 del /Q *.png || goto :error
+del /Q *.md || goto :error
 
 @echo *** SIGN SUCCESSFUL ***
 @endlocal
