@@ -27,7 +27,7 @@ jobs:
         msbuild .\src\Pkcs11Interop.X509Store.sln /p:Configuration=Release /p:Platform="Any CPU" /target:Restore
         msbuild .\src\Pkcs11Interop.X509Store.sln /p:Configuration=Release /p:Platform="Any CPU" /target:Rebuild
 
-    - name: Test net461 assembly
+    - name: Test net462 assembly
       shell: cmd
       run: |
         nunit3-console .\src\Pkcs11Interop.X509Store.Tests\bin\Release\net481\Pkcs11Interop.X509Store.Tests.dll

@@ -14,7 +14,7 @@ Pkcs11Interop.X509Store is periodically tested on Windows, Linux and macOS. It w
 
 ## What .NET runtimes are supported?
 
-Pkcs11Interop.X509Store is compatible with .NET Framework 4.6.1 and newer, .NET 5 and newer, and a [few other runtimes](https://www.nuget.org/packages/Pkcs11Interop.X509Store#supportedframeworks-body-tab).
+Pkcs11Interop.X509Store is compatible with .NET Framework 4.6.2 and newer, .NET 5 and newer, and a [few other runtimes](https://www.nuget.org/packages/Pkcs11Interop.X509Store#supportedframeworks-body-tab).
 
 ## What algorithms are supported?
 
